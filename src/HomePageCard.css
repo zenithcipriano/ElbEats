@@ -1,0 +1,52 @@
+.dishCard {
+    width: 250px;
+    border: 1px solid #ededed;
+    box-shadow:#cccccc 2.4px 2.4px 3.2px;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    padding: 15px;
+    /* padding-left: 15px;
+    padding-right: 15px; */
+    /* padding-bottom: 0px; */
+    border-radius: 25px;
+}
+
+.dishCard:hover {
+    width: 250px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    /* box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 15px;
+    border-radius: 25px;
+    position: relative;
+    /* top: -1px; */
+}
+/* table > tr > td {
+    border: 1px solid black;
+} */
+.dishImg {
+    width: 250px;
+    height: 200px;
+    /* padding: 10px;
+    padding-left: 15px; */
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+.hometable {
+    position: relative; 
+    width: 100%;
+    padding: 0;
+    margin-bottom: -5px;
+    /* white-space: nowrap;
+    overflow: hidden;
+    /* text-overflow: clip; */
+    /* top: -7px */
+}
+
+.vitmin {
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}

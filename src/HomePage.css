@@ -1,0 +1,5 @@
+.HomePage {
+    overflow-y: scroll;
+    /* border: 1px solid black; */
+    display: block;
+}
