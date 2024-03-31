@@ -4,9 +4,10 @@ import { useMediaQuery } from 'react-responsive';
 import { IoHome } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { BiSolidFoodMenu } from "react-icons/bi";
-import logo from "./assets/logo.png";
+import logo from "./assets/Untitled design (1).png";
 import { useState } from 'react'
 import HomePage from "./HomePage.js";
+import Login from './Login.js';
 
 function App() {
   // const isDesktopOrLaptop = useMediaQuery({
@@ -22,13 +23,13 @@ function App() {
   const [profileColor, setProfileColor] = useState("lightgray")
 
   var iconSize = 16;
-
   if (isTabletOrMobile) {
     iconSize = 40;
   } else {
-    iconSize = 16;
+    iconSize = 22;
   }
 
+  const [page, setPage] = useState(1);
   const changeTabColor = (page) => {
     if (page === 1) {
       setHomeColor("black")
@@ -43,8 +44,14 @@ function App() {
       setHistoryColor("lightgray")
       setProfileColor("black")
     }
-
+    setPage(page);
     // alert(page + " | " + homeColor + " | " + historyColor + " | " + profileColor)
+  }
+
+  const [keywords, setKeywords] = useState("");
+  const handleChange = (event) => {
+    setKeywords(event.target.value);
+    // console.log(keywords);
   }
 
   return (
@@ -53,7 +60,7 @@ function App() {
       <table className='header'>
           <tr>
             <th> <img className="logo" src={logo} alt="ElbEats logo"/> </th>
-            <th> <h1>ElbEats</h1> </th>
+            <th> <input type="text" value={keywords} onChange={handleChange} /> </th>
           </tr>
         </table>
       </section>
@@ -67,17 +74,22 @@ function App() {
       </table> :
       <table className='desktopTable'>
         <tr>
-            <th style={{color: homeColor}} onClick={() => changeTabColor(1)}><h3><IoHome size={iconSize}/> Home</h3> </th>
-            <th style={{color: historyColor}} onClick={() => changeTabColor(2)}><h3><BiSolidFoodMenu size={iconSize}/> Meal History</h3> </th>
+            <th style={{color: homeColor}} onClick={() => changeTabColor(1)}><h2><IoHome size={iconSize}/> Home</h2> </th>
+            <th style={{color: historyColor}} onClick={() => changeTabColor(2)}><h2><BiSolidFoodMenu size={iconSize}/> Meal History</h2> </th>
             <th style={{color: profileColor}} onClick={() => changeTabColor(3)}><CgProfile size={40}/></th>
         </tr>
       </table>}
       
-
-      <section className='body'>
+      <section className='body' 
+      style={{height: isTabletOrMobile?"76%":"100%"}}
+      >
+      {/* <HomePage isMobile={isTabletOrMobile}/> */}
+      {page==1?
         <HomePage isMobile={isTabletOrMobile}/>
+        : <Login/>
+      }
       </section>
-
+      
       <section className='footer'>
         {/* <h1>Device Test!</h1>
         {isDesktopOrLaptop && <p>You are a desktop or laptop</p>}
