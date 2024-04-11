@@ -1,0 +1,159 @@
+.RP {
+    background-color: white;
+    font-size: 17px;
+    width: 100%
+}
+
+hr {
+    margin-top: -1px;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    border-top: 0px solid #ededed;
+}
+
+.RP > * {
+    background-color: white;
+}
+
+.rswitch {
+    border: 1px solid #ededed;
+    color: #6e2323;
+    background-color: white;
+    font-size: 20px;
+    padding: 5px 20px;
+    opacity: 1;
+    margin-right: 20px;
+    margin-left: -21px;
+    /* margin-right: 10px; */
+}
+
+.rdishtable {
+    position: relative;
+}
+.rdishtable > tr > td {
+    padding: 10px;
+    /* border: 1px solid black; */
+}
+
+.restoBody {
+    /* border: 1px solid black; */
+    padding: 10px 30px;
+    margin-bottom: 20px;
+}
+
+.restoBody > * {
+    position: relative;
+}
+
+#rpname {
+    font-size: 40px;
+    margin: 0px;
+    margin-top: 3px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    /* font-weight: bold; */
+}
+
+.tableHours {
+    font-size: 17px;
+}
+
+.priceTable {
+    border-spacing: 10px;
+    font-size: 25px;
+    margin-bottom: -5px;
+}
+
+.socialsTable {
+    position: relative;
+    width: 101%;
+    margin-left: -2px;
+}
+
+
+/* .rdescdiv {
+    border: 1px solid #ededed;
+    padding: 20px;
+    margin: 30px 0px;
+} */
+
+#descTextarea {
+    font-size: 17px;
+    /* width: 90%; */
+    /* width: 507px; */
+    border: 1px solid #ededed;
+    resize: none;
+    color: #6e2323;
+    padding: 20px;
+    background-color: white;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.Raddress {
+    padding: 5px;
+    margin-left: -5px;
+    border: 1px solid #ededed;
+    /* margin-top: -5px; */
+}
+
+#rateTable {
+    border-spacing: 6px 0;
+    /* left: -6px; */
+    font-size: 18px;
+}
+/* #rateTable > tr > td {
+    border: 1px solid black;
+} */
+#rateTable > tr > td > p {
+    margin: 0px;
+}
+
+
+.scrollable1 {
+    /* position: relative; */
+    /* border: 1px solid black; */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-left: -25px;
+    /* background-color: #f8f9ff; */
+    /* margin-top: -10px; */
+}
+
+.Carousel1 {
+    /* border: 1px solid black; */
+    position: fixed;
+    padding: 10px 20px;
+    /* background-color: white; */
+    text-align: left;
+    border-left: 1px solid #ededed;
+    margin-top: -20px;
+    /* top: -10px; */
+}
+
+.car {
+    text-align: center;
+}
+
+.ArrowBack {
+    position:absolute;
+    z-index: 1;
+    padding: 140px 20px;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
+.ArrowNext {
+    /* background-color: aqua; */
+    right: 0px;
+    padding: 140px 20px;
+    margin-top: -350px;
+    z-index: 1;
+    position:absolute;
+    height: 100%;
+}
+
+.ArrowBack:hover, .ArrowNext:hover {
+    /* background-color:aqua; */
+    background-color:rgba(242, 244, 255, .5);
+}

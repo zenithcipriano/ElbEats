@@ -2,7 +2,14 @@ import React  from 'react';
 import "./HomePageCard.css";
 import { Card } from 'react-bootstrap';
 import { CiStar } from "react-icons/ci";
-import { FaWalking } from "react-icons/fa";
+import { FaWalking, FaRegBookmark } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEditAlt } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { GrRestaurant } from "react-icons/gr";
 
 class HomePageCard extends React.Component {
   constructor(props) {
@@ -10,27 +17,91 @@ class HomePageCard extends React.Component {
     const tb = props.data.tabs;
 
     this.state = {
+        navigate: props.navigate,
         dishName: props.data.dishName,
         rate: props.data.rate,
         resName: props.data.resName,
         distance: props.data.distance,
         status: props.data.status,
         vitamins: props.data.vitamins,
+        calories: 46,
         minerals: props.data.minerals,
         tabs: tb.replace(" ", "").split(","),
-        price: props.data.price
+        price: props.data.price,
+        anchorEl: null,
+        open: false,
     };
 
-    // this.updateState = this.updateState.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
+
+  options = [
+    "Save",
+    "Edit",
+    "Delete",
+    "View Restaurant"
+  ]
+
+  handleClick(event) {
+    this.setState({anchorEl: event.currentTarget, open: true});
+  };
+
+  handleClose(choice) {
+    this.setState({anchorEl: null, open: false});
+    if("View Restaurant" == choice) {
+      this.state.navigate('/restaurant');
+    }
+    // alert(choice);
+  };
 
     render() {
       return <div className='HomePageCard' >
         <Card className="dishCard" >
-          <Card.Img className="dishImg" variant="top" src={ require("./assets/sample.jpg")} />
+          <Card.Img className="dishImg" variant="top" src={ require("./assets/sample.jpg")} 
+          style={{marginBottom: "-42px"}} onClick={() => this.state.navigate('/dish')}/>
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={this.state.open ? 'long-menu' : undefined}
+            aria-expanded={this.state.open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={this.handleClick}
+            style={{
+              top: "-160px",
+              marginLeft: "210px",
+              // border: "1px solid rgba(0, 0, 0, 0.1)",
+              }}
+          >
+            <BsThreeDotsVertical 
+            style={{
+              color: "#FEFDED",
+              }}
+              />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={this.state.anchorEl}
+            open={this.state.open}
+            onClose={() => this.handleClose("None")}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            {this.options.map((option) => (
+              <MenuItem key={option} onClick={() => this.handleClose(option)} style={{fontSize: "10px", fontWeight: "bold", backgroundColor: "#FEFDED"}}>
+                {"Save" == option? <FaRegBookmark /> : 
+                "Edit" == option? <BiEditAlt />:
+                "Delete" == option? <MdDeleteOutline />:
+                "View Restaurant" == option? <GrRestaurant /> :
+                <div></div>} 
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
             <Card.Body>
 
-                  <table className='hometable'>
+                  <table className='hometable' onClick={() => this.state.navigate('/dish')}>
                   <tr>
                       <td 
                       className="vitmin" 
@@ -39,7 +110,6 @@ class HomePageCard extends React.Component {
                         fontWeight: "bold",
                         width: "163px",
                         padding: "4px 0",
-                        marginBottom: "-7px",
                       }}> 
                         {this.state.dishName} 
                       </td>
@@ -63,11 +133,11 @@ class HomePageCard extends React.Component {
                   <tr>
                     <td 
                       className="vitmin"
-                      style={{width: "100px", marginRight: "-12px"}}
+                      style={{width: "100px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant')}
                      >
                       {this.state.resName} 
                     </td>
-                    <td style={{textAlign: "center", width: "80px" }}>
+                    <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish')}>
                       <FaWalking style={{
                         position: "relative", 
                         top: "2px",
@@ -76,42 +146,56 @@ class HomePageCard extends React.Component {
                     <td style={{
                       width: "54px",
                       textAlign: "right", 
-                      color: this.state.status === "Open" ? "#013b3f":"#540000"}}>
+                      color: this.state.status == "Open" ? "#013b3f":"#AD0C26",
+                      fontWeight: "500"
+                      }} onClick={() => this.state.navigate('/dish')}>
                       {this.state.status}
                     </td>
                   </tr>
                 </table>
-                
-                <table className='hometable' style={{
+
+                <div onClick={() => this.state.navigate('/dish')}>
+                <table className='macro' style={{
                   // color: "#013b3f", 
                   fontSize: "14px",
-                  marginBottom: "-7px",
+                  marginBottom: "-5px",
                   // width:"70%"
-                  }}>
+                  }} >
                   <tr>
-                    <td style={{width:"60px"}}>Vitamins: </td>
-                    <td className="vitmin" style={{ width:"80px" }}> {this.state.vitamins} </td>
+                    <td> <div style={{marginRight:"5px"}}>*Calories: {this.state.calories} kcal</div></td>
+                    <td> <div>*Sodium: {this.state.calories} mg </div></td>
                   </tr>
                 </table>
 
                 
 
-                <table className='hometable' style={{
+                {
+                this.state.vitamins || this.state.minerals ? <table className='hometable' style={{
                   // color: "#013b3f", 
                   fontSize: "14px", 
                   // marginTop: "-39px"
                   }}>
                   <tr>
-                    <td style={{width:"60px"}}>Minerals: </td>
-                    <td className="vitmin" style={{width:"80px"}}> {this.state.minerals} </td>
+                    <td> <div style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width:"130px",
+                    // border: "1px solid rgba(0, 0, 0, 0.1)",
+                  }}>*Rich in {this.state.minerals? this.state.minerals + " and": ""} Vitamins {this.state.vitamins} 
+                  </div></td>
+                    {/* <td className="vitmin" style={{width:"80px"}}> {this.state.minerals} </td> */}
                   </tr>
-                </table>
+                </table>:
+                <div></div>
+                }
 
                 <div style={{
-                      fontSize:"40px",
-                      marginTop: "-35px",
+                      fontSize: "40px",
+                      marginTop: this.state.vitamins || this.state.minerals ? "-20px": "-5px",
+                      marginBottom: "-25px",
                       textAlign: "right",
-                      color: "#3a0101"
+                      color: "#013B3F"
                       }}> ₱{this.state.price} </div>
 
                 <table className='hometable' style={{
@@ -145,6 +229,7 @@ class HomePageCard extends React.Component {
                 }}>
                   {this.state.price}
                 </div> */}
+                </div>
             </Card.Body>
         </ Card>
       </div>;

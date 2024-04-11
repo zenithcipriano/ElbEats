@@ -1,6 +1,15 @@
+body {
+  /* background-color: #FEFDED; */
+  background-color: #f8f9ff;
+  text-shadow: 0 0 5px white;
+  /* color: #A34343; */
+  color: #6e2323;
+}
+
 .logo {
   /* width: 100px; */
   height: 60px;
+  /* height: 100%; */
   /* padding: 10px; */
   padding-top: 30px;
   padding-left: 30px;
@@ -8,18 +17,24 @@
 }
 
 .header {
-  top: -10px;
+  top: -15px;
+  /* height: 20%; */
+  width: 100%;
+  background-color: white;
+  border-bottom: 3px solid white;
+  padding-bottom: 3px;
+  /* border: 1px solid black; */
 }
 
 .desktopTable {
   padding: 20px;
-  top: -5px;
+  top: -10px;
   right: 0;
   text-align: center;
 }
 
 .desktopTable > tr > th {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   padding-left: 15px;
   padding-right: 15px;
   text-align: center;
@@ -27,7 +42,7 @@
 
 .phoneTable > tr > th{
 /* th { */
-  border: 1px solid #3a0101;
+  /* border: 1px solid #A34343; */
   padding: 10px;
 }
 
@@ -35,6 +50,8 @@
   width: 100%;
   table-layout: fixed;
   bottom: 0;
+  /* border-top: 3px solid #A34343; */
+  background-color: white;
 }
 
 table {
@@ -43,8 +60,9 @@ table {
 
 .body {
   position: fixed;
-  top: 80px;
+  top: 90px;
   width: 100%;
+  /* display: flex; */
   /* background-color: #3a0101; */
   /* padding-left: 20px;
   padding-right: 20px; */

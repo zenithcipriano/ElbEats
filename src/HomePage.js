@@ -2,8 +2,10 @@ import React  from 'react';
 import HomePageCard from './HomePageCard';
 import { useState } from "react";
 import "./HomePage.css";
+import { useNavigate } from 'react-router-dom';
 
 function HomePage({isMobile}) {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [isSet, setIsSet] = useState(0);
     const sampleData = [{
@@ -49,7 +51,8 @@ function HomePage({isMobile}) {
         minerals: "iron, magnesium",
         tabs: "Pork, Fried",
         price: "200"
-    },{
+    },
+    {
         dishName: "Dish Name1",
         rate: "unrated",
         resName: "Restaurant",
@@ -94,7 +97,7 @@ function HomePage({isMobile}) {
         price: "200"
     },
     ];
-
+    
     const tableBorder = 15;
     const perCard = 282 + tableBorder;
     const tempCol = Math.floor((window.innerWidth - tableBorder) / perCard);
@@ -122,10 +125,8 @@ function HomePage({isMobile}) {
         {/* {JSON.stringify(data)} */}
         <table className="HomePage"
         style={{
-            // paddingLeft: border+"px",
             left: border+"px",
-            right:"0px",
-            // paddingRight: border+"px",
+            paddingRight: border+"px",
             borderSpacing: tableBorder+"px",
             height: isMobile ? window.innerHeight - (95+68.36) : window.innerHeight - (98),
         }}>
@@ -134,12 +135,8 @@ function HomePage({isMobile}) {
                     return <tr> 
                         <td>{
                             row.map((dish) => {
-                                return  <td style={{ 
-                                    // border: "1px solid black" 
-                                    }}>
-                                    {/* {border} */}
-                                    {/* {window.innerHeight} */}
-                                    <HomePageCard data={dish}/> </td>
+                                return  <td>
+                                    <HomePageCard data={dish} navigate={navigate} /> </td>
                             })    
                         }</td>
                     </tr>

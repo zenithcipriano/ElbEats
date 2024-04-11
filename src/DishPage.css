@@ -1,0 +1,241 @@
+.DishPage {
+    /* text-align: center; */
+    overflow-y: scroll;
+    /* overflow-x: hidden; */
+    /* text-align: left; */
+    /* color: black; */
+    background-color: white;
+}
+
+.slideImg {
+    max-height: 350px;
+    object-fit: contain;
+}
+
+.Carousel {
+    position: fixed;
+    padding: 10px 20px;
+    background-color: white;
+    text-align: center;
+    border-right: 1px solid #ededed;
+}
+
+.dishBody {
+    padding-left: 30px;
+    padding-right: 10px;
+}
+
+.dishBody > * {
+    position: relative;
+}
+
+.ArrowBack {
+    position:absolute;
+    z-index: 1;
+    padding: 140px 20px;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
+.ArrowNext {
+    /* background-color: aqua; */
+    right: 0px;
+    padding: 140px 20px;
+    margin-top: -350px;
+    z-index: 1;
+    position:absolute;
+    height: 100%;
+}
+
+.ArrowBack:hover, .ArrowNext:hover {
+    /* background-color:aqua; */
+    background-color:rgba(242, 244, 255, .5);
+}
+
+.status {
+    /* color: black; */
+    /* background-color: aqua; */
+    margin-top: -17px;
+}
+
+/* .dishBody{
+    background-color: white;
+} */
+
+/* p {
+    margin: 0px;
+} */
+
+/* #rname {
+    margin: 0px;
+    padding-top: 5px;
+} */
+
+#dname {
+    font-size: 30px;
+    margin: 0px;
+    margin-top: 3px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    /* font-weight: bold; */
+}
+
+.address {
+    background-color: white;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    border-top: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+    color: #6e2323;
+    margin: 0px;
+    padding-top: 5px;
+    text-align: left;
+}
+
+.resto {
+    /* position: relative; */
+    /* background-color: aqua; */
+    /* padding-left: 10px; */
+    left: -10px;
+    table-layout: fixed;
+    width: 460px;
+    /* width: 80%; */
+}
+
+.resto > tr > td > p {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#rateTable {
+    border-spacing: 6px 0;
+    /* left: -6px; */
+    font-size: 18px;
+}
+
+/* #rateTable > tr > td {
+    border: 1px solid black;
+} */
+#rateTable > tr > td > p {
+    margin: 0px;
+}
+
+#stars {
+    padding-top: 3px;
+}
+
+/* #price {
+} */
+
+/* .Price > tr > td > * {
+    margin: 0;
+}
+
+.Price > tr > td {
+    border: 1px solid black;
+} */
+
+.priceTable > tr > td > * {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.priceTable {
+    font-size: 25px;
+}
+
+
+
+#p1 {
+    color: #013B3F;
+    padding: 0px 10px;
+    width: 60px;
+    font-weight:500;
+    white-space: nowrap;
+}
+
+#p2 > button {
+    font-size: 15px;
+}
+
+button {
+    border: 1px solid #ededed;
+    color: #6e2323;
+    background-color: white;
+}
+
+.paymentTags {
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+.tags1 {
+    font-size: 15px;
+    margin-top: 0px;
+}
+
+.tags {
+    font-size: 17px;
+    margin-bottom: 0px;
+}
+
+/* table > tr > td {
+    border: 1px solid black;
+} */
+
+.catTable > tr > td, 
+.ingTable > tr > td, 
+.ingTable > tr > th {
+    border: 1px solid #ededed;
+    padding: 5px;
+    text-align: left;
+}
+
+.switch1 {
+    margin-top: 15px;
+    font-size: 17px;
+    left: -2px;
+    opacity: .5;
+    padding: 5px 15px;
+    background-color: white;
+    z-index: 1;
+}
+
+.switchable-textarea {
+    border: 1px solid #ededed;
+    left: -2px;
+    top: -1px;
+    padding: 15px;
+    font-size: 17px;
+    width: 543px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.switchable-textarea > table {
+    position: relative;
+    width: 543px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#revTable {
+    /* width: 100%; */
+    border: 1px solid #ededed;
+    padding-top: 2px;
+    margin-bottom: 5px;
+}
+
+.nutTable > tr > td, 
+.nutTable > tr > th {
+    border: 1px solid #ededed;
+    padding: 5px;
+    text-align: left;
+}

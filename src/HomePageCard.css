@@ -1,4 +1,10 @@
+.HomePageCard {
+    color: black;
+    font-family: Tahoma;
+}
+
 .dishCard {
+    background-color: white;
     width: 250px;
     border: 1px solid #ededed;
     box-shadow:#cccccc 2.4px 2.4px 3.2px;
@@ -37,6 +43,7 @@
     width: 100%;
     padding: 0;
     margin-bottom: -5px;
+    /* border: 1px solid black; */
     /* white-space: nowrap;
     overflow: hidden;
     /* text-overflow: clip; */
@@ -49,4 +56,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
+}
+
+.macro {
+    /* width: 100px; */
+    /* padding: 0px; */
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    /* table-layout: auto; */
+    /* border:1px solid black; */
+    position: relative; 
+    margin-top: 3px;
 }

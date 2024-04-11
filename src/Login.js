@@ -92,7 +92,7 @@ class Login extends React.Component {
         if(this.state.password.localeCompare(this.state.confirmPassword) == 0) {
             alert(this.state.password);
             this.setState({resetPasswordValue: false, forgotPasswordValue: false, loginValue:true, 
-                password:"", confirmPassword:"", showpassword: false, showpassword: false})
+                password:"", confirmPassword:"", showpassword: false})
         } else {
             alert("Passwords do not match");
         }
@@ -106,71 +106,93 @@ class Login extends React.Component {
         this.setState({forgotPasswordValue: val, resetPasswordValue: false})
     }
 
+    // centerHeight() {
+    //     console.log(window.innerHeight);
+
+    // }
     render() {
         return this.state.resetPasswordValue?
         <div className='Login'>
             <h1>Reset Password</h1>
-            <p>Enter a new password for {this.state.email}</p>
+            <p className='pageLabel'>Enter a new password for {this.state.email}</p>
 
             <form onSubmit={this.resetPassword}>
-            <RiLockPasswordLine />
-            <input required type={this.state.showpassword?"text":"password"} value={this.state.password} onChange={this.handleChangePassword} placeholder='Password'/> 
-            {!this.state.showpassword?<FaRegEye onClick={() => this.showPasFun(true, 1)}/>:<TbEyeClosed onClick={() => this.showPasFun(false, 1)}/>} <br/>
+            <div className='loginInput'>
+            <RiLockPasswordLine className='icon'/>
+            <input className='lockinput' required type={this.state.showpassword?"text":"password"} value={this.state.password} onChange={this.handleChangePassword} placeholder='Password'/> 
+            {!this.state.showpassword?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 1)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 1)}/>} <br/>
+            </div>
 
-            <RiLockPasswordLine />
-            <input required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
-            {!this.state.showConPas?<FaRegEye onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed onClick={() => this.showPasFun(false, 2)}/>} <br/>
+            <div className='loginInput'>
+            <RiLockPasswordLine className='icon'/>
+            <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
+            {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
+            </div>
+
             <input type="submit" value="Reset Password"/>
             </form>
         </div>
         : this.state.forgotPasswordValue?
         <div className='Login'>
             <h1>Forgot Password</h1>
-            <p>Enter the email address associated with your account and we'll send you a code to confirm your identity.</p>
+            <p className='pageLabel'>Enter the email address associated with your account and we'll send you a code to confirm your identity.</p>
 
             <form onSubmit={this.sendEmail}>
-                <MdMailOutline />
+                <div className='loginInput'>
+                <MdMailOutline className='icon'/>
                 <input required type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
+                </div>
                 <input type="submit" value="Send Code" />    
             </form>
 
             <form onSubmit={this.verifyPin}>
-                <TbPasswordUser />
+                <div className='loginInput'>
+                <TbPasswordUser className='icon'/>
                 <input required type="text" value={this.state.pin} onChange={this.handleChangePin} placeholder='PIN'/> <br/>
+                </div>
                 <input type="submit" value="Continue" />    
             </form>
 
-            <a onClick={() => this.forgot(false)}>Back to log in</a>
+            <div className="clickableText">
+            <a onClick={() => this.forgot(false)}>Back to login</a>
+            </div>
         </div>:
         <div className='Login'>
             {this.state.loginValue? 
                 <div>
                     <h1>Welcome Back</h1>
-                    <p>Enter your credentials to login</p>
+                    <p className='pageLabel'>Enter your credentials to login</p>
                 </div>:<div>
                     <h1>Sign Up</h1>
-                    <p>Create your account</p>
+                    <p className='pageLabel'>Create your account</p>
                 </div>
             }
 
             <form onSubmit={this.handleSubmit}>
-                <FaRegUser />
+                <div className='loginInput'>
+                <FaRegUser className='icon' />
                 <input required type="text" value={this.state.username} onChange={this.handleChangeUsername} placeholder='Username'/> <br/>
+                </div>
+                
                 {!this.state.loginValue? 
-                    <div>
-                        <MdMailOutline />
+                    <div className='loginInput'>
+                        <MdMailOutline className='icon' />
                         <input required type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
                     </div>
                     : <div></div>
                 }
-                <RiLockPasswordLine />
-                <input required type={this.state.showpassword?"text":"password"} value={this.state.password} onChange={this.handleChangePassword} placeholder='Password'/> 
-                {!this.state.showpassword?<FaRegEye onClick={() => this.showPasFun(true, 1)}/>:<TbEyeClosed onClick={() => this.showPasFun(false, 1)}/>} <br/>
+
+                <div className='loginInput'>
+                <RiLockPasswordLine className='icon'/>
+                <input className='lockinput' required type={this.state.showpassword?"text":"password"} value={this.state.password} onChange={this.handleChangePassword} placeholder='Password'/> 
+                {!this.state.showpassword?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 1)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 1)}/>} <br/>
+                </div>
+
                 {!this.state.loginValue? 
-                    <div>
-                        <RiLockPasswordLine />
-                        <input required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
-                        {!this.state.showConPas?<FaRegEye onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed onClick={() => this.showPasFun(false, 2)}/>} <br/>
+                    <div className='loginInput'>
+                        <RiLockPasswordLine className='icon'/>
+                        <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
+                        {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
                     </div>
                     : <div></div>
                 }
@@ -178,7 +200,7 @@ class Login extends React.Component {
             </form>
 
             {this.state.loginValue? 
-                <div>
+                <div className="clickableText">
                     <a onClick={() => this.forgot(true)}>Forgot Password?</a>
                     <p>Don't have an account? <a onClick={() => this.signup(false)}>Sign Up</a></p>
                 </div>:
