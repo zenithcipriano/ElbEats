@@ -1,0 +1,78 @@
+/* .OwnerPage > * {
+    position: relative;
+} */
+
+.OwnerTable {
+    position: relative;
+    width: 100%;
+    /* margin-right: 20px; */
+}
+
+.restoCard {
+    position: relative;
+    max-width: 200px;
+    /* border: 1px solid rgba(110, 35, 35, 0.2); */
+    padding: 10px;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid rgba(0, 0, 0, 0);
+    /* margin-left: 0; */
+    /* margin-top: 0px; */
+}
+
+.restoCardtd {
+    border: 1px solid rgba(110, 35, 35, 0.2);
+    z-index: 1;
+}
+
+.restoName {
+    font-size: 18px;
+}
+
+.restoLoc {
+    font-size: 12px;
+}
+
+/* .icon1 {
+    position: relative;
+} */
+
+.dishdiv {
+    position: relative;
+    border-left: 1px solid rgba(110, 35, 35, 0.2);
+    border-top: 1px solid rgba(110, 35, 35, 0.2);
+    margin-top: -3.5px;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-left: 2.5px;
+}
+
+.dishdiv > table {
+    /* border: 1px solid black; */
+}
+
+.restoTabs {
+    position: relative;
+    /* background-color: white; */
+    border-spacing: 0px;
+    /* border: 1px solid rgba(110, 35, 35, 0.2); */
+    overflow-x: hidden;
+    z-index: 1;
+}
+
+/* .dishTable {
+    border-spacing: 20px;
+} */
+
+.OwnerTable > tr > td {
+    /* border: 1px solid black; */
+    /* vertical-align: text-top; */
+}
+
+.ProfileTable > tr > td {
+    /* border: 1px solid black; */
+    vertical-align: top;
+}

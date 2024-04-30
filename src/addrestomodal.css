@@ -1,0 +1,69 @@
+.modalTable {
+    position: relative;
+    width: 100%;
+    margin-top: -15px;
+    margin-bottom: 0px;
+    /* border: 1px solid black; */
+}
+
+.modalTable > tr > td {
+    /* border: 1px solid black; */
+    margin: 0px;
+    padding: 0px;
+    /* padding-top: 10px; */
+}
+
+fieldset {
+    margin-top: -10px;
+    /* border: 1px solid #6e2323; */
+    margin-bottom: 10px;
+}
+
+.inputModal {
+    font-size: 18px;
+    width: 100%;
+}
+
+.timeI {
+    font-size: 18px;
+    color: #6e2323;
+    height: 40px;
+    /* width: 100%; */
+}
+
+.inputTables {
+    position: relative;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: -1px;
+    border-spacing: 5px;
+}
+
+.textAreaModal {
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0);
+    color: #6e2323;
+    /* border: 1px solid white; */
+
+}
+
+.textAreaModal:focus {
+    outline: none !important;
+    border: 1px solid rgba(0,0,0,0);
+}
+
+.checkbox {
+    accent-color: #6e2323;
+}
+
+.img-wrap{
+    height: 170px;
+    border: 1px solid #6e2323;
+    margin-bottom: 10px;
+}
+
+.img-wrap > img {
+    height: 170px;
+    object-fit: contain;
+}

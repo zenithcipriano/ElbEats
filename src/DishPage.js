@@ -1,5 +1,5 @@
 import './DishPage.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -8,21 +8,149 @@ import "@fontsource/rubik";
 import { FaRegStar, FaStarHalfAlt, FaStar } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { FiPlusCircle } from "react-icons/fi";
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';  
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import ProgressBar1 from './progress';
+import { BiEditAlt } from 'react-icons/bi';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import AddDishModal from './AddDishModal';
+import DeleteModal from './DeleteModal';
+
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function DishPage({isMobile, navigate}) {
     // Regular Comp
-    const dname = "Filipino Chicken Adobo"
-    const rname = "RecipeTin Eats"
-    const coordinates = 0
-    const address = "F.O. Santos St., Los Baños, Philippines"
-    const walkinPrice = 80
-    const delPrice = 120
-    const numRev = 30
+    // const dname = "Filipino Chicken Adobo"
+    // const rname = "RecipeTin Eats"
+    // const coordinates = 0
+    // const address = "F.O. Santos St., Los Baños, Philippines"
+    // const walkinPrice = 80
+    // const delPrice = 120
+    // const numRev = 30
+    // const restoID = 1;
+    const userInfo = {
+        id: localStorage.getItem("user_reference"),
+        type: localStorage.getItem("user_type")
+    }
+    // console.log(userInfo.type);
+
+    const location = useLocation();
+    const { pathname } = location;
+    const dishID = pathname.split("/")[2];
+
+    const [restoID, setrestoID] = useState(0);
+    const [dname, setdname] = useState("");
+    const [rname, setrname] = useState("");
+    const [coordinates, setCoordinates] = useState(0);
+    const [address, setAddress] = useState("");
+    const [walkinPrice, setWalkinprice] = useState(0);
+    const [delPrice, setOnlineprice] = useState(0);
+    const [numRev, setNumreviews] = useState(0);
+    const [imgList, setImages] = useState([]);
+    const [rating, setRatings] = useState(0);
+
+    const [paymentTags, setPay] = useState([]); 
+    const [Categories, setCat] = useState([]);
+    const [catPercent, setcatper] = useState([]);
+    const [nut, setNut] = useState({});
+    const [ing, setIng] = useState([]);
+    const [ingGrams, setAmount] = useState([]);
+    const [ingType, setType] = useState([]);
+    const [protein, setProtein] = useState([]);
+    const [proteinType, setPType] = useState([]);
+    const [Reviews, setreviews] = useState([]);
+    const [servings, setServings] = useState(1);
+    const [permission, setPermissionGiven] = useState(false);
+    const [dishInfo, setDishInfo] = useState({});
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const [openDel, setOpenDel] = useState(false);
+    const handleOpenDel = () => setOpenDel(true);
+    const handleCloseDel = () => setOpenDel(false);
+
+    const [retDish, setRetDish] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const Retrieving = async () => {
+        await axios({
+            method: 'post',
+            url: process.env.REACT_APP_API_URL+"/retrieveDishByID",
+            data: {
+                dishID: dishID,
+            }
+        }).then((res) => {
+            if(res.data.success){
+                const data = res.data.dish;
+                setDishInfo(data);
+                setPermissionGiven(data.permission == 1)
+                setServings(data.servings);
+                setrestoID(data.restoID);
+                setdname(data.dishname);
+                setrname(data.restoname);
+                setImages(data.images);
+                setAddress(data.address);
+                setWalkinprice(data.walkinprice);
+                setOnlineprice(data.onlineprice);
+                setNumreviews(data.reviews.length);
+                setNut(data.nut);
+                setIng(data.ings);
+                setAmount(data.amounts);
+                setType(data.types);
+                setProtein(data.protein);
+                setPType(data.proteinSource);
+                setreviews(data.reviews);
+
+                setRatings(data.ratings);
+                setPay(data.paymentOptions);
+                
+                const ingCount = data.types.length;
+                const cat1 = []
+                const catAmount = [] 
+                let total = 0;
+
+                for (let i=0; i<ingCount; i++) {
+                    const dtype = data.types[i];
+                    const amountsT = data.amounts[i] * 100;
+                    const ind = cat1.indexOf(dtype);
+                    total += amountsT;
+
+                    if(ind == -1) {
+                        cat1.push(dtype)
+                        catAmount.push(amountsT)
+
+                    } else {
+                        catAmount[ind] += amountsT;
+                    }
+                }
+                
+                for (let i=0; i<cat1.length; i++) {
+                    catAmount[i] = (catAmount[i]/total*100).toFixed(2);;
+                }
+                setCat(cat1);
+                setcatper(catAmount);
+
+            } else{
+                alert(res.data.message);
+                navigate('/');
+            }
+            setRetDish(true);
+            setLoading(false);
+    })}
+
+    useEffect(() => {
+        if(!retDish && !loading) {
+            setLoading(true);
+            Retrieving();
+        }
+    }, []);
 
     // Rate Comp
-    const rating = 2
     const rateFun = (rate, iconSize) => {
         const numFilled = Math.floor(rate, 1)
         const filled = Array(numFilled).fill(<FaStar size={iconSize}/>)
@@ -35,25 +163,22 @@ function DishPage({isMobile, navigate}) {
 
     
     // Array Comp
-    const paymentTags = ["Gcash", "Credit/Debit Cards"]
-    const Categories = ["Grains", "Nuts, Dried Beans, & Seeds", "Meat & Animals"]
-    const catPercent = [50, 10, 40]
-    const Reviews = [
-        {
-            username: "sample name1",
-            rate: 4,
-            review: "Hi! ",
-            // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
-            datePosted: new Date()
-        },
-        {
-            username: "sample name",
-            rate: 4,
-            review: "Hi! ",
-            // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
-            datePosted: new Date()
-        }
-    ]
+    // const Reviews = [
+    //     {
+    //         username: "sample name1",
+    //         rate: 4,
+    //         review: "Hi! ",
+    //         // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
+    //         datePosted: new Date()
+    //     },
+    //     {
+    //         username: "sample name",
+    //         rate: 4,
+    //         review: "Hi! ",
+    //         // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
+    //         datePosted: new Date()
+    //     }
+    // ]
     const ReviewsRet = () => {
         return Reviews.map((rev) => {
                     return <table id='revTable'> <tr>
@@ -89,9 +214,6 @@ function DishPage({isMobile, navigate}) {
     }
 
     // Ingredients Components
-    const ing = ["soy sauce", "white vinegar", "onion", "garlic", "peppercorns", "sugar", "bay leaves", "green onion"]
-    const ingGrams = [100, 200, 300, 400, 500, 600, 700, 800]
-    const ingType = ["Condiments & Spices", "Condiments & Spices", "Vegetables", "Vegetables",  "Not Accounted", "Sweets", "Not Accounted", "Vegetables"]
     const ingRet = () => {
         return <table className='ingTable'>
             <tr>
@@ -103,7 +225,7 @@ function DishPage({isMobile, navigate}) {
                 ing.map((ing1, index) => {
                     return (
                         <tr>
-                            <td>{ingGrams[index]}g</td>
+                            <td>{(ingGrams[index]/servings).toFixed(2)} g</td>
                             <td>{ing1}</td>
                             <td>{ingType[index]}</td>
                         </tr>
@@ -111,24 +233,6 @@ function DishPage({isMobile, navigate}) {
                 })
             }
         </table>
-    }
-
-    const nut = {
-        ingCalories: 357,
-        ingCalcium: 0.1,
-        ingPhosphorus: 0.2,
-        ingIron: 0.3,
-        ingSodium: 0.4,
-        ingA: 0.5,
-        ingBC: 0.6,
-        ingRAE: 0.7,
-        ingB1: 0.8,
-        ingB2: 0.9,
-        ingNiacin: 1.0,
-        ingC: 1.1,
-        ingK: 1.2,
-        ingZn: 1.3,
-        ingNT: 1.4
     }
 
     const nutRet = () => {
@@ -204,20 +308,24 @@ function DishPage({isMobile, navigate}) {
     const [NutIngRevTag, setNutIngRevTag] = useState(0);
     const [walkdel, setWalkDel] = useState(true);
 
-    const imgList = [
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-        "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-        "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-        "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-        "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-        "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-        "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-        "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-        "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-    ]
+    // const imgList = [
+    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
+    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
+    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
+    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
+    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
+    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
+    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
+    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
+    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
+    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
+    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
+    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
+    // ]
+
+    const [openDish, setOpenDish] = useState(false);
+    const handleOpenDish = () => setOpenDish(true);
+    const handleCloseDish = () => setOpenDish(false);
 
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
@@ -236,7 +344,8 @@ function DishPage({isMobile, navigate}) {
 
     const style3 = {
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        position: "relative"
     }
 
     const style4 = {
@@ -244,118 +353,180 @@ function DishPage({isMobile, navigate}) {
         opacity: 1
     }
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
     const cedReview = [
         "Add", "Edit", "Delete" 
     ]
     const cedReviewIndex = 0;
 
-    return (
-        <div className='DishPage' style={style1}>
-            <div style={{width: isMobile ? width-15 : width/2}} className={isMobile ? "" : "Carousel"}>
-                <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true}
-                    statusFormatter={(current, total) => {
-                        return (
-                            <p className='status' 
-                            style={{fontSize: 13, 
-                                // textShadow: "0 0 1px grey"
-                            }}>{current} of {total}</p>
-                        )
-                    }}
-                    renderArrowPrev={(clickHandler, hasPrev) => {
-                        return (
-                            <div className='ArrowBack' onClick={clickHandler} style={{opacity: hasPrev ? 1 : 0}}>
-                                <IoIosArrowBack size={50}/>
+    if (!retDish) {
+        return <ProgressBar1 />
+    } else {
+        return (
+            <div className='DishPage' style={style1}>
+                <div style={{width: isMobile ? width-15 : width/2}} className={isMobile ? "" : "Carousel"}>
+                    <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true}
+                        statusFormatter={(current, total) => {
+                            return (
+                                <p className='status' 
+                                style={{fontSize: 13, 
+                                    // textShadow: "0 0 1px grey"
+                                }}>{current} of {total}</p>
+                            )
+                        }}
+                        renderArrowPrev={(clickHandler, hasPrev) => {
+                            return (
+                                <div className='ArrowBack' onClick={clickHandler} style={{opacity: hasPrev ? 1 : 0}}>
+                                    <IoIosArrowBack size={50}/>
+                                </div>
+                            );
+                        }}
+                        
+                        renderArrowNext={(clickHandler, hasNext) => {
+                            return (
+                                <div onClick={clickHandler} className='ArrowNext' style={{opacity: hasNext ? 1 : 0}}>
+                                    <IoIosArrowForward size={50}/>
+                                </div>
+                            );
+                        }}
+                    >
+                        {imgList.map((URL, index) => (
+                            <div>
+                                <img className="slideImg" alt="sample_file" src={URL} key={index} />
                             </div>
-                        );
-                    }}
-                    
-                    renderArrowNext={(clickHandler, hasNext) => {
-                        return (
-                            <div onClick={clickHandler} className='ArrowNext' style={{opacity: hasNext ? 1 : 0}}>
-                                <IoIosArrowForward size={50}/>
-                            </div>
-                        );
-                    }}
-                >
-                    {imgList.map((URL, index) => (
-                        <div>
-                            <img className="slideImg" alt="sample_file" src={URL} key={index} />
-                        </div>
-                    ))}
-                </Carousel>
-            </div>
-            <div className="dishBody" style={isMobile ? {} : style2}>
-                <table className='resto'>
-                    <tr>
-                        <td>
-                        <button onClick={() => navigate('/restaurant')}
-                        className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
-                        </td>
-                        <td style={{width:"70%"}}>
-                            <button className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
-                        </td>
-                    </tr>
-                </table>
-                <p id='dname'>{dname}</p>
-                <table id='rateTable' style={isMobile ? style3 : {left: "-6px"}}>
-                    <tr>
-                        <td>
-                            <p id='stars'>{
-                                stars.map((star) => star)
-                            }</p>
-                        </td>
-                        <td>
-                            <p>{Number.isInteger(rating) ? rating+".0" : rating} ({numRev}) </p>
-                        </td>
-                    </tr>
-                </table>
+                        ))}
+                    </Carousel>
+                </div>
+                <div className="dishBody" style={isMobile ? {} : style2}>
+                    <table className='resto'>
+                        <tr>
+                            <td>
+                            <button onClick={() => navigate('/restaurant/'+restoID)}
+                            className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
+                            </td>
+                            <td style={{width:"70%"}}>
+                                <button className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto"} : {position: 'relative'}}>
+                        <tr>
+                            <td><p id='dname'>{dname}</p></td>
+                            <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td>
+                            <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td>
+                        </tr>
+                    </table>
+                    {/* <p id='dname'>{dname}</p> */}
+                    <table id='rateTable' style={isMobile ? style3 : {left: "-8px"}}>
+                        <tr>
+                            <td>
+                                <p id='stars'>{
+                                    stars.map((star) => star)
+                                }</p>
+                            </td>
+                            <td>
+                                <p>{Number.isInteger(rating) ? rating+".0" : rating} ({numRev}) </p>
+                            </td>
+                        </tr>
+                    </table>
 
-                <table className='priceTable' style={isMobile ? style3 : {left: "-3px"}}>
-                    <tr>
-                        <td id="p0">
-                            <p id='price'>{walkdel ? "Walk-in" : "Online App"} Price: </p> 
-                        </td>
-                        <td id="p1">
-                            <p>P {walkdel ? walkinPrice : delPrice}</p>
-                        </td>
-                        <td id="p2">
-                            <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
-                        </td>
+                    <table className='priceTable' style={isMobile ? style3 : {left: "-13px"}}>
+                        <tr>
+                            <td id="p0">
+                                <p id='price'>{walkdel ? "Walk-in" : "Online App"} Price: </p> 
+                            </td>
+                            <td id="p1">
+                                <p>P {walkdel ? walkinPrice : delPrice}</p>
+                            </td>
+                            <td id="p2">
+                                <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <p className='tags1'>Accepting Payments via: {
+                        paymentTags.map((pay) => {
+                            return (
+                                <button className='paymentTags'> {pay} </button>
+                            )
+                        })
+                    }</p>
+
+                    <table className="BRTable" style={isMobile ? style3 : {}}>
+                        <tr>
+                            <td>
+                                <p className='tags'>Protein:</p>
+                                <table className='proteinTable'>
+                                    {
+                                        protein.map((prot, index) => {
+                                            return (
+                                                <tr>
+                                                    <td style={{width: "30%"}}> {prot} </td>
+                                                    <td> {proteinType[index]} </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </table>
+                            </td>
+                            <td>
+                                <p className='tags'>Breakdown: </p>
+                                <table className="catTable">{
+                                    Categories.map((cat, index) => {
+                                        return (
+                                                <tr>
+                                                    <td style={{width: 40}}> {catPercent[index]}% </td>
+                                                    <td style={{paddingLeft: 8}}> {cat} </td>
+                                                </tr>
+                                        )
+                                    })
+                                }</table>
+                            </td>
                     </tr>
-                </table>
-                <p className='tags1'>Accepting Payments via: {
-                    paymentTags.map((pay) => {
-                        return (
-                            <button className='paymentTags'> {pay} </button>
-                        )
-                    })
-                }</p> 
-                <p className='tags'>Breakdown: </p>
-                <table className="catTable" style={isMobile ? style3 : {left: "-3px"}}>{
-                    Categories.map((cat, index) => {
-                        return (
-                                <tr>
-                                    <td style={{width: 40}}> {catPercent[index]}% </td>
-                                    <td> {cat} </td>
-                                </tr>
-                        )
-                    })
-                }</table>
-                <button className="switch1" style={NutIngRevTag == 0 ? style4 : {}} onClick={() => setNutIngRevTag(0)}>Nutrition Table</button> 
-                <button className="switch1" style={NutIngRevTag == 1 ? style4 : {}} onClick={() => setNutIngRevTag(1)}>Reviews</button> 
-                <button className="switch1" style={NutIngRevTag == 2 ? style4 : {}} onClick={() => setNutIngRevTag(2)}>Ingredients</button>
-                {NutIngRevTag == 1 ? <button className="switch1" style={{opacity: 1}}>{cedReview[cedReviewIndex]} Review <FiPlusCircle/></button>:<div></div>}
-                <div className='switchable-textarea'>
-                    {
-                        NutIngRevTag == 0 ? nutRet() :
-                        NutIngRevTag == 1 ? ReviewsRet() :
-                        NutIngRevTag == 2 ? ingRet() :
-                        ""
-                    }
+                    </table>
+                    <button className="switch1" style={NutIngRevTag == 0 ? style4 : {}} onClick={() => setNutIngRevTag(0)}>Nutrition Table</button> 
+                    {userInfo.type=="reviewer" ? <button className="switch1" style={NutIngRevTag == 1 ? style4 : {}} onClick={() => setNutIngRevTag(1)}>Reviews</button> : null}
+                    {permission ? <button className="switch1" style={NutIngRevTag == 2 ? style4 : {}} onClick={() => setNutIngRevTag(2)}>Ingredients</button> : null }
+                    {NutIngRevTag == 1 && userInfo.type=="reviewer" ? <button className="switch1" style={{opacity: 1}} onClick={ handleOpen }>{cedReview[cedReviewIndex]} Review <FiPlusCircle/></button>:<div></div>}
+                    <div className='switchable-textarea'>
+                        {
+                            NutIngRevTag == 0 ? nutRet() :
+                            NutIngRevTag == 1 && userInfo.type=="reviewer"? ReviewsRet() :
+                            NutIngRevTag == 2 && permission ? ingRet() :
+                            ""
+                        }
+                    </div>
+                    <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            {/* <Typography id="modal-modal-title" variant="h6" component="h2"> */}
+                            Text in a modal
+                            {/* </Typography> */}
+                            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
+                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                            {/* </Typography> */}
+                        </Box>
+                    </Modal>
+                    <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo}/>
+                    <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={dishID} type={"dish"} name={dname}/>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
     
 export default DishPage;

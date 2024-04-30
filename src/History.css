@@ -1,6 +1,7 @@
 .HistoryPage {
     overflow-y: scroll;
     overflow-x: hidden;
+    margin-top: -10px;
     /* position: relative; */
 }
 
@@ -21,8 +22,8 @@
 } */
 .DailyHistory {
     width: 100%;
-    top: -135px;
-    margin-bottom: -380px;
+    top: -133px;
+    margin-bottom: -373px;
     text-align: center;
     position: relative;
     /* right: 30px; */
@@ -35,6 +36,11 @@
     font-size: 20px;
     width: 15%;
 }
+
+/* .DailyHistory >tr>td {
+    border: 1px solid black
+} */
+
 .labels {
     /* border: 1px solid black; */
     position: relative;

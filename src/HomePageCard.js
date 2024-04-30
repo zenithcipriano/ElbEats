@@ -14,22 +14,48 @@ import { GrRestaurant } from "react-icons/gr";
 class HomePageCard extends React.Component {
   constructor(props) {
     super(props);
-    const tb = props.data.tabs;
+    const tb = props.data.protein;
 
+    const d = new Date();
+    const curday = d.getDay().toString();
+    const curHour = d.getHours();
+    const curMinute = d.getMinutes();
+
+    const isOpenDay = props.data.daysOfTheWeek.includes(curday);
+
+    let isOpenTime0 = false
+    if (props.data.openingTime) {
+      const openT = props.data.openingTime.split(":");
+      isOpenTime0 = curHour > parseInt(openT[0]) ? true : 
+                          curHour == parseInt(openT[0]) && curMinute >= parseInt(openT[1]);
+    }
+
+    let isOpenTime1 = false
+    if (props.data.closingTime) {
+      const closedT = props.data.closingTime.split(":");
+      isOpenTime1 = curHour < parseInt(closedT[0]) ? true : 
+                          curHour == parseInt(closedT[0]) && curMinute <= parseInt(closedT[1]);
+    }
     this.state = {
         navigate: props.navigate,
-        dishName: props.data.dishName,
-        rate: props.data.rate,
-        resName: props.data.resName,
-        distance: props.data.distance,
-        status: props.data.status,
+        dishName: props.data.dishname,
+        rate: props.data.reviewCount == 0 ? "unrated": props.data.ratings,
+        resName: props.data.restoname,
+        distance: 0,
+        status:  isOpenDay && isOpenTime0 && isOpenTime1 ? "Open": "Closed",
+        status: "Closed",
         vitamins: props.data.vitamins,
-        calories: 46,
+        calories: parseInt(props.data.ingCaloriesFinal),
+        sodium: parseInt(props.data.ingSodiumFinal),
         minerals: props.data.minerals,
-        tabs: tb.replace(" ", "").split(","),
-        price: props.data.price,
+        tabs: tb ? tb.replace(" ", "").split(",") : [],
+        price: props.data.walkinprice,
+        image: props.data.images,
         anchorEl: null,
         open: false,
+
+        dishID: props.data.dishID,
+        restoID: props.data.restoID
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -50,7 +76,7 @@ class HomePageCard extends React.Component {
   handleClose(choice) {
     this.setState({anchorEl: null, open: false});
     if("View Restaurant" == choice) {
-      this.state.navigate('/restaurant');
+      this.state.navigate('/restaurant/'+this.state.restoID);
     }
     // alert(choice);
   };
@@ -58,8 +84,8 @@ class HomePageCard extends React.Component {
     render() {
       return <div className='HomePageCard' >
         <Card className="dishCard" >
-          <Card.Img className="dishImg" variant="top" src={ require("./assets/sample.jpg")} 
-          style={{marginBottom: "-42px"}} onClick={() => this.state.navigate('/dish')}/>
+          <Card.Img className="dishImg" variant="top" src={this.state.image} 
+          style={{marginBottom: "-42px"}} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}/>
           <IconButton
             aria-label="more"
             id="long-button"
@@ -101,7 +127,7 @@ class HomePageCard extends React.Component {
           </Menu>
             <Card.Body>
 
-                  <table className='hometable' onClick={() => this.state.navigate('/dish')}>
+                  <table className='hometable' onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
                   <tr>
                       <td 
                       className="vitmin" 
@@ -133,11 +159,11 @@ class HomePageCard extends React.Component {
                   <tr>
                     <td 
                       className="vitmin"
-                      style={{width: "100px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant')}
+                      style={{width: "100px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}
                      >
                       {this.state.resName} 
                     </td>
-                    <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish')}>
+                    <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
                       <FaWalking style={{
                         position: "relative", 
                         top: "2px",
@@ -148,13 +174,13 @@ class HomePageCard extends React.Component {
                       textAlign: "right", 
                       color: this.state.status == "Open" ? "#013b3f":"#AD0C26",
                       fontWeight: "500"
-                      }} onClick={() => this.state.navigate('/dish')}>
+                      }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
                       {this.state.status}
                     </td>
                   </tr>
                 </table>
 
-                <div onClick={() => this.state.navigate('/dish')}>
+                <div onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
                 <table className='macro' style={{
                   // color: "#013b3f", 
                   fontSize: "14px",
@@ -163,7 +189,7 @@ class HomePageCard extends React.Component {
                   }} >
                   <tr>
                     <td> <div style={{marginRight:"5px"}}>*Calories: {this.state.calories} kcal</div></td>
-                    <td> <div>*Sodium: {this.state.calories} mg </div></td>
+                    <td> <div>*Sodium: {this.state.sodium} mg </div></td>
                   </tr>
                 </table>
 
@@ -182,7 +208,7 @@ class HomePageCard extends React.Component {
                     textOverflow: "ellipsis",
                     width:"130px",
                     // border: "1px solid rgba(0, 0, 0, 0.1)",
-                  }}>*Rich in {this.state.minerals? this.state.minerals + " and": ""} Vitamins {this.state.vitamins} 
+                  }}>*Contains {this.state.minerals? this.state.minerals + " and": ""} Vitamins {this.state.vitamins} 
                   </div></td>
                     {/* <td className="vitmin" style={{width:"80px"}}> {this.state.minerals} </td> */}
                   </tr>

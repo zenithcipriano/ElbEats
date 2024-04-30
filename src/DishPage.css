@@ -143,7 +143,7 @@
 } */
 
 .priceTable > tr > td > * {
-    margin-top: 15px;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
@@ -179,18 +179,42 @@ button {
 .tags1 {
     font-size: 15px;
     margin-top: 0px;
+    /* margin-bottom: 20px; */
+}
+
+.BRTable {
+    width: 100%;
+    left: -3px;
+    position: relative;
+}
+
+.BRTable > tr > td {
+    /* border: 1px solid black; */
+    vertical-align: text-top;
+    width: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.BRTable > tr > td > table {
+    position: relative;
+    width: 100%;
 }
 
 .tags {
     font-size: 17px;
-    margin-bottom: 0px;
+    margin-bottom: 4px;
+    margin-top: 0px;
+    padding-left: 1px;
+    /* text-align: center; */
 }
 
 /* table > tr > td {
     border: 1px solid black;
 } */
 
-.catTable > tr > td, 
+.catTable > tr > td,
+.proteinTable > tr > td,
 .ingTable > tr > td, 
 .ingTable > tr > th {
     border: 1px solid #ededed;

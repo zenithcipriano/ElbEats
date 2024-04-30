@@ -1,0 +1,18 @@
+.resultsTable {
+    /* table-layout: fixed; */
+    position: relative;
+    width: 100%;
+}
+
+.resultsTable > tr > th, .resultsTable > tr > td {
+    border: 1px solid rgba(110,35,35, 0.3);
+    padding: 10px;
+}
+
+.resultsDiv {
+    position: relative;
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+}

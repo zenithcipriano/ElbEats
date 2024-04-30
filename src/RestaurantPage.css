@@ -29,11 +29,13 @@ hr {
 
 .rdishtable {
     position: relative;
+    border-spacing: 20px 10px;
+    /* padding-right: 20px; */
+    /* margin-left: -10px; */
 }
-.rdishtable > tr > td {
+/* .rdishtable > tr > td {
     padding: 10px;
-    /* border: 1px solid black; */
-}
+} */
 
 .restoBody {
     /* border: 1px solid black; */
@@ -61,7 +63,7 @@ hr {
 .priceTable {
     border-spacing: 10px;
     font-size: 25px;
-    margin-bottom: -5px;
+    margin-bottom: -8px;
 }
 
 .socialsTable {
@@ -78,7 +80,7 @@ hr {
 } */
 
 #descTextarea {
-    font-size: 17px;
+    font-size: 16px;
     /* width: 90%; */
     /* width: 507px; */
     border: 1px solid #ededed;
@@ -90,9 +92,20 @@ hr {
     margin-bottom: 10px;
 }
 
+.paymentBut {
+    border: 1px solid #ededed;
+    padding: 5px;
+    /* border-spacing: 20px; */
+    /* tabl-width: 10px; */
+    /* padding-right: 5px; */
+    /* margin-right: 100px; */
+}
+
 .Raddress {
     padding: 5px;
-    margin-left: -5px;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* margin-left: -5px; */
     border: 1px solid #ededed;
     /* margin-top: -5px; */
 }
@@ -116,6 +129,7 @@ hr {
     overflow-y: scroll;
     overflow-x: hidden;
     margin-left: -25px;
+    margin-top: -20px;
     /* background-color: #f8f9ff; */
     /* margin-top: -10px; */
 }
@@ -127,7 +141,7 @@ hr {
     /* background-color: white; */
     text-align: left;
     border-left: 1px solid #ededed;
-    margin-top: -20px;
+    margin-top: -15px;
     /* top: -10px; */
 }
 

@@ -107,7 +107,8 @@ function History({data}) {
                     {month[d.getMonth()]} {d.getDate()}, {d.getFullYear()}
                 </td>
                 <td>
-                    <hr/>
+                    <hr style={{margin: "0px", marginTop: "10px"}}/>
+                    {/* <hr/> */}
                 </td>
                 <td className='DailyHistorycell'>
                     Meals of the Day
@@ -127,7 +128,8 @@ function History({data}) {
                     {
                         sampleData.reverse().map((dish) => {
                             return  <td className='cards'>
-                                <HomePageCard data={dish} navigate={navigate}/> </td>
+                                {/* <HomePageCard data={dish} navigate={navigate}/>  */}
+                                </td>
                         })
                     }
                 </tr>

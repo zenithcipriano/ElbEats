@@ -4,6 +4,8 @@ import { FaRegUser, FaRegEye } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { TbPasswordUser, TbEyeClosed } from "react-icons/tb";
 import "./login.css";
+import axios from 'axios';
+import Cookies from "universal-cookie";
 
 class Login extends React.Component {
     constructor(props) {
@@ -18,7 +20,9 @@ class Login extends React.Component {
             loginValue: true,
             pin: "",
             showpassword: false,
-            showConPas: false
+            showConPas: false,
+            type1: -1,
+            checkLog: props.checkLog,
         }
 
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
@@ -32,6 +36,8 @@ class Login extends React.Component {
         this.resetPassword = this.resetPassword.bind(this);
         this.signup = this.signup.bind(this);
         this.forgot = this.forgot.bind(this);
+        this.chooseType = this.chooseType.bind(this);
+        this.resetValues = this.resetValues.bind(this);
     }
 
     handleChangeUsername(event) {
@@ -62,12 +68,82 @@ class Login extends React.Component {
         }
     }
 
+    resetValues() {
+        this.setState({username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        forgotPasswordValue: false,
+        resetPasswordValue: false,
+        loginValue: true,
+        pin: "",
+        showpassword: false,
+        showConPas: false,
+        type1: -1,})
+    }
+
     handleSubmit(event) {
         event.preventDefault();
+        // Login
         if(this.state.loginValue) {
-            alert(this.state.username + " | " + this.state.password)
+            axios({
+                method: 'post',
+                url: process.env.REACT_APP_API_URL+"/login",
+                data: {
+                    username: this.state.username,
+                    password: this.state.password,
+                }
+            }).then((res) => {
+                if(res.data.success){
+
+                    this.resetValues()
+                    const cookies = new Cookies();
+                    cookies.set(
+                        "authToken",
+                        res.data.token,
+                    {
+                        // path: "localhost:3001/",
+                        age: 60*60*24,
+                        sameSite: "lax"
+                    });
+                    // cookies.remove("authToken");
+
+                    localStorage.setItem("user_reference", res.data.id);
+                    localStorage.setItem("user_type", res.data.type);
+                    this.state.checkLog();
+                    alert(res.data.message)
+                } else{
+                    alert(res.data.message)
+                }
+            })
+
+        // Signup
         } else {
-            alert(this.state.username + " | " + this.state.email + " | " + this.state.password + " | " + this.state.confirmPassword)
+            if(this.state.password.localeCompare(this.state.confirmPassword) == 0) {
+                if (this.state.type1 != -1) {
+                    axios({
+                        method: 'post',
+                        url: process.env.REACT_APP_API_URL+"/signup",
+                        data: {
+                            username: this.state.username,
+                            email: this.state.email,
+                            password: this.state.password,
+                            type: this.state.type1
+                        }
+                    }).then((res) => {
+                        if(res.data.success){
+                            this.resetValues()
+                            alert(res.data.message)
+                        } else {
+                            alert(res.data.message)
+                        }
+                    })
+                } else {
+                    alert("User type: Reviewer or Owner?")
+                }
+            } else {
+                alert("Password does not match!")
+            }
         }
     }
 
@@ -104,6 +180,14 @@ class Login extends React.Component {
 
     forgot(val) {
         this.setState({forgotPasswordValue: val, resetPasswordValue: false})
+    }
+
+    chooseType(val) {
+        this.setState({type1: val})
+    }
+
+    style1 = {
+        opacity: 0.5
     }
 
     // centerHeight() {
@@ -193,6 +277,14 @@ class Login extends React.Component {
                         <RiLockPasswordLine className='icon'/>
                         <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
                         {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
+                    </div>
+                    : <div></div>
+                }
+
+                {!this.state.loginValue? 
+                    <div>
+                        <input type="button" className='buttonUser' id="user1" value={"Reviewer"} style={this.state.type1 == 1 ? this.style1 : {}} onClick={() => this.chooseType(0)}/> 
+                        <input type="button" className='buttonUser' value={"Owner"} style={this.state.type1 == 0 ? this.style1 : {}} onClick={() => this.chooseType(1)}/>
                     </div>
                     : <div></div>
                 }
