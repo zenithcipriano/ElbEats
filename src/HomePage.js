@@ -60,9 +60,9 @@ function HomePage({isMobile}) {
     }, []);
 
     if (!retDishes) {
-        <ProgressBar1 />
+        return <ProgressBar1/>
     } else {
-        return <div >
+        return <div>
             <table className="HomePage"
             style={{
                 left: border+"px",

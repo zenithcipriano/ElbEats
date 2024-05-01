@@ -180,37 +180,41 @@ function DishPage({isMobile, navigate}) {
     //     }
     // ]
     const ReviewsRet = () => {
-        return Reviews.map((rev) => {
-                    return <table id='revTable'> <tr>
-                        <td style={{width: "30px"}}>
-                            <div style={{left: "4px", position: "relative"}}>< CgProfile size={25}/></div>
-                        </td>
-                        <td className='rp1'>
-                            <table style={{position: "relative", marginTop: "-6px", width: "100%"}}><tr>
-                                <td> <div style={{ marginLeft: "-2px", textAlign: "left"}}>{rev.username}</div></td>
-                                <td style={{textAlign: "right", paddingRight: "5px", fontSize: "15px"}}> {months[rev.datePosted.getMonth()]} {rev.datePosted.getDate()} {rev.datePosted.getFullYear()} {rev.datePosted.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</td>
-                                </tr></table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td className='rp2'>
-                            <div style={{marginTop: "-13px", marginLeft: "-2px"}}><table style={{position: "relative"}}><tr>
-                                <td>{rateFun(rev.rate, 15)}</td>
-                                <td><p style={{margin: "0px", marginTop: "-2px"}}>{rev.rate}</p></td></tr></table></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td className='rp3'><p style={{margin: "0px", marginTop: "-5px", marginBottom: "5px", textAlign: "left"}}>{rev.review}</p></td>
-                    </tr>
-                    {/* <tr>
-                        <td></td>
-                        <td className='rp4'>
-                        </td>
-                    </tr> */}
-                    </table>
-                })
+        if(Reviews.length == 0) {
+            return "No reviews yet."
+        } else {
+            return Reviews.map((rev) => {
+                        return <table id='revTable'> <tr>
+                            <td style={{width: "30px"}}>
+                                <div style={{left: "4px", position: "relative"}}>< CgProfile size={25}/></div>
+                            </td>
+                            <td className='rp1'>
+                                <table style={{position: "relative", marginTop: "-6px", width: "100%"}}><tr>
+                                    <td> <div style={{ marginLeft: "-2px", textAlign: "left"}}>{rev.username}</div></td>
+                                    <td style={{textAlign: "right", paddingRight: "5px", fontSize: "15px"}}> {months[rev.datePosted.getMonth()]} {rev.datePosted.getDate()} {rev.datePosted.getFullYear()} {rev.datePosted.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</td>
+                                    </tr></table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td className='rp2'>
+                                <div style={{marginTop: "-13px", marginLeft: "-2px"}}><table style={{position: "relative"}}><tr>
+                                    <td>{rateFun(rev.rate, 15)}</td>
+                                    <td><p style={{margin: "0px", marginTop: "-2px"}}>{rev.rate}</p></td></tr></table></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td className='rp3'><p style={{margin: "0px", marginTop: "-5px", marginBottom: "5px", textAlign: "left"}}>{rev.review}</p></td>
+                        </tr>
+                        {/* <tr>
+                            <td></td>
+                            <td className='rp4'>
+                            </td>
+                        </tr> */}
+                        </table>
+                    })
+        }
     }
 
     // Ingredients Components
@@ -495,13 +499,13 @@ function DishPage({isMobile, navigate}) {
                     </tr>
                     </table>
                     <button className="switch1" style={NutIngRevTag == 0 ? style4 : {}} onClick={() => setNutIngRevTag(0)}>Nutrition Table</button> 
-                    {userInfo.type=="reviewer" ? <button className="switch1" style={NutIngRevTag == 1 ? style4 : {}} onClick={() => setNutIngRevTag(1)}>Reviews</button> : null}
+                    <button className="switch1" style={NutIngRevTag == 1 ? style4 : {}} onClick={() => setNutIngRevTag(1)}>Reviews</button>
                     {permission ? <button className="switch1" style={NutIngRevTag == 2 ? style4 : {}} onClick={() => setNutIngRevTag(2)}>Ingredients</button> : null }
                     {NutIngRevTag == 1 && userInfo.type=="reviewer" ? <button className="switch1" style={{opacity: 1}} onClick={ handleOpen }>{cedReview[cedReviewIndex]} Review <FiPlusCircle/></button>:<div></div>}
                     <div className='switchable-textarea'>
                         {
                             NutIngRevTag == 0 ? nutRet() :
-                            NutIngRevTag == 1 && userInfo.type=="reviewer"? ReviewsRet() :
+                            NutIngRevTag == 1 ? ReviewsRet() :
                             NutIngRevTag == 2 && permission ? ingRet() :
                             ""
                         }

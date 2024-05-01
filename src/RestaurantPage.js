@@ -33,8 +33,8 @@ function RestaurantPage({isMobile}) {
     const numRev = 30
     const [bhours, setBH] = useState(["", ""]); 
     const [rdesc, setRdesc] = useState("");
-    const [priceRange, setWalkPrices] = useState([10, 200]);
-    const [onlinePriceRange, setOnlinePrices] = useState([10, 200]);
+    const [priceRange, setWalkPrices] = useState([]);
+    const [onlinePriceRange, setOnlinePrices] = useState([]);
     const [address, setAddress] = useState("");
     const [cpnumber, setCP] = useState("");
     const [email, setEmail] = useState("");
@@ -318,17 +318,16 @@ function RestaurantPage({isMobile}) {
                             priceRange.length > 1 ?
                             <tr>
                                 <td>{walkdel ? "Walk-in" : "Online App"} Price:</td>
-                                <td>P{priceRange[0]}</td>
+                                <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
                                 <td>-</td>
-                                <td>P{priceRange[1]}</td>
-                                <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
-                                <td id="p2">
+                                <td>P{walkdel ? priceRange[1] : onlinePriceRange[1]}</td>
+                                <td>
                                     <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
                                 </td>
                             </tr>
                             : <tr>
                                 <td>{walkdel ? "Walk-in" : "Online App"} Prices:</td>
-                                <td>P{priceRange[0]}</td>
+                                <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
                                 <td>
                                     <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
                                 </td>
