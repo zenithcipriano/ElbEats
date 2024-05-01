@@ -42,7 +42,7 @@ function HomePage({isMobile}) {
             url: process.env.REACT_APP_API_URL+"/retrieveAllDishes",
         }).then((res) => {
             if(res.data.success){
-                console.log(Array(10).fill(res.data.dishList[0]));
+                // console.log(Array(10).fill(res.data.dishList[0]));
                 setSampleData(Array(10).fill(res.data.dishList[0]));
                 setDataWithRows(Array(10).fill(res.data.dishList[0]), tempCol);
             } else{

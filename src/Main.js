@@ -113,13 +113,13 @@ function Main() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const options = ["View Profile", "Logout"]
-  const cookies = new Cookies();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
 
   const handleClose = (choice) => {
+    const cookies = new Cookies();
     setAnchorEl(null);
     setOpen(false);
 

@@ -106,6 +106,7 @@ class Login extends React.Component {
                         age: 60*60*24,
                         sameSite: "lax"
                     });
+                    console.log(cookies);
                     // cookies.remove("authToken");
 
                     localStorage.setItem("user_reference", res.data.id);
