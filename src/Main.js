@@ -118,8 +118,9 @@ function Main() {
     setOpen(true);
   };
 
+  const cookies = new Cookies();
   const handleClose = (choice) => {
-    const cookies = new Cookies();
+    // const cookies = new Cookies();
     setAnchorEl(null);
     setOpen(false);
 
@@ -159,7 +160,7 @@ function Main() {
         <Routes>
           <Route path="/" element={ <HomePage isMobile={isTabletOrMobile}/> } />
           <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} /> : < Navigate to="/"/>} />
-          <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog}/> } />
+          <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies}/> } />
           <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
           <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
           <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage /> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />

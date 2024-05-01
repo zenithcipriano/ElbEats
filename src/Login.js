@@ -5,7 +5,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { TbPasswordUser, TbEyeClosed } from "react-icons/tb";
 import "./login.css";
 import axios from 'axios';
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 
 class Login extends React.Component {
     constructor(props) {
@@ -23,6 +23,7 @@ class Login extends React.Component {
             showConPas: false,
             type1: -1,
             checkLog: props.checkLog,
+            cookies: props.cookies,
         }
 
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
@@ -97,8 +98,8 @@ class Login extends React.Component {
                 if(res.data.success){
 
                     this.resetValues()
-                    const cookies = new Cookies();
-                    cookies.set(
+                    // const cookies = new Cookies();
+                    this.state.cookies.set(
                         "authToken",
                         res.data.token,
                     {
@@ -106,7 +107,7 @@ class Login extends React.Component {
                         age: 60*60*24,
                         sameSite: "lax"
                     });
-                    console.log(cookies);
+                    console.log(this.state.cookies);
                     // cookies.remove("authToken");
 
                     localStorage.setItem("user_reference", res.data.id);
