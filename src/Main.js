@@ -90,6 +90,9 @@ function Main() {
         method: 'post',
         url: process.env.REACT_APP_API_URL+"/checkifloggedin",
         withCredentials: true,
+        data: {
+          cookies: cookies
+        }
         // credentials: 'include'
     }).then((res) => {
       // alert(JSON.stringify(res.data))

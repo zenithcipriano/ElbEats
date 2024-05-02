@@ -103,10 +103,8 @@ class Login extends React.Component {
                         "authToken",
                         res.data.token,
                     {
-                        path: `${process.env.REACT_APP_API_URL}`,
                         age: 60*60*24,
                         sameSite: "lax",
-                        httpOnly: true, secure: true
                     });
                     console.log(this.state.cookies);
                     // cookies.remove("authToken");
