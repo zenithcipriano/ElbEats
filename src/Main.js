@@ -85,11 +85,12 @@ function Main() {
   const [userInfo, setUserInfo] = useState({}); 
   const [isLoggedIn, setIsLoggedIn] = useState(-1);
   const checkLog = async () => {
-    // axios.defaults.withCredentials = true;
+    axios.defaults.withCredentials = true;
     await axios({
         method: 'post',
         url: process.env.REACT_APP_API_URL+"/checkifloggedin",
-        withCredentials: true
+        withCredentials: true,
+        credentials: 'include'
     }).then((res) => {
       // alert(JSON.stringify(res.data))
         if(res.data.isLoggedIn){
