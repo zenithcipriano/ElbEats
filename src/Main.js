@@ -93,7 +93,6 @@ function Main() {
         data: {
           cookies: cookies
         }
-        // credentials: 'include'
     }).then((res) => {
       // alert(JSON.stringify(res.data))
         if(res.data.isLoggedIn){
@@ -139,7 +138,7 @@ function Main() {
   };
 
   if(isLoggedIn == -1) {
-    return <ProgressBar1 />
+    return <ProgressBar1 height={200}/>
   } else {
   return (
     <div className="App" style={{fontFamily: "Rubik"}}>
@@ -177,7 +176,36 @@ function Main() {
             <th style={{color: homeColor}} onClick={() => changeTabColor(1)}><IoHome size={iconSize}/></th>
             { isLoggedIn == 1 && userInfo.type == "reviewer" ? <th style={{color: historyColor}} onClick={() => changeTabColor(2)}><BiSolidFoodMenu size={iconSize}/></th>
             : null}
-            <th style={{color: profileColor}} onClick={() => changeTabColor(3)}><CgProfile size={iconSize}/></th>
+            {isLoggedIn ? <th><IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+                style={{color: profileColor, padding: "0px", marginLeft: "-5px", marginTop: "-5px"}}
+              >
+                <CgProfile size={40}/>
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => handleClose("View Profile")}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                {options.map((option) => (
+                  <MenuItem key={option} onClick={() => handleClose(option)} style={{fontSize: "20px", fontWeight: "bold"}}>
+                    {"View Profile" == option? <RiProfileLine style={{paddingRight: "5px"}}/> : 
+                    "Logout" == option? <IoLogOutOutline style={{paddingRight: "5px"}}/>:
+                    <div></div>} {option}
+                  </MenuItem>
+                ))}
+              </Menu></th>
+            : <th onClick={() => changeTabColor(3)} style={{color: profileColor}}><CgProfile size={iconSize} /></th>}
+            {/* <th style={{color: profileColor}} onClick={() => changeTabColor(3)}><CgProfile size={iconSize}/></th> */}
         </tr>
       </table> :
       <table className='desktopTable' style={isTabletOrMobile ? {} : style1}>

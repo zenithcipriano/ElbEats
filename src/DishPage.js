@@ -17,6 +17,7 @@ import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AddDishModal from './AddDishModal';
 import DeleteModal from './DeleteModal';
+import GMaps from './locationModal';
 
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -44,7 +45,8 @@ function DishPage({isMobile, navigate}) {
     const [restoID, setrestoID] = useState(0);
     const [dname, setdname] = useState("");
     const [rname, setrname] = useState("");
-    const [coordinates, setCoordinates] = useState(0);
+    const [coordinates, setCoordinates] = useState({});
+    // const [coordinates, setCoordinates] = useState(0);
     const [address, setAddress] = useState("");
     const [walkinPrice, setWalkinprice] = useState(0);
     const [delPrice, setOnlineprice] = useState(0);
@@ -65,7 +67,7 @@ function DishPage({isMobile, navigate}) {
     const [servings, setServings] = useState(1);
     const [permission, setPermissionGiven] = useState(false);
     const [dishInfo, setDishInfo] = useState({});
-
+    const [avail, setAvail] = useState(1);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -73,6 +75,10 @@ function DishPage({isMobile, navigate}) {
     const [openDel, setOpenDel] = useState(false);
     const handleOpenDel = () => setOpenDel(true);
     const handleCloseDel = () => setOpenDel(false);
+
+    const [openMaps, setOpenMaps] = useState(false);
+    const handleOpenMaps = () => setOpenMaps(true);
+    const handleCloseMaps = () => setOpenMaps(false);
 
     const [retDish, setRetDish] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -87,6 +93,8 @@ function DishPage({isMobile, navigate}) {
         }).then((res) => {
             if(res.data.success){
                 const data = res.data.dish;
+                setCoordinates({lng: parseFloat(data.lng), lat: parseFloat(data.lat)})
+                setAvail(data.available);
                 setDishInfo(data);
                 setPermissionGiven(data.permission == 1)
                 setServings(data.servings);
@@ -221,15 +229,15 @@ function DishPage({isMobile, navigate}) {
     const ingRet = () => {
         return <table className='ingTable'>
             <tr>
-                <th style={{width: "20%"}}>Amount (g)</th>
-                <th style={{width: "40%"}}>Ingredient</th>
+                {/* <th style={{width: "20%"}}>Amount (g)</th> */}
+                <th style={{width: "60%"}}>Ingredient</th>
                 <th style={{width: "40%"}}>Food Type</th>
             </tr>
             {
                 ing.map((ing1, index) => {
                     return (
                         <tr>
-                            <td>{(ingGrams[index]/servings).toFixed(2)} g</td>
+                            {/* <td>{(ingGrams[index]/servings).toFixed(2)} g</td> */}
                             <td>{ing1}</td>
                             <td>{ingType[index]}</td>
                         </tr>
@@ -375,7 +383,7 @@ function DishPage({isMobile, navigate}) {
     const cedReviewIndex = 0;
 
     if (!retDish) {
-        return <ProgressBar1 />
+        return <ProgressBar1 height={200}/>
     } else {
         return (
             <div className='DishPage' style={style1}>
@@ -415,20 +423,23 @@ function DishPage({isMobile, navigate}) {
                 <div className="dishBody" style={isMobile ? {} : style2}>
                     <table className='resto'>
                         <tr>
-                            <td>
+                            <td style={{width: 110}}>
                             <button onClick={() => navigate('/restaurant/'+restoID)}
                             className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
                             </td>
-                            <td style={{width:"70%"}}>
-                                <button className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
+                            <td style={{width:200}}>
+                                <button onClick={handleOpenMaps} className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
+                            </td>
+                            <td style={{width: 100}}>
+                                <button className='address' style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button>
                             </td>
                         </tr>
                     </table>
                     <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto"} : {position: 'relative'}}>
                         <tr>
                             <td><p id='dname'>{dname}</p></td>
-                            <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td>
-                            <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td>
+                            {userInfo.type=="owner" ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
+                            {userInfo.type=="owner" ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td> : null}
                         </tr>
                     </table>
                     {/* <p id='dname'>{dname}</p> */}
@@ -453,9 +464,9 @@ function DishPage({isMobile, navigate}) {
                             <td id="p1">
                                 <p>P {walkdel ? walkinPrice : delPrice}</p>
                             </td>
-                            <td id="p2">
+                            {delPrice ? <td id="p2">
                                 <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
-                            </td>
+                            </td> : null}
                         </tr>
                     </table>
                     <p className='tags1'>Accepting Payments via: {
@@ -525,6 +536,7 @@ function DishPage({isMobile, navigate}) {
                             {/* </Typography> */}
                         </Box>
                     </Modal>
+                    <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={address} height={height} width={width} permissionGiven={false} restoName={rname} />
                     <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo}/>
                     <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={dishID} type={"dish"} name={dname}/>
                 </div>

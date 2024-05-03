@@ -35,6 +35,7 @@ function HomePage({isMobile}) {
 
     const [retDishes, setRetDishes] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [reloaded, setReload] = useState(false);
 
     const Retrieving = async () => {
         await axios({
@@ -42,11 +43,21 @@ function HomePage({isMobile}) {
             url: process.env.REACT_APP_API_URL+"/retrieveAllDishes",
         }).then((res) => {
             if(res.data.success){
-                // console.log(Array(10).fill(res.data.dishList[0]));
-                setSampleData(Array(10).fill(res.data.dishList[0]));
-                setDataWithRows(Array(10).fill(res.data.dishList[0]), tempCol);
+                // setSampleData(Array(10).fill(res.data.dishList[0]));
+                // setDataWithRows(Array(10).fill(res.data.dishList[0]), tempCol);
+                setReload(false);
+                setSampleData(res.data.dishList);
+                setDataWithRows(res.data.dishList, tempCol);
             } else{
-                alert(res.data.message);
+                // alert(res.data.message);
+                if(reloaded) {
+                    alert(res.data.message);
+                } else {
+                    setReload(true);
+                    Retrieving();
+                    // window.location.reload();
+                }
+
             }
             setRetDishes(true);
             setLoading(false);
@@ -60,7 +71,7 @@ function HomePage({isMobile}) {
     }, []);
 
     if (!retDishes) {
-        return <ProgressBar1/>
+        return <ProgressBar1 height={200}/>
     } else {
         return <div>
             <table className="HomePage"

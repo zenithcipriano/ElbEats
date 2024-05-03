@@ -10,8 +10,10 @@ import ProgressBar1 from './progress';
 import {useDropzone} from 'react-dropzone'
 import { Carousel } from "react-responsive-carousel";
 import { colors } from '@mui/material';
+import GMaps from './locationModal';
+import { MdLocationPin } from "react-icons/md";
 
-function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, restoData, loadingModal}) {
+function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, restoData, loadingModal, width}) {
     const style = {
         position: 'absolute',
         fontFamily: "Rubik",
@@ -88,6 +90,11 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
     const [twitter, setX] = useState("");
     const handleX = (event) => setX(event.target.value);
 
+    const [coordinates, setCoordinates] = useState({});
+    const [openMaps, setOpenMaps] = useState(false);
+    const handleOpenMaps = () => setOpenMaps(true);
+    const handleCloseMaps = () => setOpenMaps(false);
+
     // const [images, setImages] = useState([
     //     "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg"
     // ]);
@@ -135,6 +142,12 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                 return
             }
 
+            if (!location) {
+                alert("Missing: Restaurant Address");
+                setRet(false);
+                return
+            }
+
             const newResto = {
                 userID,
                 restoname,
@@ -149,6 +162,8 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                 facebook,        
                 instagram,       
                 twitter,
+                lat: coordinates.lat,
+                lng: coordinates.lng
             }
             
             let counter = 0;
@@ -208,6 +223,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
 
     useEffect(() => {
         if (restoData.restoID) {
+            setCoordinates({lng: parseFloat(restoData.lng), lat: parseFloat(restoData.lat)})
             setname(restoData.restoname);
             setAddress(restoData.restoLocation);
 
@@ -283,8 +299,18 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         }
     })
 
-    if(loadingModal) {
-        return <ProgressBar1 />
+    if(loadingModal || ret) {
+        return <Modal 
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+                <Box sx={style}>
+                        <ProgressBar1 height={200}/>
+                    </Box>
+            </Modal>
+    } else if(openMaps) {
+        return <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={location} height={height} width={width} permissionGiven={true} restoName={restoname} setAddress={setAddress} setCoordinates={setCoordinates}/>
     } else {
         return <Modal
         open={open}
@@ -309,9 +335,10 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                     <legend>Restaurant Name: </legend>
                                     <input required type="text" value={restoname} onChange={handleNameChange} className='inputModal' placeholder='Kahit Saan'/>
                                 </fieldset>
-                                <fieldset>
+                                <fieldset onClick={handleOpenMaps}>
                                     <legend>Restaurant Address: </legend>
-                                    <input required type="text" value={location} onChange={handleAddChange} className='inputModal' placeholder='Brgy. Batong Malake'/>
+                                    <div className='inputModal' style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: 250}}><MdLocationPin/>{location ? location : "Click Me"}</div>
+                                    {/* <input required type="text" value={location} className='inputModal' placeholder='Brgy. Batong Malake' disabled onChange={handleOpenMaps}/> */}
                                 </fieldset>
                             </td>
                             <td colSpan={2} rowSpan={2}>

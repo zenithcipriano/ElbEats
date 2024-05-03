@@ -46,7 +46,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     }
     const userID = userInfo.id;
     const [dishID, setdishID] = useState(-1);
-
+    
     useEffect(() => {
         setDishname(dishData.dishname);
         setwalkinPrice(dishData.walkinprice);
@@ -73,6 +73,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         setServings(dishData.servings);
         setPermissionGiven(dishData.permission == 1);
         setMainPicture(dishData.images ? dishData.images : []);
+        setAvail(dishData.available);
     }, [dishData]);
 
     const [ret, setRet] = useState(false);
@@ -109,7 +110,8 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 walkinprice: walkinPrice,
                 onlineprice: onlinePrice,
                 typeList,
-                permission: permissionGiven ? 1 : 0
+                permission: permissionGiven ? 1 : 0,
+                avail
             }
 
             const formData = new FormData();
@@ -122,7 +124,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
 
             let counter = 0;
             const tempImages = [];
-            console.log("start");
+            // console.log("start");
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/saveImages`, formData);
             mainPicture.forEach((image) => {
                 if (image.preview) {
@@ -134,7 +136,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
             });
             newDish.images = tempImages;
 
-            console.log(newDish);
+            // console.log(newDish);
             // setRet(false);
             if(action == "Add") {
                 await axios({
@@ -193,7 +195,12 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     const [searchPushed, setSearchPushed] = useState(false);
     const [permissionGiven, setPermissionGiven] = useState(false);;
     const [results, setResults] = useState([]);
-    
+    const [avail, setAvail] = useState(1);
+    const onAvailable = (event) => {
+        // console.log(event.target.value);
+        setAvail("Yes" == event.target.value ? 1 : 0);
+    }
+
     const selectIng = (index) => {
         setIngList([...ingList, results[index]]);
         clearIng();
@@ -249,8 +256,16 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         }
     })
 
-    if(loadingModal) {
-        return <ProgressBar1 />
+    if(loadingModal || ret) {
+        return <Modal 
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+            <Box sx={style}>
+                    <ProgressBar1 height={200}/>
+                </Box>
+        </Modal>
     } else {
         return <Modal
         open={open}
@@ -267,7 +282,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                         <td style={{textAlign: "right"}}> <IoIosCloseCircleOutline size={40} onClick={handleClose}/> </td>
                     </tr>
                 </table>
-                <form onSubmit={handleSubmit} style={{fontFamily: "Rubik", marginBottom: -15}}>
+                <form style={{fontFamily: "Rubik", marginBottom: -15}}>
                     <table className="inputTables">
                         <tr>
                             <td colSpan={2}>
@@ -329,31 +344,61 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                             <td colSpan={2}>
                                 <fieldset>
                                     <legend>Online Price: </legend>
-                                    <input required type="number" value={onlinePrice} onChange={handleonlineChange} className='inputModal' placeholder='0'/>
+                                    <input type="number" value={onlinePrice} onChange={handleonlineChange} className='inputModal' placeholder='0'/>
                                 </fieldset>
                             </td>
                         </tr>
                         <tr>
                             <td colSpan={2}>
-                                <fieldset>
-                                    <legend>Permissions: </legend>
-                                    <input type="checkbox" className='checkbox' id="show_inglist" checked={permissionGiven} onChange={() => setPermissionGiven(!permissionGiven)}/>
-                                    <label htmlFor="show_inglist" style={{fontSize: 15, marginTop: -10}}>Show Ingredients to Other Users</label>
-                                </fieldset>
+                            <fieldset>
+                                <legend>Available Today: </legend>
+                                <table style={{position: 'relative'}} align='center'>
+                                    <tr>
+                                        <td style={{width: "10px"}}>
+                                            <label htmlFor='availYes'>
+                                                Yes
+                                            </label>
+                                        </td>
+                                        <td style={{width: "10px"}}>
+                                            <input required type="radio" id="availYes" value="Yes" onChange={onAvailable} className='checkbox' name="available" checked={avail == 1}/>
+                                        </td>
+                                        <td style={{width: "50px"}}>
+
+                                        </td>
+                                        <td style={{width: "10px"}}>
+                                            <label htmlFor='availNo'>
+                                                No
+                                            </label>
+                                        </td>
+                                        <td style={{width: "10px"}}>
+                                            <input required type="radio" id="availNo" value="No" onChange={onAvailable} className='checkbox' name="available" checked={avail == 0}/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
                             </td>
                         </tr>
                         <tr>
                             <td colSpan={4}>
                                 <fieldset>
                                     <legend>Ingredients: </legend>
-                                    { ingList.length > 0 ? 
-                                        <fieldset style={{width: 100, textAlign: "right", marginLeft: 420, padding: 5}}>
-                                            <legend>Servings: </legend>
-                                            <input required type="number" className='inputModal' placeholder='1' value={servings} onChange={(e) => setServings(e.target.value)} step="any" min="1" style={{width: "90%"}}/>
-                                        </fieldset>
-                                        :null}
                                     { ingList.length > 0 ?
                                     <table className='resultsTable'>
+                                        <tr>
+                                            <td colSpan={3} style={{border: "1px solid white", paddingBottom: 0}}>
+                                                <fieldset>
+                                                    <legend>Permissions: </legend>
+                                                    <input type="checkbox" className='checkbox' id="show_inglist" checked={permissionGiven} onChange={() => setPermissionGiven(!permissionGiven)}/>
+                                                    <label htmlFor="show_inglist" style={{fontSize: 15, marginTop: -10}}>Show Ingredients to Other Users</label>
+                                                </fieldset>
+                                            </td>
+                                            <td style={{border: "1px solid white", paddingBottom: 0}}>
+                                                <fieldset style={{textAlign: "right", padding: 5}}>
+                                                    <legend>Servings: </legend>
+                                                    <input required type="number" className='inputModal' placeholder='1' value={servings} onChange={(e) => setServings(e.target.value)} step="any" min="1" style={{width: "90%"}}/>
+                                                </fieldset>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th>Amount (g)</th>
                                             <th>Ingredient</th>
@@ -422,7 +467,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                         }
                         <tr>
                             <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
-                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret}/></td>
+                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret} onClick={handleSubmit}/></td>
                         </tr>
                     </table>
                 </form>

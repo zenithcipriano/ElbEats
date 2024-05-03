@@ -14,7 +14,7 @@ import { GrRestaurant } from "react-icons/gr";
 class HomePageCard extends React.Component {
   constructor(props) {
     super(props);
-    const tb = props.data.protein;
+    // const tb = props.data.protein;
 
     const d = new Date();
     const curday = d.getDay().toString();
@@ -48,12 +48,12 @@ class HomePageCard extends React.Component {
         calories: parseInt(props.data.ingCaloriesFinal),
         sodium: parseInt(props.data.ingSodiumFinal),
         minerals: props.data.minerals,
-        tabs: tb ? tb.replace(" ", "").split(",") : [],
+        available: props.data.available,
+        // tabs: tb ? tb.replace(" ", "").split(",").slice(0,2) : [],
         price: props.data.walkinprice,
         image: props.data.images,
         anchorEl: null,
         open: false,
-
         dishID: props.data.dishID,
         restoID: props.data.restoID
     };
@@ -159,16 +159,17 @@ class HomePageCard extends React.Component {
                   <tr>
                     <td 
                       className="vitmin"
-                      style={{width: "100px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}
+                      // 100px
+                      style={{width: "185px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}
                      >
                       {this.state.resName} 
                     </td>
-                    <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                    {/* <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
                       <FaWalking style={{
                         position: "relative", 
                         top: "2px",
                       }}/> {this.state.distance} min
-                    </td>
+                    </td> */}
                     <td style={{
                       width: "54px",
                       textAlign: "right", 
@@ -227,34 +228,21 @@ class HomePageCard extends React.Component {
                 <table className='hometable' style={{
                   fontSize: "14px", 
                   width: "0px", 
-                  marginTop: "-18px"
+                  marginTop: "-30px"
                   // marginTop: "5px"
                   }}>
                   <tr>
-                    {
-                      this.state.tabs.map((tab1) => {
-                        return <td style={{
-                          // padding: "3px", 
+                      <td style={{
                           paddingLeft: "6px",
                           paddingRight: "6px", 
-                          paddingBottom: "3px", 
-                          boxShadow: "rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px",
-                          border: "1px solid rgba(0, 0, 0, 0.1)",
-                          borderRadius: "10px",
-                          // borderCollapse: "separate",
-                          // borderSpacing: "100px, 50px"
-                        }}> {tab1} </td>
-                      })
-                    }
+                          paddingBottom: "3px",
+                          color: (this.state.available == 1 ? "#013B3F": "#6e2323"),
+                          fontSize: 18
+                        }}>
+                          {this.state.available == 1 ? "Available" : "Not Available"}
+                      </td>
                   </tr>
                 </table>
-
-                {/* <div style={{
-                  // marginTop:"100px", 
-                // display: "block"
-                }}>
-                  {this.state.price}
-                </div> */}
                 </div>
             </Card.Body>
         </ Card>

@@ -61,6 +61,10 @@ input {
     margin-right: 5px;
 }
 
+.textLogin {
+    width: 190px;
+}
+
 input[type="submit"], input[type="reset"] {
     border: 1px solid white;
     /* background-color: #A34343; */

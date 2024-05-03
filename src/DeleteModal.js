@@ -7,6 +7,7 @@ import "./addrestomodal.css";
 import axios from 'axios';
 import "@fontsource/rubik";
 import ProgressBar1 from './progress';
+import { useNavigate } from 'react-router-dom';  
 
 function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
     const style = {
@@ -25,6 +26,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
     };
 
     const userID = userInfo.id;
+    const navigate = useNavigate();
 
     const [ret, setRet] = useState(false);
     const handleSubmit = async (event) => {
@@ -45,7 +47,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
                     if(res.data.success){
                         alert(res.data.message);
                         handleClose();
-                        window.location.reload();
+                        navigate("/profile");
+                        // window.location.reload();
                     } else {
                         alert("Deletion failed.");
                     }
@@ -63,7 +66,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
                     if(res.data.success){
                         alert(res.data.message);
                         handleClose();
-                        window.location.reload();
+                        navigate("/profile");
+                        // window.location.reload();
                     } else {
                         alert("Deletion failed.");
                     }

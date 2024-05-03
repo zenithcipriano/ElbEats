@@ -38,6 +38,10 @@
     border-radius: 25px;
 }
 
+/* .hometable > tr > td {
+    border: 1px solid black;
+} */
+
 .hometable {
     position: relative; 
     width: 100%;

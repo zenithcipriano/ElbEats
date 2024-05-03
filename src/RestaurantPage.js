@@ -17,6 +17,7 @@ import AddRestoModal from './AddRestoModal';
 import DishCardTable from './DishCardTable';
 import DeleteModal from './DeleteModal';
 import ProgressBar1 from './progress';
+import GMaps from './locationModal';
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -63,6 +64,7 @@ function RestaurantPage({isMobile}) {
         }).then(async (res) => {
             if(res.data.success){
                 const data = res.data.resto;
+                setCoordinates({lat: parseFloat(data.lat), lng: parseFloat(data.lng)})
                 setWalkPrices(data.walkPrices);
                 setOnlinePrices(data.onlinePrices);
                 setRestoData(data);
@@ -87,8 +89,11 @@ function RestaurantPage({isMobile}) {
 
                 setBH([`${openHours}:${openT[1]} ${openP}`, `${closeHours}:${closeT[1]} ${closeP}`]);
                 if(data.dishes.length > 0) {
-                    setData(Array(10).fill(data.dishes[0]));
-                    setTempData(rearrangeData((isMobile ? width : width/2), Array(10).fill(data.dishes[0])));
+                    // setData(Array(10).fill(data.dishes[0]));
+                    // setTempData(rearrangeData((isMobile ? width : width/2), Array(10).fill(data.dishes[0])));
+
+                    setData(data.dishes);
+                    setTempData(rearrangeData((isMobile ? width : width/2), data.dishes));
                 }
             } else{
                 alert(res.data.message);
@@ -161,6 +166,12 @@ function RestaurantPage({isMobile}) {
     const [openDel, setOpenDel] = useState(false);
     const handleOpenDel = () => setOpenDel(true);
     const handleCloseDel = () => setOpenDel(false);
+
+    const [openMaps, setOpenMaps] = useState(false);
+    const handleOpenMaps = () => setOpenMaps(true);
+    const handleCloseMaps = () => setOpenMaps(false);
+    // const [coordinates, setCoordinates] = useState();
+    const [coordinates, setCoordinates] = useState({});
 
     const style1 = {
         height: height-(isMobile? 160 : 93), 
@@ -314,25 +325,21 @@ function RestaurantPage({isMobile}) {
                     }} maxlength="300" onChange={handleChange} disabled/>
                     
                     <table className='priceTable' style={isMobile ? style3 : {marginLeft: "-10px"}}>
-                        {
-                            priceRange.length > 1 ?
-                            <tr>
-                                <td>{walkdel ? "Walk-in" : "Online App"} Price:</td>
-                                <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
-                                <td>-</td>
-                                <td>P{walkdel ? priceRange[1] : onlinePriceRange[1]}</td>
+                        <tr>
+                            <td>{walkdel ? "Walk-in" : "Online App"} Price:</td>
+                            <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
+                            {
+                                walkdel ? 
+                                (priceRange.length > 1 ? <td>- P{priceRange[1]}</td> : null)
+                                :(onlinePriceRange.length > 1 ? <td>- P{onlinePriceRange[1]}</td> : null)
+                            }
+                            {
+                                onlinePriceRange[0] ?
                                 <td>
                                     <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
-                                </td>
-                            </tr>
-                            : <tr>
-                                <td>{walkdel ? "Walk-in" : "Online App"} Prices:</td>
-                                <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
-                                <td>
-                                    <button onClick={() => setWalkDel(!walkdel)}> Check Prices </button>
-                                </td>
-                            </tr>
-                        }
+                                </td> : null
+                            }
+                        </tr>
                     </table>
 
                     <table style={isMobile ? style3 : {marginLeft: -1}}>
@@ -346,7 +353,7 @@ function RestaurantPage({isMobile}) {
                         </tr>
                     </table>
                     
-                    <div className='Raddress' style={isMobile ? {marginLeft: -15, marginTop: 10} : {marginLeft: -5, marginTop: 10}}><MdLocationPin /> {address} </div>
+                    <div onClick={handleOpenMaps} className='Raddress' style={isMobile ? {marginLeft: -15, marginTop: 10} : {marginLeft: -5, marginTop: 10}}><MdLocationPin /> <u>{address}</u> </div>
                     <table className='socialsTable' style={isMobile ? {marginLeft: -18} : {marginLeft: -5}}>
                         <tr>
                             <td>
@@ -400,9 +407,10 @@ function RestaurantPage({isMobile}) {
                     </table>
                 </div>
                 : <div></div>}
+                <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={address} height={height} width={width} permissionGiven={false} restoName={restoname} />
                 {userID == userInfo.id ? (
                     <div>
-                        <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={"Edit"} restoID={restoID} restoData={restoData} loadingModal={loading}/>  
+                        <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={"Edit"} restoID={restoID} restoData={restoData} loadingModal={loading} width={width}/>  
                         <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restoID} type={"restaurant"} name={restoname}/>
                     </div>)
                 : null }

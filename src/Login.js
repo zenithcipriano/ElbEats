@@ -21,7 +21,8 @@ class Login extends React.Component {
             pin: "",
             showpassword: false,
             showConPas: false,
-            type1: -1,
+            // type1: -1,
+            type1: 1,
             checkLog: props.checkLog,
             cookies: props.cookies,
         }
@@ -80,7 +81,8 @@ class Login extends React.Component {
         pin: "",
         showpassword: false,
         showConPas: false,
-        type1: -1,})
+        type1: 1,})
+        // type1: -1,})
     }
 
     handleSubmit(event) {
@@ -225,7 +227,7 @@ class Login extends React.Component {
             <form onSubmit={this.sendEmail}>
                 <div className='loginInput'>
                 <MdMailOutline className='icon'/>
-                <input required type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
+                <input required className='textLogin' type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
                 </div>
                 <input type="submit" value="Send Code" />    
             </form>
@@ -233,7 +235,7 @@ class Login extends React.Component {
             <form onSubmit={this.verifyPin}>
                 <div className='loginInput'>
                 <TbPasswordUser className='icon'/>
-                <input required type="text" value={this.state.pin} onChange={this.handleChangePin} placeholder='PIN'/> <br/>
+                <input required className='textLogin' type="text" value={this.state.pin} onChange={this.handleChangePin} placeholder='PIN'/> <br/>
                 </div>
                 <input type="submit" value="Continue" />    
             </form>
@@ -256,13 +258,13 @@ class Login extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <div className='loginInput'>
                 <FaRegUser className='icon' />
-                <input required type="text" value={this.state.username} onChange={this.handleChangeUsername} placeholder='Username'/> <br/>
+                <input required className='textLogin' type="text" value={this.state.username} onChange={this.handleChangeUsername} placeholder='Username'/> <br/>
                 </div>
                 
                 {!this.state.loginValue? 
                     <div className='loginInput'>
                         <MdMailOutline className='icon' />
-                        <input required type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
+                        <input required className='textLogin' type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder='Email'/> <br/>
                     </div>
                     : <div></div>
                 }
@@ -284,7 +286,7 @@ class Login extends React.Component {
 
                 {!this.state.loginValue? 
                     <div>
-                        <input type="button" className='buttonUser' id="user1" value={"Reviewer"} style={this.state.type1 == 1 ? this.style1 : {}} onClick={() => this.chooseType(0)}/> 
+                        <input type="button" className='buttonUser' id="user1" value={"Reviewer"} style={this.state.type1 == 1 ? this.style1 : {}} onClick={() => this.chooseType(0)} disabled/> 
                         <input type="button" className='buttonUser' value={"Owner"} style={this.state.type1 == 0 ? this.style1 : {}} onClick={() => this.chooseType(1)}/>
                     </div>
                     : <div></div>
@@ -294,7 +296,7 @@ class Login extends React.Component {
 
             {this.state.loginValue? 
                 <div className="clickableText">
-                    <a onClick={() => this.forgot(true)}>Forgot Password?</a>
+                    {/* <a onClick={() => this.forgot(true)}>Forgot Password?</a> */}
                     <p>Don't have an account? <a onClick={() => this.signup(false)}>Sign Up</a></p>
                 </div>:
                 <div>

@@ -8,6 +8,7 @@
     "@fontsource/rubik": "^5.0.19",
     "@mui/material": "^5.15.14",
     "@mui/x-charts": "^7.1.0",
+    "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

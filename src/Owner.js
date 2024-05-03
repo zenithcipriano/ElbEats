@@ -198,7 +198,7 @@ function OwnerPage({isMobile}) {
     }
 
     if (!retDish) {
-        return <ProgressBar1 />
+        return <ProgressBar1 height={200}/>
     } else {
         return <div className="OwnerPage">
             <table className='ProfileTable'>
@@ -206,8 +206,8 @@ function OwnerPage({isMobile}) {
                         <td style={{width: width/4}}>
                             <div id='profileIcon'><CgProfile size={150}/></div>
                             <div className='userProfile'>
-                                <h1>{username}</h1>
-                                <h3>{aboutYou ? aboutYou : "Edit Your Description Here"}</h3>
+                                <h1 style={{paddingBottom: 20}}>{username}</h1>
+                                {/* <h3>{aboutYou ? aboutYou : "Edit Your Description Here"}</h3> */}
                             </div>
                         </td>
                         <td style={{paddingRight: 10}}>
@@ -282,7 +282,7 @@ function OwnerPage({isMobile}) {
                         </td>
                     </tr>
                 </table>
-            <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos[curResto].restoID} restoData={restoData} loadingModal={loadingModal}/>  
+            <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos[curResto].restoID} restoData={restoData} loadingModal={loadingModal} width={width}/>  
             <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos[curResto].restoID} type={"restaurant"} name={restos[curResto].restoname}/>
         </div>
     }
