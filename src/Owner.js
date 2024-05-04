@@ -214,20 +214,20 @@ function OwnerPage({isMobile}) {
                             <table className='OwnerTable'>
                                 <tr>
                                     <td>
-                                        <table align={width/4 < ProfWidth ? "left" : "right"} className='restoTabs' style={{borderSpacing: 5, marginTop: -5, marginBottom: (width/4 < ProfWidth ? 0 : -10)}}>
+                                        <table align={width/4 < ProfWidth ||  restos.length == 0 ? "left" : "right"} className='restoTabs' style={{borderSpacing: 5, marginTop: -5, marginBottom: (width/4 < ProfWidth ? 0 : -10)}}>
                                             <tr>
                                             {/* marginLeft: width/4 < ProfWidth && width-ProfWidth < 353 ? width-ProfWidth - 353 : 0 */}
                                                 {/* <td style={{padding: 10}}> 
                                                     <b className='restoName' onClick={handleOpen}>Restaurant: </b>
                                                 </td> */}
-                                                <td className='restoCardtd' style={{padding: 10}}> 
+                                                {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}}> 
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
                                                             <td><b className='restoName' onClick={() => navigate('/restaurant/'+restos[curResto].restoID)}>View</b></td>
                                                             <td style={{paddingTop: 5}}><HiOutlineCursorClick size={20} /></td>
                                                         </tr>
                                                     </table>
-                                                </td>
+                                                </td> : null}
                                                 <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Add")}}> 
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
@@ -236,22 +236,22 @@ function OwnerPage({isMobile}) {
                                                         </tr>
                                                     </table>
                                                 </td>
-                                                <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Edit")}}>
+                                                {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Edit")}}>
                                                 <table style={{position: 'relative'}}>
                                                         <tr>
                                                             <td><b className='restoName'>Edit</b></td>
                                                             <td style={{paddingTop: 5}}><BiEditAlt size={20}/></td>
                                                         </tr>
                                                     </table> 
-                                                </td>
-                                                <td className='restoCardtd' style={{padding: 10}} onClick={handleOpenDel}> 
+                                                </td> : null}
+                                                {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} onClick={handleOpenDel}> 
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
                                                             <td><b className='restoName'>Delete</b></td>
                                                             <td style={{paddingTop: 5}}><RiDeleteBin6Line size={20}/></td>
                                                         </tr>
                                                     </table>
-                                                </td>
+                                                </td> : null}
                                             </tr>
                                         </table>
                                             <table className='restoTabs'> 
@@ -273,17 +273,19 @@ function OwnerPage({isMobile}) {
                                     </td>
                                 </tr>
                                 </table>
-                                                    
-                                <div className='dishdiv' style={{height: isMobile ? height-253 : height-178, width: width/4 > ProfWidth ?(3*width/4) : width-ProfWidth}}>
-                                    <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
-                                        <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={true} loadingModalDish={loadingModalDish} height={height} restoID={restos[curResto].restoID}/>
-                                    </table>
-                                </div>
+                                {
+                                    restos.length > 0 ?
+                                        <div className='dishdiv' style={{height: isMobile ? height-253 : height-178, width: width/4 > ProfWidth ?(3*width/4) : width-ProfWidth}}>
+                                            <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
+                                                <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={true} loadingModalDish={loadingModalDish} height={height} restoID={restos[curResto].restoID}/>
+                                            </table>
+                                        </div> : null
+                                }
                         </td>
                     </tr>
                 </table>
-            <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos[curResto].restoID} restoData={restoData} loadingModal={loadingModal} width={width}/>  
-            <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos[curResto].restoID} type={"restaurant"} name={restos[curResto].restoname}/>
+            <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos.length > 0 ? restos[curResto].restoID : null} restoData={restoData} loadingModal={loadingModal} width={width}/>  
+            <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos.length > 0 ? restos[curResto].restoID : null} type={"restaurant"} name={restos.length > 0 ? restos[curResto].restoname : null}/>
         </div>
     }
 }

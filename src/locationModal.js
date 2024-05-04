@@ -49,7 +49,7 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
         setCoordinates({lng:center.lng(), lat:center.lat()});
         handleClose();
     }
-
+    
     const onMapClick = (e) => {
         if (permissionGiven) {
             // centerSet(true);

@@ -90,7 +90,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
     const [twitter, setX] = useState("");
     const handleX = (event) => setX(event.target.value);
 
-    const [coordinates, setCoordinates] = useState({});
+    const [coordinates, setCoordinates] = useState({lat: 14.1673913, lng: 121.2430767});
     const [openMaps, setOpenMaps] = useState(false);
     const handleOpenMaps = () => setOpenMaps(true);
     const handleCloseMaps = () => setOpenMaps(false);
