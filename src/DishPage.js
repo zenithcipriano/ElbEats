@@ -69,6 +69,7 @@ function DishPage({isMobile, navigate}) {
     const [dishInfo, setDishInfo] = useState({});
     const [avail, setAvail] = useState(1);
     const [open, setOpen] = useState(false);
+    const [userID, setUserID] = useState(-1);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -93,6 +94,7 @@ function DishPage({isMobile, navigate}) {
         }).then((res) => {
             if(res.data.success){
                 const data = res.data.dish;
+                setUserID(data.userID);
                 setCoordinates({lng: parseFloat(data.lng), lat: parseFloat(data.lat)})
                 setAvail(data.available);
                 setDishInfo(data);
@@ -438,8 +440,8 @@ function DishPage({isMobile, navigate}) {
                     <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto"} : {position: 'relative'}}>
                         <tr>
                             <td><p id='dname'>{dname}</p></td>
-                            {userInfo.type=="owner" ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
-                            {userInfo.type=="owner" ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td> : null}
+                            {userInfo.id == userID ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
+                            {userInfo.id == userID ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td> : null}
                         </tr>
                     </table>
                     {/* <p id='dname'>{dname}</p> */}
