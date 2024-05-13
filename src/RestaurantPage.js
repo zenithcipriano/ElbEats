@@ -80,12 +80,14 @@ function RestaurantPage({isMobile}) {
                 setImages(data.images);
 
                 const openT = data.openingTime.split(":");
+                console.log(openT);
+
                 let openP = parseInt(openT[0]) < 12 ? "AM" : "PM";
-                const openHours = openP == "AM" ? (openT[0][0] == "0" ? openT[0][1] : openT[0]) : (parseInt(openT[0]) == 12 ? openT[0] : parseInt(openT[0])-12)
+                const openHours = openP == "AM" ? (openT[0] == "00" ? 12 : (openT[0][0] == "0" ? openT[0][1] : openT[0])) : (parseInt(openT[0]) == 12 ? openT[0] : parseInt(openT[0])-12)
 
                 const closeT = data.closingTime.split(":");
                 let closeP = parseInt(closeT[0]) < 12 ? "AM" : "PM";
-                const closeHours = closeP == "AM" ? (closeT[0][0] == "0" ? closeT[0][1] : closeT[0]) : (parseInt(closeT[0]) == 12 ? closeT[0] : parseInt(closeT[0])-12)
+                const closeHours = closeP == "AM" ? (closeT[0] == "00" ? 12 : (closeT[0][0] == "0" ? closeT[0][1] : closeT[0])) : (parseInt(closeT[0]) == 12 ? closeT[0] : parseInt(closeT[0])-12)
 
                 setBH([`${openHours}:${openT[1]} ${openP}`, `${closeHours}:${closeT[1]} ${closeP}`]);
                 if(data.dishes.length > 0) {
@@ -215,7 +217,7 @@ function RestaurantPage({isMobile}) {
 
 
     if (loading) {
-        return <ProgressBar1 />
+        return <ProgressBar1 height={200}/>
     } else {
         return (
             <div className='RP' style={style1}>

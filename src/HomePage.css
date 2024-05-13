@@ -1,9 +1,60 @@
-.HomePage {
+.divH {
     overflow-y: scroll;
     overflow-x: hidden;
-    /* border: 1px solid black; */
-    display: block;
-    right: 0px;
-    margin-top: -20px;
-    /* borderTop: 3px solid white; */
+    margin-top: -10px;
 }
+
+.HomePage {
+    /* border: 1px solid black; */
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* .HomePage > tr > td { */
+    /* border: 1px solid black; */
+/* } */
+.filterDiv {
+    position: absolute;
+    background-color: rgb(110, 35, 35);
+    color: white;
+    z-index: 1;
+    width: 250px;
+}
+
+.priceTable1 {
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    /* margin-top: 10px; */
+}
+
+.priceTable1 > tr > td {
+    /* padding: 10px; */
+}
+
+.hmInput {
+    font-size: 15px;
+    width: 60px;
+    margin: 10px;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+/* .hmInputSearch {
+    font-size: 15px;
+    width: 130px;
+    padding-left: 5px;
+    border-radius: 10px;
+}
+
+.prtTBL {
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+    margin: 5px auto;
+} */
+
+/* .prtTBL > tr > td {
+    border: 1px solid black;
+} */

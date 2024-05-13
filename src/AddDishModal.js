@@ -77,9 +77,10 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     }, [dishData]);
 
     const [ret, setRet] = useState(false);
+    const [findIng, setfindIng] = useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(!ret) {
+        if(!findIng && !ret) {
             setRet(true);
 
             if(ingList.length == 0) {
@@ -92,11 +93,14 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
             const fidList = [];
             const weightList = [];
             const typeList = [];
+            const FilIngList = [];
+
             ingList.forEach((ing) =>{
                 ingList1.push(ing.ingNameDesc);
                 fidList.push(ing.ingFID);
                 weightList.push(ing.amount);
                 typeList.push(ing.ingType);
+                FilIngList.push(ing.ingAltName);
             })
 
             const newDish = {
@@ -111,13 +115,18 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 onlineprice: onlinePrice,
                 typeList,
                 permission: permissionGiven ? 1 : 0,
-                avail
+                avail,
+                FilIngList
             }
 
+            if(mainPicture.length == 0) {   
+                alert("Missing:\n Images");
+                setRet(false);
+                return;
+            }
             const formData = new FormData();
             mainPicture.forEach((image) => {
                 if (image.preview) {
-                    // console.log(image);
                     formData.append("file", image);
                 }
             });
@@ -217,18 +226,25 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     }
 
     const searchIng = async () => {
-        await axios({
-                method: 'post',
-                url: process.env.REACT_APP_API_URL+"/searchIng",
-                data: {ingName: ingSearch},
-            }).then((res) => {
-                if(res.data.success){
-                    setSearchPushed(true);
-                    setResults(res.data.results);
-                } else {
-                    alert(res.data.message);
-                }
-            })
+        setfindIng(true);
+        if (ingSearch) {
+            await axios({
+                    method: 'post',
+                    url: process.env.REACT_APP_API_URL+"/searchIng",
+                    data: {ingName: ingSearch},
+                }).then((res) => {
+                   setfindIng(false);
+                    if(res.data.success){
+                        setSearchPushed(true);
+                        setResults(res.data.results);
+                    } else {
+                        alert(res.data.message);
+                    }
+                })
+        } else {
+            await new Promise(res => setTimeout(res, 100));
+            setfindIng(false);
+        }
     }
 
     const clearIng = () => {
@@ -282,7 +298,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                         <td style={{textAlign: "right"}}> <IoIosCloseCircleOutline size={40} onClick={handleClose}/> </td>
                     </tr>
                 </table>
-                <form style={{fontFamily: "Rubik", marginBottom: -15}}>
+                <form style={{fontFamily: "Rubik", marginBottom: -15}} onSubmit={handleSubmit}>
                     <table className="inputTables">
                         <tr>
                             <td colSpan={2}>
@@ -295,7 +311,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                 <fieldset>
                                     <legend>Images: </legend>
                                         {mainPicture.length > 0 ? 
-                                            <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true} showThumbs={false}
+                                            <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true} showThumbs={false} {...getRootProps()}
                                                 statusFormatter={(current, total) => {
                                                     return (
                                                         <div style={{fontSize: 15, 
@@ -319,14 +335,15 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                                     </div>
                                                 ))}
                                             </Carousel>
-                                        : <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
+                                        : <div {...getRootProps()} style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
                                             No images.
                                         </div>
                                         }
                                         <div {...getRootProps()} >
                                         <input {...getInputProps()} />
                                             <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative'}}>
-                                                Drag 'n drop images here, or click to select files
+                                                {/* {"Drag 'n drop images here, or click to select files"}  */}
+                                                Click to select files
                                             </div>
                                         </div>
                                 </fieldset>
@@ -430,7 +447,11 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                     <table style={{position: 'relative', width: "100%"}}>
                                         <tr>
                                             <td style={{width: "100%"}}>
-                                            <input type="text" value={ingSearch} onChange={handleIngSearch} className='inputModal' placeholder='asin'/>
+                                            <input type="text" value={ingSearch} onChange={handleIngSearch} className='inputModal' placeholder='asin' 
+                                            onKeyDown={(event) => {
+                                                if(event.key.includes("Enter")) searchIng()
+                                            }}
+                                            />
                                             </td>
                                             <td style={{padding: 5}}><IoIosCloseCircleOutline size={25} onClick={clearIng}/></td>
                                             <td style={{padding: 5}}><FaSearch size={25} onClick={searchIng}/></td>
@@ -465,9 +486,12 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                             </td>
                         </tr> : null
                         }
+                    {/* </table>
+                </form>
+                    <table className="inputTables"> */}
                         <tr>
                             <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
-                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret} onClick={handleSubmit}/></td>
+                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret}/></td>
                         </tr>
                     </table>
                 </form>

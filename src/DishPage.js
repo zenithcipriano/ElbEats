@@ -18,6 +18,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import AddDishModal from './AddDishModal';
 import DeleteModal from './DeleteModal';
 import GMaps from './locationModal';
+import AddReview from './addReview';
 
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -72,6 +73,8 @@ function DishPage({isMobile, navigate}) {
     const [userID, setUserID] = useState(-1);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [revAction, setrevAction] = useState("Add");
+    const [curRev, setCurRev] = useState({});
 
     const [openDel, setOpenDel] = useState(false);
     const handleOpenDel = () => setOpenDel(true);
@@ -115,6 +118,15 @@ function DishPage({isMobile, navigate}) {
                 setProtein(data.protein);
                 setPType(data.proteinSource);
                 setreviews(data.reviews);
+
+                const reviews = data.reviews;
+                for (let k=0; k<reviews.length; k++) {
+                    if(reviews[k].userID == userInfo.id) {
+                        setrevAction("Edit");
+                        setCurRev(reviews[k]);
+                        break
+                    }
+                }
 
                 setRatings(data.ratings);
                 setPay(data.paymentOptions);
@@ -171,28 +183,11 @@ function DishPage({isMobile, navigate}) {
     }
     const stars = rateFun(rating, 25)
 
-    
-    // Array Comp
-    // const Reviews = [
-    //     {
-    //         username: "sample name1",
-    //         rate: 4,
-    //         review: "Hi! ",
-    //         // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
-    //         datePosted: new Date()
-    //     },
-    //     {
-    //         username: "sample name",
-    //         rate: 4,
-    //         review: "Hi! ",
-    //         // HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi
-    //         datePosted: new Date()
-    //     }
-    // ]
     const ReviewsRet = () => {
         if(Reviews.length == 0) {
             return "No reviews yet."
         } else {
+            console.log(Reviews);
             return Reviews.map((rev) => {
                         return <table id='revTable'> <tr>
                             <td style={{width: "30px"}}>
@@ -201,7 +196,9 @@ function DishPage({isMobile, navigate}) {
                             <td className='rp1'>
                                 <table style={{position: "relative", marginTop: "-6px", width: "100%"}}><tr>
                                     <td> <div style={{ marginLeft: "-2px", textAlign: "left"}}>{rev.username}</div></td>
-                                    <td style={{textAlign: "right", paddingRight: "5px", fontSize: "15px"}}> {months[rev.datePosted.getMonth()]} {rev.datePosted.getDate()} {rev.datePosted.getFullYear()} {rev.datePosted.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</td>
+                                    <td style={{textAlign: "right", paddingRight: "5px", fontSize: "15px"}}> {months[parseInt(rev.datePosted.substring(5, 7))]} {rev.datePosted.substring(8, 10)} {rev.datePosted.substring(0, 4)} {
+                                    parseInt(rev.datePosted.substring(11, 13))-4 < 10 ? "0"+(parseInt(rev.datePosted.substring(11, 13))-4) : (parseInt(rev.datePosted.substring(11, 13))-4)}
+                                    {rev.datePosted.substring(13, 19)}</td>
                                     </tr></table>
                             </td>
                         </tr>
@@ -215,7 +212,7 @@ function DishPage({isMobile, navigate}) {
                         </tr>
                         <tr>
                             <td></td>
-                            <td className='rp3'><p style={{margin: "0px", marginTop: "-5px", marginBottom: "5px", textAlign: "left"}}>{rev.review}</p></td>
+                            <td className='rp3'><p style={{margin: "0px", marginBottom: "5px", textAlign: "left"}}>{rev.review}</p></td>
                         </tr>
                         {/* <tr>
                             <td></td>
@@ -382,6 +379,9 @@ function DishPage({isMobile, navigate}) {
     const cedReview = [
         "Add", "Edit", "Delete" 
     ]
+
+    const [delAction, setDelAction] = useState("");
+    const [delID, setDelID] = useState(-1);
     const cedReviewIndex = 0;
 
     if (!retDish) {
@@ -441,7 +441,11 @@ function DishPage({isMobile, navigate}) {
                         <tr>
                             <td><p id='dname'>{dname}</p></td>
                             {userInfo.id == userID ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
-                            {userInfo.id == userID ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={handleOpenDel}/></td> : null}
+                            {userInfo.id == userID ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={() => {
+                                handleOpenDel()
+                                setDelAction("dish");
+                                setDelID(dishID);
+                                }}/></td> : null}
                         </tr>
                     </table>
                     {/* <p id='dname'>{dname}</p> */}
@@ -455,6 +459,16 @@ function DishPage({isMobile, navigate}) {
                             <td>
                                 <p>{Number.isInteger(rating) ? rating+".0" : rating} ({numRev}) </p>
                             </td>
+                            {userInfo.type == "reviewer" ? 
+                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
+                            </td> : null}
+                            {userInfo.type == "reviewer" && revAction == "Edit" ? 
+                            <td><button style={{fontSize: 17}} onClick={ () => {
+                                handleOpenDel();
+                                setDelAction("review");
+                                setDelID(curRev.reviewID);
+                            } }>Delete Review <RiDeleteBin6Line /></button>
+                            </td> : null}
                         </tr>
                     </table>
 
@@ -514,7 +528,6 @@ function DishPage({isMobile, navigate}) {
                     <button className="switch1" style={NutIngRevTag == 0 ? style4 : {}} onClick={() => setNutIngRevTag(0)}>Nutrition Table</button> 
                     <button className="switch1" style={NutIngRevTag == 1 ? style4 : {}} onClick={() => setNutIngRevTag(1)}>Reviews</button>
                     {permission ? <button className="switch1" style={NutIngRevTag == 2 ? style4 : {}} onClick={() => setNutIngRevTag(2)}>Ingredients</button> : null }
-                    {NutIngRevTag == 1 && userInfo.type=="reviewer" ? <button className="switch1" style={{opacity: 1}} onClick={ handleOpen }>{cedReview[cedReviewIndex]} Review <FiPlusCircle/></button>:<div></div>}
                     <div className='switchable-textarea'>
                         {
                             NutIngRevTag == 0 ? nutRet() :
@@ -523,24 +536,10 @@ function DishPage({isMobile, navigate}) {
                             ""
                         }
                     </div>
-                    <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={style}>
-                            {/* <Typography id="modal-modal-title" variant="h6" component="h2"> */}
-                            Text in a modal
-                            {/* </Typography> */}
-                            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                            {/* </Typography> */}
-                        </Box>
-                    </Modal>
+                    <AddReview open={open} handleClose={handleClose} height={height} dishID={dishID} action={revAction} curRev={curRev}/>
                     <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={address} height={height} width={width} permissionGiven={false} restoName={rname} />
                     <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo}/>
-                    <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={dishID} type={"dish"} name={dname}/>
+                    <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={delID} type={delAction} name={dname} rname={rname}/>
                 </div>
             </div>
         );

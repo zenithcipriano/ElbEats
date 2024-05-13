@@ -21,8 +21,8 @@ class Login extends React.Component {
             pin: "",
             showpassword: false,
             showConPas: false,
-            // type1: -1,
-            type1: 1,
+            type1: -1,
+            // type1: 1,
             checkLog: props.checkLog,
             cookies: props.cookies,
         }
@@ -286,7 +286,7 @@ class Login extends React.Component {
 
                 {!this.state.loginValue? 
                     <div>
-                        <input type="button" className='buttonUser' id="user1" value={"Reviewer"} style={this.state.type1 == 1 ? this.style1 : {}} onClick={() => this.chooseType(0)} disabled/> 
+                        <input type="button" className='buttonUser' id="user1" value={"Reviewer"} style={this.state.type1 == 1 ? this.style1 : {}} onClick={() => this.chooseType(0)} /> 
                         <input type="button" className='buttonUser' value={"Owner"} style={this.state.type1 == 0 ? this.style1 : {}} onClick={() => this.chooseType(1)}/>
                     </div>
                     : <div></div>

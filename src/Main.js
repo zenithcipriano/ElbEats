@@ -37,7 +37,7 @@ function Main() {
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
-  console.log(pathname);
+  // console.log(pathname);
 
   const pageList = ["/", "/history", "/profile"];
   const [page, setPage] = useState(pageList.indexOf(pathname)+1);
@@ -59,8 +59,15 @@ function Main() {
   }, [isTabletOrMobile]);
 
   const changeTabColor = (page1) => {
-    navigate(pageList[page1-1]);
-    setPage(page1);
+    if(pathname == pageList[page1-1]) {
+      window.location.reload();
+    } else {
+      navigate(pageList[page1-1]);
+      setPage(page1);
+      if(page1 == 1) {
+        setSU("");
+      }
+    }
     // setHomeColor("white");
     // setHistoryColor("white");
     // setProfileColor("white");
@@ -132,10 +139,19 @@ function Main() {
       cookies.remove("authToken");
       localStorage.removeItem("user_reference");
       localStorage.removeItem("user_type");
+      // window.location.reload();
     } else {
       changeTabColor(3)
     }
   };
+
+  const [submittedInput, setSU] = useState("");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    navigate(pageList[0]);
+    setPage(1);
+    setSU(keywords);
+  }
 
   if(isLoggedIn == -1) {
     return <ProgressBar1 height={200}/>
@@ -144,29 +160,33 @@ function Main() {
     <div className="App" style={{fontFamily: "Rubik"}}>
       <section>
       <div id='searchDiv1' >
-      <table className='header' style={isTabletOrMobile ? {} : style1}>
+      <table className='header' 
+      style={style1}
+      >
           <tr>
             <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo"/> </th>
           </tr>
       </table>
       {/* <div id='searchDiv1' > */}
-      
-      <table id="searchDiv" align={isTabletOrMobile ? 'right' : 'center'}
-      style={isTabletOrMobile ? {width: "35%", marginRight: "10px"} : {width: "25%", zIndex: 1}}><tr>
-        <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search'/></td> 
-        <td style={{width: "25px"}}><FaSearch size={20} style={{marginTop: "1px"}}/> </td>
-      </tr></table>
+
+        <form onSubmit={handleSubmit}>
+          <table id="searchDiv" align={isTabletOrMobile ? 'right' : 'center'}
+          style={isTabletOrMobile ? {width: "35%", marginRight: "10px", zIndex: 1} : {width: "25%", zIndex: 1}}><tr>
+              <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search'/></td> 
+              <td style={{width: "25px"}} onClick={handleSubmit}><FaSearch size={20} style={{marginTop: "1px"}}/> </td>
+          </tr></table>
+        </form>
       </div>
       </section>
 
       <section className='body' style={{height: isTabletOrMobile?"76%":"100%"}} >
         <Routes>
-          <Route path="/" element={ <HomePage isMobile={isTabletOrMobile}/> } />
+          <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
           <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} /> : < Navigate to="/"/>} />
           <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies}/> } />
           <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
           <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
-          <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage /> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />
+          <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage isMobile={isTabletOrMobile}/> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />
           {/* <Route path="/*" element={ < Navigate to="/"/> }/> */}
         </Routes>
       </section>
@@ -191,7 +211,10 @@ function Main() {
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={() => handleClose("View Profile")}
+                onClose={() => {
+                  setAnchorEl(null);
+                  setOpen(false);
+                }}
                 MenuListProps={{
                   'aria-labelledby': 'basic-button',
                 }}
@@ -208,7 +231,7 @@ function Main() {
             {/* <th style={{color: profileColor}} onClick={() => changeTabColor(3)}><CgProfile size={iconSize}/></th> */}
         </tr>
       </table> :
-      <table className='desktopTable' style={isTabletOrMobile ? {} : style1}>
+      <table className='desktopTable' style={style1}>
         <tr>
             <th style={{color: homeColor}} onClick={() => changeTabColor(1)}><h2><IoHome size={iconSize}/> <u>Home</u></h2> </th>
             { isLoggedIn == 1 && userInfo.type == "reviewer" ? <th style={{color: historyColor}} onClick={() => changeTabColor(2)}><h2><BiSolidFoodMenu size={iconSize}/> <u>Meal History</u></h2> </th>
@@ -229,7 +252,10 @@ function Main() {
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={() => handleClose("View Profile")}
+                onClose={() => {
+                  setAnchorEl(null);
+                  setOpen(false);
+                }}
                 MenuListProps={{
                   'aria-labelledby': 'basic-button',
                 }}

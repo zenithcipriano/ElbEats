@@ -65,6 +65,20 @@ input {
     width: 190px;
 }
 
+.button1 {
+    border: 1px solid white;
+    /* background-color: #A34343; */
+    background-color: #6e2323;
+    outline: none;
+    font-size: 15px;
+    width: 235px;
+    /* margin: auto; */
+    padding: 8px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    color: white;
+}
+
 input[type="submit"], input[type="reset"] {
     border: 1px solid white;
     /* background-color: #A34343; */

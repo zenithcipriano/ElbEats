@@ -7,9 +7,9 @@ import "./addrestomodal.css";
 import axios from 'axios';
 import "@fontsource/rubik";
 import ProgressBar1 from './progress';
-import { useNavigate } from 'react-router-dom';  
+import { useLocation, useNavigate } from 'react-router-dom';  
 
-function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
+function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
     const style = {
         position: 'absolute',
         fontFamily: "Rubik",
@@ -26,6 +26,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
     };
 
     const userID = userInfo.id;
+    const location = useLocation();
     const navigate = useNavigate();
 
     const [ret, setRet] = useState(false);
@@ -33,6 +34,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
         event.preventDefault();
         if(!ret) {
             setRet(true);
+            const { pathname } = location;
 
             if(type == "restaurant") {
                 await axios({
@@ -47,8 +49,11 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
                     if(res.data.success){
                         alert(res.data.message);
                         handleClose();
-                        navigate("/profile");
-                        // window.location.reload();
+                        if(pathname == "/profile") {
+                            window.location.reload();
+                        } else {
+                            navigate();
+                        }
                     } else {
                         alert("Deletion failed.");
                     }
@@ -66,14 +71,44 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
                     if(res.data.success){
                         alert(res.data.message);
                         handleClose();
-                        navigate("/profile");
+                        // navigate("/profile");
                         // window.location.reload();
+                        if(pathname == "/profile") {
+                            window.location.reload();
+                        } else {
+                            navigate();
+                        }
+                    } else {
+                        alert("Deletion failed.");
+                    }
+                })
+            } else if (type == "review") {
+                await axios({
+                    method: 'post',
+                    url: process.env.REACT_APP_API_URL+"/deleteReview",
+                    data: {
+                        userID, reviewID: ID
+                    },
+                }).then((res) => {
+                    // alert(res.data.message);
+                    setRet(false);
+                    if(res.data.success){
+                        alert(res.data.message);
+                        handleClose();
+                        // navigate("/profile");
+                        // window.location.reload();
+                        if(pathname == "/profile") {
+                            window.location.reload();
+                        } else {
+                            navigate();
+                        }
                     } else {
                         alert("Deletion failed.");
                     }
                 })
             } else {
                 setRet(false);
+                console.log("hi");
             }
         }
     }
@@ -88,7 +123,9 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
             <table className='modalTable'>
                 <tr>
                     <td>
-                        <h2>Delete '{name}'</h2>
+                        {type == "review" ?
+                            <h2>Delete Review</h2>:
+                            <h2>Delete '{name}'</h2>}
                     </td>
                     <td style={{textAlign: "right"}}> <IoIosCloseCircleOutline size={40} onClick={handleClose}/> </td>
                 </tr>
@@ -103,7 +140,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name}) {
                             {
                                type == "restaurant" ?
                                <p>Deleting this restaurant will also <b>delete all its listed dishes and reviews</b>.</p>
-                               : <p>Deleting this dish will also <b>delete all its reviews</b>.</p>
+                               : type == "dish" ? <p>Deleting this dish will also <b>delete all its reviews</b>.</p>
+                               : <p>You are deleting your review on <b> {name}</b> of <b>{rname}</b>.</p>
                             }
                         </td>
                     </tr>

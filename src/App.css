@@ -101,3 +101,7 @@ table {
 .footer {
   text-align: center;
 }
+
+textarea {
+  resize: none;
+}

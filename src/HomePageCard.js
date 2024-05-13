@@ -2,7 +2,7 @@ import React  from 'react';
 import "./HomePageCard.css";
 import { Card } from 'react-bootstrap';
 import { CiStar } from "react-icons/ci";
-import { FaWalking, FaRegBookmark } from "react-icons/fa";
+import { FaWalking, FaRegBookmark, FaStar } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
@@ -10,11 +10,35 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { GrRestaurant } from "react-icons/gr";
+import { GiKnifeFork } from "react-icons/gi";
+import AddDishModal from './AddDishModal';
+import DeleteModal from './DeleteModal';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { GoBookmarkSlash } from "react-icons/go";
 
 class HomePageCard extends React.Component {
   constructor(props) {
     super(props);
-    // const tb = props.data.protein;
+
+    const options = props.userInfo.type == "owner" && props.userInfo.id == props.data.userID ? [
+      "View Dish Details",
+      "Edit Dish Details",
+      "Delete Dish Details",
+      "View Restaurant Details"
+    ] : ( this.props.userInfo.type == "reviewer" ? [
+      "Add to History",
+      (props.history ? "Remove from History" : null),
+      "View Dish Details",
+      "View Restaurant Details"
+    ] : [
+      "View Dish Details",
+      "View Restaurant Details"
+    ])
+
+    // if (props.history && this.props.userInfo.type == "reviewer") {
+    //   options.push("Remove Dish from History");
+    // }
 
     const d = new Date();
     const curday = d.getDay().toString();
@@ -22,6 +46,10 @@ class HomePageCard extends React.Component {
     const curMinute = d.getMinutes();
 
     const isOpenDay = props.data.daysOfTheWeek.includes(curday);
+
+    console.log(props.data.openingTime);
+    console.log(props.data.closingTime);
+    console.log(props.data.daysOfTheWeek);
 
     let isOpenTime0 = false
     if (props.data.openingTime) {
@@ -36,14 +64,13 @@ class HomePageCard extends React.Component {
       isOpenTime1 = curHour < parseInt(closedT[0]) ? true : 
                           curHour == parseInt(closedT[0]) && curMinute <= parseInt(closedT[1]);
     }
+
     this.state = {
-        navigate: props.navigate,
         dishName: props.data.dishname,
         rate: props.data.reviewCount == 0 ? "unrated": props.data.ratings,
         resName: props.data.restoname,
         distance: 0,
         status:  isOpenDay && isOpenTime0 && isOpenTime1 ? "Open": "Closed",
-        status: "Closed",
         vitamins: props.data.vitamins,
         calories: parseInt(props.data.ingCaloriesFinal),
         sodium: parseInt(props.data.ingSodiumFinal),
@@ -51,42 +78,134 @@ class HomePageCard extends React.Component {
         available: props.data.available,
         // tabs: tb ? tb.replace(" ", "").split(",").slice(0,2) : [],
         price: props.data.walkinprice,
-        image: props.data.images,
+        image: props.data.images[0],
         anchorEl: null,
         open: false,
         dishID: props.data.dishID,
-        restoID: props.data.restoID
+        restoID: props.data.restoID,
+        openDish : false,
+        openDel: false,
+        options: options,
+        loading: false
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
-  options = [
-    "Save",
-    "Edit",
-    "Delete",
-    "View Restaurant"
-  ]
+  componentDidUpdate(prevProps, prevState) {
+      if(prevProps.userInfo.id != this.props.userInfo.id) {
+        const options = this.props.userInfo.type == "owner" && this.props.userInfo.id == this.props.data.userID ? [
+          "View Dish Details",
+          "Edit Dish Details",
+          "Delete Dish Details",
+          "View Restaurant Details"
+        ] : ( this.props.userInfo.type == "reviewer" ? [
+          "Add to History",
+          "View Dish Details",
+          "View Restaurant Details"
+        ] : [
+          "View Dish Details",
+          "View Restaurant Details"
+        ])
+
+        this.setState({options: options, userInfo: this.props.userInfo})
+      }
+  }
+
+  // handleClick(event) {
+  //   this.setState({anchorEl: event.currentTarget, open: true});
+  // };
+
+  async handleClose(choice) {
+    this.setState({anchorEl: null});
+    if("View Restaurant Details" == choice) {
+      this.props.navigate('/restaurant/'+this.state.restoID);
+    } else if (choice === "Edit Dish Details"){
+      this.handleEdit(true);
+    } else if (choice === "Delete Dish Details"){
+      this.handleDelete(true);
+    } else if (choice === "View Dish Details"){
+      this.props.navigate('/dish/'+this.state.dishID)
+    } else if(choice === "Add to History") {
+      this.setState({loading: true});
+      const now = new Date();
+      const YYYY = now.getFullYear();
+      const MM = now.getMonth() < 10 ? "0"+now.getMonth() : now.getMonth();
+      const DD = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
+      const HH = now.getHours() < 10 ? "0"+now.getHours() : now.getHours();
+      const MI = now.getMinutes() < 10 ? "0"+now.getMinutes() : now.getMinutes();
+      const SS = now.getSeconds() < 10 ? "0"+now.getSeconds() : now.getSeconds();
+
+      const data = {
+        dishName: this.state.dishName,
+        dishID: this.state.dishID,
+        userID: this.props.userInfo.id,
+        dateSelected: `${YYYY}-${MM}-${DD} ${HH}:${MI}:${SS}`,
+      }
+
+      await axios({
+          method: 'post',
+          url: process.env.REACT_APP_API_URL+"/addToHistory",
+          data,
+      }).then((res) => {
+          this.setState({loading: false});
+          alert(res.data.message);
+          if(res.data.success){
+              this.setState({open: false});
+
+              // const location = useLocation();
+              // const { pathname } = location;
+              // if (pathname == "/history") {
+              // if (this.props.history) {
+              window.location.reload();
+              // }
+          }
+      })
+    } else if(choice === "Remove from History") {
+      this.setState({loading: true});
+      const data = {
+        historyID: this.props.data.historyID,
+        userID: parseInt(this.props.userInfo.id)
+      }
+
+      await axios({
+          method: 'post',
+          url: process.env.REACT_APP_API_URL+"/deleteFromHistory",
+          data,
+      }).then((res) => {
+          this.setState({loading: false});
+          alert(res.data.message);
+          if(res.data.success){
+              this.setState({open: false});
+              window.location.reload();
+          }
+      })
+    }
+  };
 
   handleClick(event) {
-    this.setState({anchorEl: event.currentTarget, open: true});
-  };
+    this.setState({open: !this.state.open})
+  }
 
-  handleClose(choice) {
-    this.setState({anchorEl: null, open: false});
-    if("View Restaurant" == choice) {
-      this.state.navigate('/restaurant/'+this.state.restoID);
-    }
-    // alert(choice);
-  };
+  handleEdit(val) {
+    this.setState({openDish: val, open: true})
+  }
+
+  handleDelete(val) {
+    this.setState({openDel: val, open: true})
+  }
 
     render() {
       return <div className='HomePageCard' >
-        <Card className="dishCard" >
+        <Card className="dishCard" onClick={this.handleClick}>
           <Card.Img className="dishImg" variant="top" src={this.state.image} 
-          style={{marginBottom: "-42px"}} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}/>
-          <IconButton
+          style={{marginBottom: 0, opacity: this.state.open ? 0.3 : 1}} 
+          // onClick={() => this.props.navigate('/dish/'+this.state.dishID)}
+          />
+          {/* <IconButton
             aria-label="more"
             id="long-button"
             aria-controls={this.state.open ? 'long-menu' : undefined}
@@ -104,8 +223,8 @@ class HomePageCard extends React.Component {
               color: "#FEFDED",
               }}
               />
-          </IconButton>
-          <Menu
+          </IconButton> */}
+          {/* <Menu
             id="basic-menu"
             anchorEl={this.state.anchorEl}
             open={this.state.open}
@@ -114,20 +233,22 @@ class HomePageCard extends React.Component {
               'aria-labelledby': 'basic-button',
             }}
           >
-            {this.options.map((option) => (
+            {this.state.options.map((option) => (
               <MenuItem key={option} onClick={() => this.handleClose(option)} style={{fontSize: "10px", fontWeight: "bold", backgroundColor: "#FEFDED"}}>
-                {"Save" == option? <FaRegBookmark /> : 
-                "Edit" == option? <BiEditAlt />:
-                "Delete" == option? <MdDeleteOutline />:
+                {"Add to History" == option? <FaRegBookmark /> : 
+                option.includes("Edit") ? <BiEditAlt />:
+                option.includes("Delete") ? <MdDeleteOutline />:
                 "View Restaurant" == option? <GrRestaurant /> :
                 <div></div>} 
                 {option}
               </MenuItem>
             ))}
-          </Menu>
-            <Card.Body>
+          </Menu> */}
+            <Card.Body style={{opacity: this.state.open ? 0.3 : 1}}>
 
-                  <table className='hometable' onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                  <table className='hometable' 
+                  // onClick={() => this.props.navigate('/dish/'+this.state.dishID)}
+                  >
                   <tr>
                       <td 
                       className="vitmin" 
@@ -143,7 +264,7 @@ class HomePageCard extends React.Component {
                         textAlign: "right",
                         paddingTop: "9px"
                       }}>
-                        <CiStar size={18}/> 
+                        {this.state.rate == "unrated" ? <CiStar size={18} color='#6e2323'/> : <FaStar size={15} color='#6e2323'/>}
                       </td>
                       <td style={{
                         textAlign: "right",
@@ -160,11 +281,12 @@ class HomePageCard extends React.Component {
                     <td 
                       className="vitmin"
                       // 100px
-                      style={{width: "185px", marginRight: "-12px"}} onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}
+                      style={{width: "185px", marginRight: "-12px"}} 
+                      // onClick={() => this.props.navigate('/restaurant/'+ this.state.restoID)}
                      >
                       {this.state.resName} 
                     </td>
-                    {/* <td style={{textAlign: "center", width: "80px" }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                    {/* <td style={{textAlign: "center", width: "80px" }} onClick={() => this.props.navigate('/dish/'+this.state.dishID)}>
                       <FaWalking style={{
                         position: "relative", 
                         top: "2px",
@@ -173,15 +295,19 @@ class HomePageCard extends React.Component {
                     <td style={{
                       width: "54px",
                       textAlign: "right", 
-                      color: this.state.status == "Open" ? "#013b3f":"#AD0C26",
+                      color: this.state.status == "Open" ? "#013b3f":"#6e2323",
                       fontWeight: "500"
-                      }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                      }} 
+                      // onClick={() => this.props.navigate('/dish/'+this.state.dishID)}
+                      >
                       {this.state.status}
                     </td>
                   </tr>
                 </table>
 
-                <div onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                <div 
+                // onClick={() => this.props.navigate('/dish/'+this.state.dishID)}
+                >
                 <table className='macro' style={{
                   // color: "#013b3f", 
                   fontSize: "14px",
@@ -245,7 +371,36 @@ class HomePageCard extends React.Component {
                 </table>
                 </div>
             </Card.Body>
+            {this.state.open ?
+              <div className='buttonsTop'>
+                <table className='buttonsTable' 
+                style={{margin: (330-(this.state.options.length * 40))/2 + "px auto" }}
+                // align='center'
+                >
+                  {
+                    this.state.options.map((opt) => {
+                      if (opt) {
+                        return <tr>
+                          <td>
+                            <button className='button1' onClick={() => this.handleClose(opt)}>{
+                            "Add to History" == opt? <FaRegBookmark size={15}/> : 
+                            opt.includes("Edit") ? <BiEditAlt size={15}/>:
+                            opt.includes("Delete") ? <MdDeleteOutline size={15}/>:
+                            opt.includes("Restaurant") ? <GrRestaurant size={15}/> : 
+                            opt.includes("View") ? <GiKnifeFork size={15}/> :
+                            opt.includes("Remove") ? <GoBookmarkSlash size={15} /> :
+                            null} {opt} </button>
+                            {/* <input type="Reset" value={opt} onClick={() => this.handleClose(opt)}/> */}
+                          </td>
+                        </tr>
+                      }
+                    })
+                  }
+                </table>
+              </div> : null }
         </ Card>
+        <AddDishModal open={this.state.openDish} handleClose={() => this.handleEdit(false)} height={window.innerHeight} action={"Edit"} loadingModal={false} restoID={this.state.restoID} dishData={this.props.data}/>
+        <DeleteModal open={this.state.openDel} handleClose={() => this.handleDelete(false)} userInfo={this.props.userInfo} ID={this.state.dishID} type={"dish"} name={this.state.dishName} rname={this.state.resName}/>
       </div>;
     }
 }
