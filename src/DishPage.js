@@ -197,7 +197,7 @@ function DishPage({isMobile, navigate}) {
                                 <table style={{position: "relative", marginTop: "-6px", width: "100%"}}><tr>
                                     <td> <div style={{ marginLeft: "-2px", textAlign: "left"}}>{rev.username}</div></td>
                                     <td style={{textAlign: "right", paddingRight: "5px", fontSize: "15px"}}> {months[parseInt(rev.datePosted.substring(5, 7))]} {rev.datePosted.substring(8, 10)} {rev.datePosted.substring(0, 4)} {
-                                    parseInt(rev.datePosted.substring(11, 13))-4 < 10 ? "0"+(parseInt(rev.datePosted.substring(11, 13))-4) : (parseInt(rev.datePosted.substring(11, 13))-4)}
+                                    parseInt(rev.datePosted.substring(11, 13)) < 10 ? "0"+(parseInt(rev.datePosted.substring(11, 13))-4) : (parseInt(rev.datePosted.substring(11, 13))-4)}
                                     {rev.datePosted.substring(13, 19)}</td>
                                     </tr></table>
                             </td>
