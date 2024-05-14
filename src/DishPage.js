@@ -425,14 +425,14 @@ function DishPage({isMobile, navigate}) {
                 <div className="dishBody" style={isMobile ? {} : style2}>
                     <table className='resto'>
                         <tr>
-                            <td style={{width: 110}}>
+                            <td style={{width: "25%"}}>
                             <button onClick={() => navigate('/restaurant/'+restoID)}
                             className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
                             </td>
-                            <td style={{width:200}}>
+                            <td style={{width:"50%"}}>
                                 <button onClick={handleOpenMaps} className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
                             </td>
-                            <td style={{width: 100}}>
+                            <td style={{width: "25%"}}>
                                 <button className='address' style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button>
                             </td>
                         </tr>

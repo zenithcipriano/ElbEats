@@ -103,7 +103,8 @@
     /* padding-left: 10px; */
     left: -10px;
     table-layout: fixed;
-    width: 450px;
+    width: 70%;
+    /* width: 400px; */
     /* width: 80%; */
 }
 
@@ -238,14 +239,16 @@ button {
     top: -1px;
     padding: 15px;
     font-size: 17px;
-    width: 543px;
+    /* width: 100%; */
+    max-width: 543px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .switchable-textarea > table {
     position: relative;
-    width: 543px;
+    width: 100%;
+    max-width: 543px;
     margin-left: auto;
     margin-right: auto;
 }
