@@ -30,6 +30,18 @@ function Main() {
   //   query: '(min-width: 1224px)'
   // })
   // const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  // const Phone = useMediaQuery({ query: '(max-width: 600px)' })
+
+  // useEffect(() => {
+  //   if(Phone) {
+  //     // document.getElementById("searchDiv1").style.zoom = "80%";
+  //     console.log(document.getElementById("searchDiv1"))
+  //     //  = "80%";
+
+  //   } else {
+  //     document.getElementById("searchDiv1").style.zoom = "100%";
+  //   }
+  // }, [Phone])
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   // const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
   // const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
@@ -139,7 +151,9 @@ function Main() {
       cookies.remove("authToken");
       localStorage.removeItem("user_reference");
       localStorage.removeItem("user_type");
-      // window.location.reload();
+      if (page == 1) {
+        window.location.reload();
+      }
     } else {
       changeTabColor(3)
     }
@@ -160,13 +174,13 @@ function Main() {
     <div className="App" style={{fontFamily: "Rubik"}}>
       <section>
       <div id='searchDiv1' >
-      <table className='header' 
-      style={style1}
-      >
-          <tr>
-            <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo"/> </th>
-          </tr>
-      </table>
+        <table className='header' 
+        style={style1}
+        >
+            <tr>
+              <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo"/> </th>
+            </tr>
+        </table>
       {/* <div id='searchDiv1' > */}
 
         <form onSubmit={handleSubmit}>
@@ -179,7 +193,7 @@ function Main() {
       </div>
       </section>
 
-      <section className='body' style={{height: isTabletOrMobile?"76%":"100%"}} >
+      <section className='body' style={{}} >
         <Routes>
           <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
           <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} /> : < Navigate to="/"/>} />
