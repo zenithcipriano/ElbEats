@@ -199,7 +199,7 @@ class Login extends React.Component {
     // }
     render() {
         return this.state.resetPasswordValue?
-        <div className='Login'>
+        <div className='Login' style={{marginTop: window.innerHeight - 400}}>
             <h1>Reset Password</h1>
             <p className='pageLabel'>Enter a new password for {this.state.email}</p>
 
@@ -220,8 +220,8 @@ class Login extends React.Component {
             </form>
         </div>
         : this.state.forgotPasswordValue?
-        <div className='Login'>
-            <h1>Forgot Password</h1>
+        <div className='Login' style={{marginTop: window.innerHeight - 400}}>
+        <h1>Forgot Password</h1>
             <p className='pageLabel'>Enter the email address associated with your account and we'll send you a code to confirm your identity.</p>
 
             <form onSubmit={this.sendEmail}>
@@ -244,7 +244,7 @@ class Login extends React.Component {
             <a onClick={() => this.forgot(false)}>Back to login</a>
             </div>
         </div>:
-        <div className='Login'>
+        <div className='Login' style={{marginTop: (window.innerHeight - (400 + 97))/2}}>
             {this.state.loginValue? 
                 <div>
                     <h1>Welcome Back</h1>

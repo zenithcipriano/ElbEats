@@ -193,7 +193,7 @@ function Main() {
       </div>
       </section>
 
-      <section className='body' style={{}} >
+      <section className='body' style={{height: "100%"}} >
         <Routes>
           <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
           <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} /> : < Navigate to="/"/>} />

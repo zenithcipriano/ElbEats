@@ -2,8 +2,8 @@
     position:relative;
     text-align: center;
     background-color: white;
-    width: 250px;
-    margin-top: 5%;
+    max-width: 290px;
+    width: 100%;
     border: 1px solid #6e2323;
     /* border: 1px solid #A34343; */
     padding: 50px;
