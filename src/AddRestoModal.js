@@ -317,6 +317,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        // style={{marginTop: 100}} 
         >
             <Box sx={style}>
                 <table className='modalTable'>

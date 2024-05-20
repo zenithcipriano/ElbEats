@@ -44,7 +44,7 @@ function OwnerPage({isMobile}) {
     const [dishes, setDishes] = useState([0]);
     const [resizeDishesV, setRD] = useState([[0]]);
     const [curResto, setResto] = useState(0);
-    const [action, setAction] = useState("");
+    const [action, setAction] = useState(restos.length > 0 ? "" : "Add");
 
     const changeResto = async (index) => {
         if(index != curResto) {
@@ -159,7 +159,7 @@ function OwnerPage({isMobile}) {
         }
     }, []);
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(restos.length > 0 ? false : true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -167,7 +167,7 @@ function OwnerPage({isMobile}) {
     const handleOpenDel = () => setOpenDel(true);
     const handleCloseDel = () => setOpenDel(false);
 
-    const [loadingModal, setLoadingModal] = useState(true);
+    const [loadingModal, setLoadingModal] = useState(restos.length > 0 ? true : false);
     const [loadingModalDish, setLoadingModalDish] = useState(false);
     const [restoData, setRestoData] = useState({});
 
@@ -228,18 +228,18 @@ function OwnerPage({isMobile}) {
                                                         </tr>
                                                     </table>
                                                 </td> : null}
-                                                <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Add")}}> 
+                                                {restos.length == 0 ? <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Add")}}> 
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
-                                                            <td><b className='restoName'>Add</b></td>
+                                                            <td><b className='restoName'>Enter Your Restaurant Details</b></td>
                                                             <td style={{paddingTop: 5}}><FiPlusCircle size={20} /></td>
                                                         </tr>
                                                     </table>
-                                                </td>
+                                                </td> : null}
                                                 {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} onClick={() => {retrieveRestoInfo("Edit")}}>
                                                 <table style={{position: 'relative'}}>
                                                         <tr>
-                                                            <td><b className='restoName'>Edit</b></td>
+                                                            <td><b className='restoName'>Edit Your Restaurant Details</b></td>
                                                             <td style={{paddingTop: 5}}><BiEditAlt size={20}/></td>
                                                         </tr>
                                                     </table> 
@@ -247,7 +247,7 @@ function OwnerPage({isMobile}) {
                                                 {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} onClick={handleOpenDel}> 
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
-                                                            <td><b className='restoName'>Delete</b></td>
+                                                            <td><b className='restoName'>Delete Restaurant</b></td>
                                                             <td style={{paddingTop: 5}}><RiDeleteBin6Line size={20}/></td>
                                                         </tr>
                                                     </table>

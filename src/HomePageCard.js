@@ -47,9 +47,9 @@ class HomePageCard extends React.Component {
 
     const isOpenDay = props.data.daysOfTheWeek.includes(curday);
 
-    console.log(props.data.openingTime);
-    console.log(props.data.closingTime);
-    console.log(props.data.daysOfTheWeek);
+    // console.log(props.data.openingTime);
+    // console.log(props.data.closingTime);
+    // console.log(props.data.daysOfTheWeek);
 
     let isOpenTime0 = false
     if (props.data.openingTime) {
@@ -68,6 +68,7 @@ class HomePageCard extends React.Component {
     this.state = {
         dishName: props.data.dishname,
         rate: props.data.reviewCount == 0 ? "unrated": props.data.ratings,
+        reviewCount: props.data.reviewCount,
         resName: props.data.restoname,
         distance: 0,
         status:  isOpenDay && isOpenTime0 && isOpenTime1 ? "Open": "Closed",
@@ -257,6 +258,7 @@ class HomePageCard extends React.Component {
                         fontWeight: "bold",
                         width: "163px",
                         padding: "4px 0",
+
                       }}> 
                         {this.state.dishName} 
                       </td>
@@ -264,14 +266,15 @@ class HomePageCard extends React.Component {
                         textAlign: "right",
                         paddingTop: "9px"
                       }}>
-                        {this.state.rate == "unrated" ? <CiStar size={18} color='#6e2323'/> : <FaStar size={15} color='#6e2323'/>}
+                        {this.state.reviewCount == 0 ? <CiStar size={18} color='#6e2323'/> : <FaStar size={15} color='#6e2323'/>}
                       </td>
                       <td style={{
                         textAlign: "right",
                         paddingTop: "5px",
                         width: "0px",
+                        whiteSpace: 'nowrap'
                       }}> 
-                        {this.state.rate}
+                        {this.state.rate}{this.state.reviewCount == 0 ? "" : ` (${this.state.reviewCount})`}
                       </td>
                     </tr>
                   </table>
