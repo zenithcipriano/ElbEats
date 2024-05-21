@@ -15,7 +15,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: window.innerWidth-40,
+        maxWidth: 600,
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
@@ -145,8 +146,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                         </td>
                     </tr>
                     <tr>
-                        <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="reset" value="Cancel" onClick={handleClose}  disabled={ret}/></td>
-                        <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Continue" disabled={ret}/></td>
+                        <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="reset" value="Cancel" onClick={handleClose}  disabled={ret}/></td>
+                        <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="submit" value="Continue" disabled={ret}/></td>
                     </tr>
                 </table>
             </form>

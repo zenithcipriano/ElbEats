@@ -74,7 +74,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         setPermissionGiven(dishData.permission == 1);
         setMainPicture(dishData.images ? dishData.images : []);
         setAvail(dishData.available);
-    }, [dishData]);
+    }, [open]);
 
     const [ret, setRet] = useState(false);
     const [findIng, setfindIng] = useState(false);

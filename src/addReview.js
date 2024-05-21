@@ -22,7 +22,9 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        // width: 600,
+        width: window.innerWidth-40,
+        maxWidth: 600,
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
@@ -42,7 +44,7 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
         changeStarNum(curRev.rate-1);
         if(curRev.review) setCount(curRev.review.length);
         setReview(curRev.review);
-    }, [curRev]);
+    }, [open]);
 
     const [ret, setRet] = useState(false);
     const handleSubmit = async (event) => {
@@ -194,14 +196,14 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     <form onSubmit={handleSubmit}>
                     <table className='reviewTable' align='center'>
                         <tr colSpan={4}>
-                            <textarea value={review} onChange={handleReview} rows={7} className='textAreaModal1' style={{width: 600-65, fontFamily: "Rubik", marginBottom: -28}} maxLength={300}/>
-                            <div style={{width: 600-25, textAlign: "right"}}>{reviewCount} / 300</div>
+                            <textarea value={review} onChange={handleReview} rows={7} className='textAreaModal1' style={{width: window.innerWidth-40 > 600 ? 600 - 70 : window.innerWidth-100, fontFamily: "Rubik", marginBottom: -28}} maxLength={300}/>
+                            <div style={{width: window.innerWidth-40 > 600 ? 600 - 40 : window.innerWidth-70, textAlign: "right"}}>{reviewCount} / 300</div>
                         </tr>
                     </table>
                     <table className='reviewTable' align='center' style={{marginTop: 20}}>
                         <tr>
-                            <td style={{textAlign: "center", paddingBottom: 10}}> <input type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
-                            <td style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret}/></td>
+                            <td style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
+                            <td style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="submit" value="Submit" disabled={ret}/></td>
                         </tr>
                     </table>
                     </form>
