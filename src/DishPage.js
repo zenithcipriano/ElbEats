@@ -408,24 +408,37 @@ function DishPage({isMobile, navigate}) {
                         ))}
                     </Carousel>
                 </div>
+                {/* {isMobile ? <button className='address' style={{
+                        borderBottom: "1px solid #ededed", padding: 5,
+                        maxWidth: 105, fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button> 
+                        : null} */}
                 <div className="dishBody" style={isMobile ? {} : style2}>
-                    <table className='resto'>
+                    <table className='resto' style={isMobile? {marginTop: -20} : {}}>
                         <tr>
-                            <td style={{maxWidth: 150}}>
+                            <td style={{maxWidth: 120}}>
                             <button onClick={() => navigate('/restaurant/'+restoID)}
-                            className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
+                            className='address' style={{fontFamily: "Rubik", width: "100%"}}><u>{rname}</u></button> 
                             </td>
-                            <td style={{maxWidth: 200}}>
-                                <button onClick={handleOpenMaps} className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
+                            <td style={{maxWidth: width*2 < 200 ? (width/2)-10 : 200}}>
+                                <button onClick={handleOpenMaps} className='address' style={{fontFamily: "Rubik", width: "100%"}}><MdLocationPin /> <u>{address}</u></button>
                             </td>
+                            {!isMobile ? 
                             <td style={{maxWidth: 105}}>
                                 <button className='address' style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button>
-                            </td>
+                            </td> : null } 
                         </tr>
-                    </table>
-                    <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto"} : {position: 'relative'}}>
+                        {/* {isMobile ? 
                         <tr>
-                            <td><p id='dname'>{dname}</p></td>
+                            <td style={{maxWidth: 105}}>
+                                <button className='address' style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button>
+                            </td></tr> : null }  */}
+                    </table>
+                    <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto", marginTop: 10} : {position: 'relative'}}>
+                        {isMobile ? <tr>
+                            <td colSpan={3} style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}><p style={{margin: 0, marginTop: -5}}>{avail == 1 ? "Available" : "Not Available"}</p></td>
+                        </tr> : null}
+                        <tr>
+                            <td><p id='dname' style={{marginTop: isMobile ? 0 : 3}}>{dname}</p></td>
                             {userInfo.id == userID ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
                             {userInfo.id == userID ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={() => {
                                 handleOpenDel()
@@ -442,20 +455,35 @@ function DishPage({isMobile, navigate}) {
                                 }</p>
                             </td>
                             <td>
-                                <p>{Number.isInteger(rating) ? rating+".0" : rating} ({numRev}) </p>
+                                <p>{Number.isInteger(rating) ? rating+".0" : rating} ({numRev})</p>
+                            {/* <td colSpan={3} style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</td> */}
+
                             </td>
-                            {userInfo.type == "reviewer" ? 
+                            {userInfo.type == "reviewer" && !isMobile ? 
                             <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
                             </td> : null}
-                            {userInfo.type == "reviewer" && revAction == "Edit" ? 
+                            {userInfo.type == "reviewer" && revAction == "Edit" && !isMobile ? 
                             <td><button style={{fontSize: 17}} onClick={ () => {
                                 handleOpenDel();
                                 setDelAction("review");
                                 setDelID(curRev.reviewID);
-                            } }>Delete Review <RiDeleteBin6Line /></button>
+                            }}>Delete Review <RiDeleteBin6Line /></button>
                             </td> : null}
                         </tr>
                     </table>
+                    {isMobile ? 
+                    <table id='rateTable' style={isMobile ? style3 : {left: "-8px"}}>
+                        <tr>
+                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
+                            </td>
+                            <td><button style={{fontSize: 17}} onClick={ () => {
+                                handleOpenDel();
+                                setDelAction("review");
+                                setDelID(curRev.reviewID);
+                            }}>Delete Review <RiDeleteBin6Line /></button>
+                            </td>
+                        </tr>
+                    </table> :null}
 
                     <table className='priceTable' style={isMobile ? style3 : {left: "-13px"}}>
                         <tr>
