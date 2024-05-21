@@ -86,6 +86,7 @@ function DishPage({isMobile, navigate}) {
 
     const [retDish, setRetDish] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showBreakDown, setShowBD] = useState(false);
 
     const Retrieving = async () => {
         await axios({
@@ -291,7 +292,7 @@ function DishPage({isMobile, navigate}) {
                 <td>{Number.isInteger(nut.ingRAE) ? nut.ingRAE+".0" : nut.ingRAE} µg</td>
             </tr>
             <tr>
-                <th>Water-Soluble Vitamins</th>
+                <th colspan="2">Water-Soluble Vitamins</th>
             </tr>
             <tr>
                 <td>Thiamin, Vitamin B1</td>
@@ -318,21 +319,6 @@ function DishPage({isMobile, navigate}) {
 
     const [NutIngRevTag, setNutIngRevTag] = useState(0);
     const [walkdel, setWalkDel] = useState(true);
-
-    // const imgList = [
-    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-    //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505",
-    //     "https://www.escoffier.edu/wp-content/uploads/2019/03/Plating-has-a-major-impact-on-how-your-customers-enjoy-their-food_1028_40183381_0_14144266_1000.jpg",
-    //     "https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",
-    // ]
 
     const [openDish, setOpenDish] = useState(false);
     const handleOpenDish = () => setOpenDish(true);
@@ -425,14 +411,14 @@ function DishPage({isMobile, navigate}) {
                 <div className="dishBody" style={isMobile ? {} : style2}>
                     <table className='resto'>
                         <tr>
-                            <td style={{width: "25%"}}>
+                            <td style={{maxWidth: 150}}>
                             <button onClick={() => navigate('/restaurant/'+restoID)}
                             className='address' style={{fontFamily: "Rubik"}}><u>{rname}</u></button> 
                             </td>
-                            <td style={{width:"50%"}}>
+                            <td style={{maxWidth: 200}}>
                                 <button onClick={handleOpenMaps} className='address' style={{fontFamily: "Rubik"}}><MdLocationPin /> <u>{address}</u></button>
                             </td>
-                            <td style={{width: "25%"}}>
+                            <td style={{maxWidth: 105}}>
                                 <button className='address' style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}>{avail == 1 ? "Available" : "Not Available"}</button>
                             </td>
                         </tr>
@@ -448,7 +434,6 @@ function DishPage({isMobile, navigate}) {
                                 }}/></td> : null}
                         </tr>
                     </table>
-                    {/* <p id='dname'>{dname}</p> */}
                     <table id='rateTable' style={isMobile ? style3 : {left: "-8px"}}>
                         <tr>
                             <td>
@@ -493,24 +478,44 @@ function DishPage({isMobile, navigate}) {
                         })
                     }</p>
 
-                    <table className="BRTable" style={isMobile ? style3 : {}}>
+                    {isMobile ? 
+                        <button className="switch1" style={!showBreakDown ? style4 : {}} onClick={() => setShowBD(false)}>Protein</button> 
+                        : null}
+                    
+                    {isMobile ? 
+                        <button className="switch1" style={showBreakDown ? style4 : {}} onClick={() => setShowBD(true)}>Breakdown</button> 
+                        : null}
+
+                    <table className="BRTable" style={isMobile ? {maxWidth: 543, marginLeft: "auto", marginRight: "auto", position: "relative", marginTop: -3} : {}}>
                         <tr>
-                            <td>
-                                <p className='tags'>Protein:</p>
-                                <table className='proteinTable'>
-                                    {
-                                        protein.map((prot, index) => {
+                            <td style={isMobile ? {border: "1px solid #ededed", padding: 15} : {}}>
+                                {!isMobile ? <p className='tags'>Protein:</p> : null}
+                                {!isMobile || !showBreakDown ? 
+                                    <table className='proteinTable'>
+                                        {
+                                            protein.map((prot, index) => {
+                                                return (
+                                                    <tr>
+                                                        <td> {prot} </td>
+                                                        <td style={{width: "40%"}}> {proteinType[index]} </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </table>
+                                    : <table className="catTable">{
+                                        Categories.map((cat, index) => {
                                             return (
-                                                <tr>
-                                                    <td style={{width: "30%"}}> {prot} </td>
-                                                    <td> {proteinType[index]} </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td style={{width: "30%", textAlign: 'center'}}> {catPercent[index]}% </td>
+                                                        <td style={{paddingLeft: 8, textAlign: 'center'}}> {cat} </td>
+                                                    </tr>
                                             )
                                         })
-                                    }
-                                </table>
+                                    }</table>
+                                }
                             </td>
-                            <td>
+                            {!isMobile ? <td>
                                 <p className='tags'>Breakdown: </p>
                                 <table className="catTable">{
                                     Categories.map((cat, index) => {
@@ -522,7 +527,7 @@ function DishPage({isMobile, navigate}) {
                                         )
                                     })
                                 }</table>
-                            </td>
+                            </td>:null}
                     </tr>
                     </table>
                     <button className="switch1" style={NutIngRevTag == 0 ? style4 : {}} onClick={() => setNutIngRevTag(0)}>Nutrition Table</button> 

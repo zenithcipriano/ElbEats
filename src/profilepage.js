@@ -70,6 +70,12 @@ function ProfilePage({isMobile}) {
     const [resizeDishesV, setRD] = useState([[]]);
 
     const resizeDishes = (col, samp, isResize) => {
+        console.log(col)
+
+        if (col == 0) {
+            col = 1;
+        }
+        
         if (isResize == 0) {
             const temp = [];
             const sampTemp = JSON.parse(JSON.stringify(samp));
@@ -78,6 +84,7 @@ function ProfilePage({isMobile}) {
             setRD(temp);
         } else if(resizeDishesV.length > 0) {
             if (resizeDishesV[0].length != col) {
+                
                 const temp = [];
                 const sampTemp = JSON.parse(JSON.stringify(samp));
 
@@ -97,6 +104,7 @@ function ProfilePage({isMobile}) {
         }).then((res) => {
             if(res.data.success){
                 const data = res.data;
+                // console.log(data);
                 setUsername(data.username);
 
                 if(data.dishList.length > 0) {
@@ -141,13 +149,13 @@ function ProfilePage({isMobile}) {
                                 weight */}
                             </div>
                         </td>
-                        <td><div>
+                        <td style={{paddingRight: 0}}><div>
                             {
                                 dishList.length > 0 ?
                                     <div className='dishdiv' 
                                     style={{
                                         height: isMobile ? height-155 : height-90, 
-                                        width: width/4 > ProfWidth ?(3*width/4) : width-ProfWidth}}
+                                        width: width/4 > ProfWidth ?(3*width/4) + 20 : width-ProfWidth}}
                                     >
                                         <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true}/>

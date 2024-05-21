@@ -44,7 +44,7 @@ function OwnerPage({isMobile}) {
     const [dishes, setDishes] = useState([0]);
     const [resizeDishesV, setRD] = useState([[0]]);
     const [curResto, setResto] = useState(0);
-    const [action, setAction] = useState(restos.length > 0 ? "" : "Add");
+    const [action, setAction] = useState("");
 
     const changeResto = async (index) => {
         if(index != curResto) {
@@ -126,6 +126,10 @@ function OwnerPage({isMobile}) {
 
                 const restos = res.data.restos;
                 setRestos(restos);
+                setOpen(restos.length > 0 ? false : true)
+                setLoadingModal(restos.length > 0 ? true : false);
+                setAction(restos.length > 0 ? "" : "Add");
+
                 const dishes = res.data.dishes;
 
                 if(dishes.length > 0) {
@@ -159,7 +163,7 @@ function OwnerPage({isMobile}) {
         }
     }, []);
 
-    const [open, setOpen] = useState(restos.length > 0 ? false : true);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -167,7 +171,7 @@ function OwnerPage({isMobile}) {
     const handleOpenDel = () => setOpenDel(true);
     const handleCloseDel = () => setOpenDel(false);
 
-    const [loadingModal, setLoadingModal] = useState(restos.length > 0 ? true : false);
+    const [loadingModal, setLoadingModal] = useState(true);
     const [loadingModalDish, setLoadingModalDish] = useState(false);
     const [restoData, setRestoData] = useState({});
 

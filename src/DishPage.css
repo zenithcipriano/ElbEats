@@ -103,7 +103,7 @@
     /* padding-left: 10px; */
     left: -10px;
     table-layout: fixed;
-    width: 70%;
+    /* width: 70%; */
     /* width: 400px; */
     /* width: 80%; */
 }
@@ -184,6 +184,7 @@ button {
 }
 
 .BRTable {
+    /* max-width: 543px; */
     width: 100%;
     left: -3px;
     position: relative;
@@ -191,6 +192,10 @@ button {
 
 .BRTable > tr > td {
     /* border: 1px solid black; */
+    /* border: 1px solid #ededed; */
+    /* padding: 15px;
+    padding-top: 10px; */
+    /* padding: ; */
     vertical-align: text-top;
     width: 50%;
     padding-left: 5px;
