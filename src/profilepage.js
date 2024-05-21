@@ -52,13 +52,17 @@ function ProfilePage({isMobile}) {
         setHeight(window.innerHeight)
 
         let tableWidth = 0;
-        if(window.innerWidth / 4 < ProfWidth) {
+        if(isMobile) {
+            tableWidth = window.innerWidth-10
+        } else if(window.innerWidth / 4 < ProfWidth) {
             tableWidth = window.innerWidth-ProfWidth;
         } else {
             tableWidth = 3*window.innerWidth/4
         }
 
+        // console.log(tableWidth);
         const col = Math.floor( tableWidth/ CardWidth);
+        console.log(col)
         resizeDishes(col, dishList, 1);
     }
 
@@ -111,7 +115,9 @@ function ProfilePage({isMobile}) {
                     setDishList(data.dishList);
                     
                     let tableWidth = 0;
-                    if(width / 4 < ProfWidth) {
+                    if(isMobile) {
+                        tableWidth = width-10
+                    } else if(width / 4 < ProfWidth) {
                         tableWidth = width-ProfWidth;
                     } else {
                         tableWidth = 3*width/4
@@ -140,22 +146,21 @@ function ProfilePage({isMobile}) {
             <div className='ProfilePage'>
                 <table className='ProfileTable'>
                     <tr>
-                        <td style={{width: width/4}}>
+                        {!isMobile ? <td style={{width: width/4, padding: 20}}>
                             <div id='profileIcon'><CgProfile size={150}/></div>
                             <div className='userProfile'>
                                 <h1 style={{paddingBottom: 20}}>{username}</h1>
-                                {/* <h3>{aboutYou}</h3> */}
-                                {/* gender
-                                weight */}
                             </div>
-                        </td>
-                        <td style={{paddingRight: 0}}><div>
+                        </td> : null }
+                        <td style={isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0}}><div>
                             {
                                 dishList.length > 0 ?
                                     <div className='dishdiv' 
                                     style={{
                                         height: isMobile ? height-155 : height-90, 
-                                        width: width/4 > ProfWidth ?(3*width/4) + 20 : width-ProfWidth}}
+                                        width: isMobile? width-10 : (width/4 > ProfWidth ?(3*width/4) + 20 : width-ProfWidth),
+                                        marginLeft: isMobile ? 0 : 2.5
+                                    }}
                                     >
                                         <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true}/>
