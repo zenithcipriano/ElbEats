@@ -154,8 +154,10 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
             <Box sx={style}>
+                <div style={{alignContent: 'center', height: "100%", marginTop: -30}}>
                     <ProgressBar1 height={200}/>
-                </Box>
+                </div>
+            </Box>
         </Modal>
     } else {
         return <Modal

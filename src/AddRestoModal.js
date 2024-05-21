@@ -255,7 +255,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         } else {
             resetButton()
         }
-    }, [restoData]);
+    }, [open]);
     // const [files, setFiles] = useState([]);
     // const selectFileHandler = (e) => {
     //     setFiles([...e.target.files]);
@@ -306,7 +306,9 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
                 <Box sx={style}>
+                    <div style={{alignContent: 'center', height: "100%", marginTop: -30}}>
                         <ProgressBar1 height={200}/>
+                    </div>
                     </Box>
             </Modal>
     } else if(openMaps) {

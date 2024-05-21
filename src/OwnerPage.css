@@ -11,7 +11,7 @@
 .restoCard {
     position: relative;
     /* border: 1px solid rgba(110, 35, 35, 0.2); */
-    padding: 10px;
+    /* padding: 10px; */
     /* width: 200px; */
     white-space: nowrap;
     overflow: hidden;
@@ -24,7 +24,13 @@
 .restoCardtd {
     border: 1px solid rgba(110, 35, 35, 0.2);
     z-index: 1;
-    margin-left: 2px;
+    /* margin-left: 2px; */
+    position: relative;
+    /* background-color: white; */
+    border-spacing: 0px;
+    /* border: 1px solid rgba(110, 35, 35, 0.2); */
+    /* overflow-x: hidden; */
+    z-index: 1;
 }
 
 .restoName {

@@ -6,7 +6,6 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import "./addrestomodal.css";
 import axios from 'axios';
 import "@fontsource/rubik";
-import ProgressBar1 from './progress';
 import { useLocation, useNavigate } from 'react-router-dom';  
 
 function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {

@@ -438,7 +438,7 @@ function DishPage({isMobile, navigate}) {
                             <td colSpan={3} style={{fontFamily: "Rubik", color: (avail == 1 ? "#013B3F": "#6e2323")}}><p style={{margin: 0, marginTop: -5}}>{avail == 1 ? "Available" : "Not Available"}</p></td>
                         </tr> : null}
                         <tr>
-                            <td><p id='dname' style={{marginTop: isMobile ? 0 : 3}}>{dname}</p></td>
+                            <td><p id='dname' style={{marginTop: isMobile ? 0 : 3, textAlign: "right"}}>{dname}</p></td>
                             {userInfo.id == userID ? <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpenDish}/></td> : null}
                             {userInfo.id == userID ? <td style={{paddingTop: 5}}><RiDeleteBin6Line size={40} onClick={() => {
                                 handleOpenDel()

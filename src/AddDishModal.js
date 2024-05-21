@@ -279,7 +279,9 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
             <Box sx={style}>
+                <div style={{alignContent: 'center', height: "100%", marginTop: -30}}>
                     <ProgressBar1 height={200}/>
+                </div>
                 </Box>
         </Modal>
     } else {

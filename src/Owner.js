@@ -209,7 +209,13 @@ function OwnerPage({isMobile}) {
     }
 
     if (!retDish) {
-        return <ProgressBar1 height={200}/>
+        return <div
+            style={{
+                height: isMobile ? height-233 : height-158,
+                alignContent: 'center'
+            }}>
+            <ProgressBar1 height={200}/>
+        </div>
     } else {
         return <div className="OwnerPage">
             <table className='ProfileTable'>
@@ -225,74 +231,78 @@ function OwnerPage({isMobile}) {
                             <table className='OwnerTable'>
                                 <tr>
                                     <td>
-                                        <table align={width <= 805 ? "center" : (restos.length == 0 ? "left" : "right")} className='restoTabs' style={{borderSpacing: 5, marginTop: -5, marginBottom: (width/4 < ProfWidth ? 0 : -10)}}>
+                                        {restos.length == 0 ? <table 
+                                        // align={width <= 805 ? "center" : (restos.length == 0 ? "left" : "right")}
+                                         align='left'
+                                         className='restoTabs' style={{borderSpacing: 5, marginTop: -5, marginBottom: (width/4 < ProfWidth ? 0 : -10)}}>
                                             <tr>
-                                            {/* marginLeft: width/4 < ProfWidth && width-ProfWidth < 353 ? width-ProfWidth - 353 : 0 */}
-                                                {/* <td style={{padding: 10}}> 
-                                                    <b className='restoName' onClick={handleOpen}>Restaurant: </b>
-                                                </td> */}
                                                 <td>
-                                                {/* {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}}>  */}
-                                                <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
+                                                {/* <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
                                                     <table style={{position: 'relative'}}>
                                                         <tr>
                                                             <td><b className='restoName' onClick={() => navigate('/restaurant/'+restos[curResto].restoID)}>View</b></td>
                                                             <td style={{paddingTop: 5}}><HiOutlineCursorClick size={20} /></td>
                                                         </tr>
-                                                    </table></button>
-                                                {/* </td> : null} */}
-                                                {/* {restos.length == 0 ? <td className='restoCardtd' style={{padding: 10}} >  */}
-                                                {restos.length == 0 ? <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
+                                                    </table></button> */}
+                                                <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
                                                     <table style={{position: 'relative'}} onClick={() => {retrieveRestoInfo("Add")}}>
                                                         <tr>
                                                             <td><b className='restoName'>Enter Your Restaurant Details</b></td>
                                                             <td style={{paddingTop: 5}}><FiPlusCircle size={20} /></td>
                                                         </tr>
-                                                    </table></button> : null}
-                                                {/* </td> : null} */}
-                                                {/* {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} > */}
-                                                <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
+                                                    </table></button>
+                                                {/* <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
                                                 <table style={{position: 'relative'}} onClick={() => {retrieveRestoInfo("Edit")}}>
                                                         <tr>
                                                             <td><b className='restoName'>Edit Your Restaurant Details</b></td>
                                                             <td style={{paddingTop: 5}}><BiEditAlt size={20}/></td>
                                                         </tr>
                                                     </table> </button>
-                                                {/* </td> : null} */}
-                                                {/* {restos.length > 0 ? <td className='restoCardtd' style={{padding: 10}} >  */}
                                                 <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
                                                     <table style={{position: 'relative'}} onClick={handleOpenDel}>
                                                         <tr>
                                                             <td><b className='restoName'>Delete Restaurant</b></td>
                                                             <td style={{paddingTop: 5}}><RiDeleteBin6Line size={20}/></td>
                                                         </tr>
-                                                    </table></button>
+                                                    </table></button> */}
                                                 </td>
                                             </tr>
-                                        </table>
-                                            <table className='restoTabs'> 
-                                                <tr>
+                                        </table> : null}
                                                     {
                                                         restos.map((rest, index) => {
                                                             return (
-                                                            <td className='restoCardtd' style={curResto == index ? {borderBottom: "3px solid white"} : {opacity: .3}}> 
-                                                                <button className='restoCard' onClick={() => changeResto(index)} style={{fontFamily: "Rubik", maxWidth: width <= 805 ? 500 : 200}}>
-                                                                <b className='restoName'>{rest.restoname}</b><br/>
-                                                                <a className='restoLoc'>{rest.restoLocation}</a>
-                                                                </button>
-                                                            </td>
+                                                            <table className='restoCardtd' style={{padding: 10, borderBottom: "3px solid white"}}> 
+                                                                <tr>
+                                                                    <td> 
+                                                                        <button className='restoCard' 
+                                                                        // onClick={() => changeResto(index)} 
+                                                                        style={{fontFamily: "Rubik", textAlign: "left"
+                                                                        // maxWidth: width <= 805 ? 500 : 200
+                                                                        }} onClick={() => navigate('/restaurant/'+restos[curResto].restoID)}>
+                                                                        <b className='restoName'>{rest.restoname}</b><br/>
+                                                                        <a className='restoLoc'>{rest.restoLocation}</a>
+                                                                        </button></td>
+                                                                        <td onClick={() => {retrieveRestoInfo("Edit")}}>
+                                                                            <BiEditAlt size={30} />
+                                                                        </td>
+                                                                        <td onClick={handleOpenDel}>
+                                                                            <RiDeleteBin6Line size={30} />
+                                                                        </td>
+                                                                    {/* <td><HiOutlineCursorClick size={20} /></td> */}
+                                                                </tr>
+                                                            </table>
+
                                                             )
                                                         })
                                                     }
-                                                </tr>
-                                            </table>
                                     </td>
                                 </tr>
                                 </table>
                                 {
                                     restos.length > 0 ?
                                         <div className='dishdiv' style={{
-                                            height: width <= 805 ? height-293 : (isMobile ? height-233 : height-158), 
+                                            height: isMobile ? height-233 : height-158, 
+                                            // height: width <= 805 ? height-293 : (isMobile ? height-233 : height-158), 
                                             width: isMobile? width-10 : (width/4 > ProfWidth ? (3*width/4) : width-ProfWidth),
                                             marginLeft: 2.5,
                                             // marginLeft: "auto", marginRight: "auto"
