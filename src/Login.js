@@ -235,21 +235,20 @@ class Login extends React.Component {
             </div>
         } else {
             return <div style={{
-                //  
-                height: window.innerHeight-150,
                 alignContent: 'center',
-                marginTop: 10
+                height: window.innerHeight-(95*2),
+                marginTop: 15
             }}>
                 {
                 this.state.page == 0 ? 
-                    <div className='Login'>
+                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
                         <h1>Welcome</h1>
                         <h2 className='pageLabelOpening' onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></h2>
                         <h2 className='pageLabelOpening' style={{marginTop: 20}} onClick={() => this.changePage(1)}><u>Do you already have an account?</u></h2>
                         <h2 className='pageLabelOpening' onClick={() => this.changePage(3)}><u>Do you want to create a user account?</u></h2>
                     </div>
                 : this.state.page == 1 ?
-                    <div className='Login'>
+                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
                         <table style={{position: 'relative', margin: -30}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>
@@ -269,13 +268,12 @@ class Login extends React.Component {
                             <input className='lockinput' required type={this.state.showpassword?"text":"password"} value={this.state.password} onChange={this.handleChangePassword} placeholder='Password'/> 
                             {!this.state.showpassword?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 1)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 1)}/>} <br/>
                             </div>
-
-                            <input type="submit" value={"Login"} />
+                            <input style={{width: 235}} type="submit" value={"Login"} />
                         </form>
                         <p onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></p>
                         <p onClick={() => this.changePage(3)} style={{marginBottom: -5}}><u>Do you want to create a user account?</u></p>
                     </div>
-                : <div className='Login'>
+                : <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
                         <table style={{position: 'relative',  margin: -30}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>
@@ -307,7 +305,7 @@ class Login extends React.Component {
                                 <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
                                 {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
                             </div>
-                            <input type="submit" value={"Submit"} />
+                            <input style={{width: 235}} type="submit" value={"Submit"} />
                         </form>
 
                         <p onClick={() => this.changePage(1)}><u>Do you already have an account?</u></p>
