@@ -79,6 +79,9 @@ function Main() {
       setPage(page1);
       if(page1 == 1) {
         setSU("");
+      } else {
+        setKeywords("");
+        setOpenSearch(false);
       }
     }
     // setHomeColor("white");
@@ -163,10 +166,13 @@ function Main() {
   const [submittedInput, setSU] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setOpenSearch(false);
     navigate(pageList[0]);
     setPage(1);
     setSU(keywords);
   }
+
+  const [openSearch, setOpenSearch] = useState(false);
 
   if(isLoggedIn == -1) {
     return <div style={{
@@ -187,21 +193,36 @@ function Main() {
               </tr>
           </table>
         {/* <div id='searchDiv1' > */}
-
+          {!isTabletOrMobile ? 
           <form onSubmit={handleSubmit}>
-            <table id="searchDiv" align={isTabletOrMobile ? 'right' : 'center'}
-            style={isTabletOrMobile ? {width: "35%", marginRight: "10px", zIndex: 1} : {width: "25%", zIndex: 1}}><tr>
+            <table id="searchDiv" align={'center'}
+            style={{width: "25%", zIndex: 1}}><tr>
                 <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search'/></td> 
                 <td style={{width: "25px"}} onClick={handleSubmit}><FaSearch size={20} style={{marginTop: "1px"}}/> </td>
             </tr></table>
+          </form>:
+          // <form onSubmit={handleSubmit}>
+          // <div style={{backgroundColor: 'cyan', height: 5000, zIndex: 1000}}> Hi
+          //   </div> 
+          // </form>
+          <form onSubmit={handleSubmit}>
+          <table align='right' style={{position: 'relative', zIndex:1, backgroundColor: 'white', borderRadius: 25, padding: 5}} onClick={() => !openSearch ? setOpenSearch(true) : null}>
+            <tr>
+              {openSearch ? 
+                <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search'/></td> 
+                :null}
+              <td style={{width: 35, height: 35, textAlign: 'center'}} onClick={(event) => openSearch ? handleSubmit(event) : null}><FaSearch size={openSearch ? 20 : 30} style={{marginTop: "1px", color: "#6e2323"}}/> </td>
+            </tr>
+          </table>
           </form>
+          }
         </div>
         </section>
 
         <section className='body' style={{height: "100%"}} >
           <Routes>
             <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
-            <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} /> : < Navigate to="/"/>} />
+            <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} isMobile={isTabletOrMobile}/> : < Navigate to="/"/>} />
             <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies}/> } />
             <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
             <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
@@ -266,7 +287,7 @@ function Main() {
                   <table style={{position: "relative"}}>
                     <tr>
                       <td><GiMeal size={iconSize} /></td>
-                      <td><h2><u>Meal of the Day</u></h2></td>
+                      <td><h2><u>Meals for the Day</u></h2></td>
                     </tr>
                   </table>
               </th>

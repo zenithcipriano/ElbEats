@@ -22,7 +22,7 @@ hr {
     font-size: 20px;
     padding: 5px 20px;
     opacity: 1;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     margin-left: -21px;
     /* margin-right: 10px; */
 }
@@ -62,14 +62,16 @@ hr {
 
 .priceTable {
     border-spacing: 10px;
-    font-size: 25px;
+    font-size: 23px;
     margin-bottom: -8px;
 }
 
 .socialsTable {
     position: relative;
-    width: 101%;
-    margin-left: -2px;
+    /* width: 101%; */
+    margin: auto;
+    /* margin-left: -2px; */
+    /* ma */
 }
 
 
@@ -95,6 +97,8 @@ hr {
 .paymentBut {
     border: 1px solid #ededed;
     padding: 5px;
+    font-size: 17px;
+    margin-right: 2px;
     /* border-spacing: 20px; */
     /* tabl-width: 10px; */
     /* padding-right: 5px; */

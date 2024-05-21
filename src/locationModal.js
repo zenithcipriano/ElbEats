@@ -12,7 +12,9 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: width/2,
+        maxWidth: 700,
+        width: width-40,
+        // width: width/2,
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
@@ -80,7 +82,8 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
                             <td style={{border: "1px solid black", padding: 10}}>
                                 <div style={{whiteSpace: "nowrap",
                                 overflow: "hidden", 
-                                width: (width/2) - 23 - (permissionGiven ? 75 : 0) - 40,
+                                width: "100%",
+                                // width: (width/2) - 23 - (permissionGiven ? 75 : 0) - 40,
                                 textOverflow: "ellipsis"
                                 }}>{address1}</div></td>
                             {permissionGiven ? <td style={{border: "1px solid black", padding: 10, width: 50}} onClick={onSubmit}> Submit </td> : null }

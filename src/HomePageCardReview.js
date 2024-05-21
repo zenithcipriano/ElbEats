@@ -13,6 +13,8 @@ import { GrRestaurant } from "react-icons/gr";
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AddReview from './addReview';
 import DeleteModal from './DeleteModal';
+import axios from 'axios';
+import { GiKnifeFork } from 'react-icons/gi';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const outlined0 = <FaRegStar size={15} color='#6e2323'/>;
@@ -37,8 +39,8 @@ class HomePageCardReview extends React.Component {
         reviewData: props.data.review,
         star: star,
         numStar: numStar, 
-        anchorEl: null,
-        open: false,
+        // anchorEl: null,
+        // open: false,
         dishID: props.data.dishID,
         restoID: props.data.restoID,
         reviewClicked: false,
@@ -47,41 +49,93 @@ class HomePageCardReview extends React.Component {
         userInfo: {
             id: localStorage.getItem("user_reference"),
             type: localStorage.getItem("user_type")
-        }
+        },
+        clicked: false,
+        loading: false
     };
 
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
+    // this.handleClose = this.handleClose.bind(this);
     this.reviewClickedF = this.reviewClickedF.bind(this);
+    this.clickedSet = this.clickedSet.bind(this);
+    this.choose = this.choose.bind(this);
   }
 
-  options = [
-    "Add to History",
-    "View Restaurant"
-  ]
+  // options = [
+  //   "Add to History",
+  //   "View Restaurant"
+  // ]
 
-  handleClick(event) {
-    this.setState({anchorEl: event.currentTarget, open: true});
-  };
+  // handleClick(event) {
+  //   this.setState({anchorEl: event.currentTarget, open: true});
+  // };
 
-  handleClose(choice) {
-    this.setState({anchorEl: null, open: false});
-    if("View Restaurant" == choice) {
-      this.state.navigate('/restaurant/'+this.state.restoID);
-    }
-    // alert(choice);
-  };
+  // handleClose(choice) {
+  //   // this.setState({anchorEl: null, open: false});
+  //   if("View Restaurant" == choice) {
+  //     this.state.navigate('/restaurant/'+this.state.restoID);
+  //   }
+  //   // alert(choice);
+  // };
 
   reviewClickedF(val) {
     this.setState({reviewClicked: !val});
   }
 
+  clickedSet(val) {
+    this.setState({clicked: val})
+  }
+
+  async choose(val) {
+    if(!this.state.loading) {
+      this.setState({loading: true, clicked: true});
+      
+      if(val === "Add") {
+        const now = new Date();
+        const YYYY = now.getFullYear();
+        const MM = now.getMonth() < 10 ? "0"+now.getMonth() : now.getMonth();
+        const DD = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
+        const HH = now.getHours() < 10 ? "0"+now.getHours() : now.getHours();
+        const MI = now.getMinutes() < 10 ? "0"+now.getMinutes() : now.getMinutes();
+        const SS = now.getSeconds() < 10 ? "0"+now.getSeconds() : now.getSeconds();
+
+        const data = {
+          dishName: this.state.dishName,
+          dishID: this.state.dishID,
+          userID: this.state.userInfo.id,
+          dateSelected: `${YYYY}-${MM}-${DD} ${HH}:${MI}:${SS}`,
+        }
+
+        await axios({
+            method: 'post',
+            url: process.env.REACT_APP_API_URL+"/addToHistory",
+            data,
+        }).then((res) => {
+            this.setState({loading: false});
+            alert(res.data.message);
+            // if(res.data.success){
+                // this.setState({open: false});
+
+                // const location = useLocation();
+                // const { pathname } = location;
+                // if (pathname == "/history") {
+                // if (this.props.history) {
+                // window.location.reload();
+                // }
+            // }
+          })
+        }
+    }
+  }
+
     render() {
-      return <div className='HomePageCard' >
-        <Card className="dishCard" >
+      return <div className='HomePageCard'>
+        <Card className="dishCard" onClick={() => this.clickedSet(!this.state.clicked)} style={{opacity: this.state.clicked ? 0.3 : 1}}>
           <Card.Img className="dishImg" variant="top" src={this.state.image} 
-          style={{marginBottom: "-42px"}} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}/>
-          <IconButton
+          style={{marginBottom: "-42px"}} 
+          // onClick={() => this.state.navigate('/dish/'+this.state.dishID)}
+          />
+          {/* <IconButton
             aria-label="more"
             id="long-button"
             aria-controls={this.state.open ? 'long-menu' : undefined}
@@ -119,22 +173,26 @@ class HomePageCardReview extends React.Component {
                 {option}
               </MenuItem>
             ))}
-          </Menu>
+          </Menu> */}
             <Card.Body>
 
-                  <table className='hometable'>
+                  <table className='hometable' style={{marginTop: 43}}>
                   <tr>
                       <td 
                       style={{
                         fontSize: "19px",
                         fontWeight: "bold",
                         padding: "4px 0",
-                      }} onClick={() => this.state.navigate('/dish/'+this.state.dishID)}>
+                      }} 
+                      // onClick={() => this.state.navigate('/dish/'+this.state.dishID)}
+                      >
                         <div style={{whiteSpace: "nowrap", overflow: "hidden", width: "120px", textOverflow: "ellipsis"}}> 
                         {this.state.dishName}
                         </div>
                       </td>
-                      <td style={{width: "50%"}} onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}>
+                      <td style={{width: "50%"}} 
+                      // onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}
+                        >
                         <div style={{whiteSpace: "nowrap", overflow: "hidden", width: "120px", textOverflow: "ellipsis"}}> 
                         of {this.state.resName}
                         </div>
@@ -143,9 +201,41 @@ class HomePageCardReview extends React.Component {
                   </table>
             </Card.Body>
         </ Card>
+        {this.state.clicked ? <div 
+        style={{position: 'relative', backgroundColor: "rgba(119,119,119, 0.1)", height: 264, marginTop: -264, borderRadius: 25, alignContent: 'center', marginBottom: -20, zIndex: 1000}}
+        onClick={() => this.clickedSet(!this.state.clicked)}>
+          <table className='buttonsTable' align='center'>
+            <tr>
+              <td>
+                {/* Select as a Meal for Today */}
+                <button className='button1' onClick={() => this.choose("Add")}><FaRegBookmark size={15}/> Select as a Meal </button>
+              </td>
+            </tr>
+            {/* <tr>
+              <td>
+                <button className='button1' onClick={() => this.setState({openReview: true})}><BiEditAlt size={15}/> Edit Review</button>                
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button className='button1' onClick={() => this.setState({openDel: true})}><MdDeleteOutline size={15}/> Delete Review</button>                
+              </td>
+              </tr> */}
+            <tr>
+              <td>
+                <button className='button1' onClick={() => this.state.navigate('/dish/'+this.state.dishID)}><GiKnifeFork size={15}/> View Dish Details</button>                
+              </td>
+              </tr>
+            <tr>
+              <td>
+              <button className='button1' onClick={() => this.state.navigate('/restaurant/'+ this.state.restoID)}><GrRestaurant size={15} /> View Restaurant Details</button>                
+              </td>
+            </tr>
+          </table>
+        </div>:<div style={{marginBottom: -20}}></div>}
         <div style={{
           border: "1px solid rgba(0, 0, 0, 0.3)", 
-          marginTop: -20, 
+          // marginTop: -20, 
           borderTop: "1px solid rgba(0, 0, 0, 0)",
           borderBottomRightRadius: 25,
           borderBottomLeftRadius: 25,

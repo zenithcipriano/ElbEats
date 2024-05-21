@@ -371,7 +371,12 @@ function DishPage({isMobile, navigate}) {
     const cedReviewIndex = 0;
 
     if (!retDish) {
-        return <ProgressBar1 height={200}/>
+        return <div style={{
+            marginTop: isMobile ? -35 : -85, 
+            height: isMobile ? window.innerHeight - (118.36) : window.innerHeight,
+            alignContent: 'center'}}>
+            <ProgressBar1 height={200}/>
+        </div>
     } else {
         return (
             <div className='DishPage' style={style1}>

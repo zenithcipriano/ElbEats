@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import "@fontsource/rubik";
+import { maxHeight } from '@mui/system';
 
 function MicroModal ({open, handleClose, mlist, values, stanvalues}) {
     const style = {
@@ -11,12 +12,15 @@ function MicroModal ({open, handleClose, mlist, values, stanvalues}) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        maxWidth: 600,
+        width: window.innerWidth-40,
         bgcolor: 'background.paper',
         boxShadow: 24,
+        maxHeight: 530,
+        height: window.innerHeight-40,
         p: 4,
         // height: 3*height/4,
-        // overflowY: "scroll",
+        overflowY: "scroll",
         padding: 2
     };
 

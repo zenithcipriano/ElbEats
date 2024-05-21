@@ -217,7 +217,12 @@ function RestaurantPage({isMobile}) {
 
 
     if (loading) {
-        return <ProgressBar1 height={200}/>
+        return <div style={{
+            marginTop: isMobile ? -35 : -85, 
+            height: isMobile ? window.innerHeight - (118.36) : window.innerHeight,
+            alignContent: 'center'}}>
+            <ProgressBar1 height={200}/>
+        </div>
     } else {
         return (
             <div className='RP' style={style1}>
@@ -305,19 +310,30 @@ function RestaurantPage({isMobile}) {
                             <td>{bhours[0]}</td>
                             <td>-</td>
                             <td>{bhours[1]}</td>
-                            <td style={{paddingLeft: 10}}> ( </td>
-                                {
-                                    daysOpen.map((d) => {
-                                        if(d == daysOpen.slice(-1)[0]) {
-                                            return <td> {d} </td>
-                                        } else {
-                                            return <td> {d} - </td>
-                                        }
-                                    })
-                                }
-                            <td> ) </td>
+                            {!isMobile ? <td style={{paddingLeft: 10}}></td> : null}
+                            {
+                                !isMobile ? daysOpen.map((d) => {
+                                    if(d == daysOpen.slice(-1)[0]) {
+                                        return <td> {d} </td>
+                                    } else {
+                                        return <td> {d} - </td>
+                                    }
+                                }) : null
+                            }
                         </tr>
                     </table>
+                    {
+                        isMobile ? <table className='tableHours' style={isMobile ? style3 :{}}>
+                            <tr>
+                            {daysOpen.map((d) => {
+                                if(d == daysOpen.slice(-1)[0]) {
+                                    return <td> {d} </td>
+                                } else {
+                                    return <td> {d} - </td>
+                                }
+                            })}
+                        </tr></table> : null
+                    }
                     <textarea id="descTextarea" value={rdesc} rows={2} 
                     style={{
                         fontFamily: "Rubik", 
@@ -326,14 +342,19 @@ function RestaurantPage({isMobile}) {
                         marginLeft: isMobile ? -20 : 0,
                     }} maxlength="300" onChange={handleChange} disabled/>
                     
-                    <table className='priceTable' style={isMobile ? style3 : {marginLeft: "-10px"}}>
+                    <table className='priceTable' style={isMobile ? style3 : {marginLeft: "-10px", fontSize: 25}}>
                         <tr>
                             <td>{walkdel ? "Walk-in" : "Online App"} Price:</td>
                             <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
                             {
                                 walkdel ? 
-                                (priceRange.length > 1 ? <td>- P{priceRange[1]}</td> : null)
-                                :(onlinePriceRange.length > 1 ? <td>- P{onlinePriceRange[1]}</td> : null)
+                                (priceRange.length > 1 ? <td>-</td> : null)
+                                :(onlinePriceRange.length > 1 ? <td>-</td> : null)
+                            }
+                            {
+                                walkdel ? 
+                                (priceRange.length > 1 ? <td>P{priceRange[1]}</td> : null)
+                                :(onlinePriceRange.length > 1 ? <td>P{onlinePriceRange[1]}</td> : null)
                             }
                             {
                                 onlinePriceRange[0] ?
@@ -347,16 +368,22 @@ function RestaurantPage({isMobile}) {
                     <table style={isMobile ? style3 : {marginLeft: -1}}>
                         <tr>
                             <td style={{paddingRight: 5}}>Payment Options:</td>
+                            <td>
                             {
                                 payment.map((pay) => {
                                     return <td className="paymentBut"> {pay} </td>
                                 })
-                            }
+                            }</td>
                         </tr>
                     </table>
                     
-                    <div onClick={handleOpenMaps} className='Raddress' style={isMobile ? {marginLeft: -15, marginTop: 10} : {marginLeft: -5, marginTop: 10}}><MdLocationPin /> <u>{address}</u> </div>
-                    <table className='socialsTable' style={isMobile ? {marginLeft: -18} : {marginLeft: -5}}>
+                    <div onClick={handleOpenMaps} className='Raddress' style={isMobile ? 
+                        {width: width-50,
+                        marginLeft: -15, marginTop: 10} : 
+                        {width: (width/2)-125,
+                        marginLeft: -5, marginTop: 10}}
+                    ><MdLocationPin /> <u>{address}</u> </div>
+                    <table className='socialsTable' style={isMobile ? {width: width-32, marginLeft: -18} : {width: (width/2)-112, marginLeft: -5}}>
                         <tr>
                             <td>
                             { cpnumber ?

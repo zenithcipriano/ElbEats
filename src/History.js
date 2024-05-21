@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar1 from './progress';
 import axios from 'axios';
 import MicroModal from './MicroModal';
+import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5';
 
-function History({data}) {
+function History({data, isMobile}) {
     const navigate = useNavigate();
     // const [isPortrait, setIsPortrait] = useState(data.isPortrait)
     // const [gender, setGender] = useState(data.gender)
@@ -58,8 +59,9 @@ function History({data}) {
     }
 
     const pieSettings = (progress, standard) => {
+        const percent = progress/standard * 100
         const data1 = {data: [
-            { value: progress, color: "#337357"},
+            { value: progress, color: percent < 20 ? "#6e2323" : percent < 40 ? "orange" : percent < 60 ? "yellow" : percent < 80 ? "#9ACD32" : percent > 110 ? "#6e2323" : "#337357"},
             { value:standard-progress < 0 ? 
                 0 : standard-progress, 
                 color: "#C0D6E8" },
@@ -84,7 +86,9 @@ function History({data}) {
     }
 
     const Retrieving = async () => {
-        const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${day < 10 ? "0" + day : day} 00:00:00`;
+        const tempDay = day + dayDisplayed
+        const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${tempDay < 10 ? "0" + tempDay : tempDay} 00:00:00`;
+        const nextTime = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${tempDay+1 < 10 ? "0" + tempDay+1 : tempDay+1} 00:00:00`;
         console.log(time);
 
         await axios({
@@ -92,7 +96,8 @@ function History({data}) {
             url: process.env.REACT_APP_API_URL+"/retrieveMealHistory",
             data: {
                 userID: userInfo.id,
-                date: time
+                date: time,
+                nextDate: nextTime
             }
         }).then((res) => {
             setLoading(false);
@@ -164,10 +169,11 @@ function History({data}) {
 
     const [sampleData, setSampleData] = useState([]);
 
+    const [dayDisplayed, setDay] = useState(0);
     useEffect(() => {
         setLoading(true);
         Retrieving();
-    }, []);
+    }, [dayDisplayed]);
 
     const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const d = new Date();
@@ -193,31 +199,64 @@ function History({data}) {
 
     // const sampledates = Array.from(Array(numData).keys());
     if (loading) {
-        return <ProgressBar1 height={200}/>
+        return <div style={{
+            marginTop: isMobile ? -35 : -85, 
+            height: isMobile ? window.innerHeight - (118.36) : window.innerHeight,
+            alignContent: 'center'}}>
+            <ProgressBar1 height={200}/>
+        </div>
     } else {
         return (<div className="HistoryPage" style={{height: width<1224 ? height-160:height-90}}>
             <table className='History' style={{width:width}}>
                 <tr>
-                    <td> <div className='pie' ><PieChart
-                    series={[
-                        pieSettings(calories, standardCalories),
-                    ]}
-                    height={300}
-                    /> </div></td>
-                    <td> <div className='pie' >
-                        <PieChart
-                    series={[
-                        pieSettings(micro, stanmicro),
-                    ]}
-                    height={300}
-                    /> </div></td>
                     <td>
-                    <div className='pie' ><PieChart 
-                    series={[
-                        pieSettings(sodium, standardSodium),
-                    ]}
-                    height={300}
-                    /> </div></td>
+                        <table style={{position: 'relative'}} align='center'>
+                            <tr>
+                                <td>
+                                <div className='pie'>
+                                <div style={{marginLeft: -75, position: 'relative'}}>
+                                    <PieChart
+                                        series={[pieSettings(calories, standardCalories)]}
+                                        height={300}
+                                    /> 
+                                </div>
+                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td> 
+                        <table style={{position: 'relative'}} align='center'>
+                                <tr>
+                                    <td>
+                                    <div className='pie'>
+                                    <div style={{marginLeft: -75, position: 'relative'}}>
+                                        <PieChart
+                                            series={[pieSettings(micro, stanmicro)]}
+                                            height={300}
+                                            /> 
+                                            </div>
+                                    </div>
+                                    </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table style={{position: 'relative'}} align='center'>
+                            <tr>
+                                <td>
+                                <div className='pie' >
+                                <div style={{marginLeft: -75, position: 'relative'}}>
+                                    <PieChart
+                                        series={[pieSettings(sodium, standardSodium)]}
+                                        height={300}
+                                    /> 
+                                    </div>
+                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <td className='percent'>{Math.floor(calories/standardCalories*100)}%</td>
@@ -235,14 +274,20 @@ function History({data}) {
             >
                 <tr>
                     <td className='DailyHistorycell'>
-                        {month[monthD]} {day}, {year}
+                        {month[monthD]} {day + dayDisplayed}, {year}
                     </td>
                     <td>
                         <hr style={{margin: "0px", marginTop: "10px"}}/>
                         {/* <hr/> */}
                     </td>
                     <td className='DailyHistorycell'>
-                        Meals of the Day
+                        <table style={{position: 'relative'}} align='center'>
+                            <tr>
+                                {dayDisplayed == 0 ? <td style={{paddingTop:5}} onClick={() => setDay(-1)}><IoCaretBackOutline size={30}/></td> : null}
+                                <td>{dayDisplayed != 0 ? "Yesterday" : "Today"}</td>
+                                {dayDisplayed != 0 ? <td style={{paddingTop:5}} onClick={() => setDay(0)}><IoCaretForwardOutline size={30}/></td> : null}
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>
@@ -272,7 +317,7 @@ function History({data}) {
                     </tr>
                 </table>
             </div>
-            : <div style={{position: 'relative', marginTop: 300, fontSize: 20, width: width-20}}>
+            : <div style={{position: 'relative', marginTop: isMobile ? 225-40 : 225, fontSize: 20, width: width-20, height: height-340, alignContent: 'center'}}>
                 <table style={{position: 'relative'}} align='center'>No dish selected for today.</table>
             </div>}
             <MicroModal open={open} handleClose={handleClose}

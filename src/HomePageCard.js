@@ -27,7 +27,7 @@ class HomePageCard extends React.Component {
       "Delete Dish Details",
       "View Restaurant Details"
     ] : ( this.props.userInfo.type == "reviewer" ? [
-      "Add to History",
+      "Select as a Meal",
       (props.history ? "Remove from History" : null),
       "View Dish Details",
       "View Restaurant Details"
@@ -104,7 +104,7 @@ class HomePageCard extends React.Component {
           "Delete Dish Details",
           "View Restaurant Details"
         ] : ( this.props.userInfo.type == "reviewer" ? [
-          "Add to History",
+          "Select as a Meal",
           "View Dish Details",
           "View Restaurant Details"
         ] : [
@@ -130,7 +130,7 @@ class HomePageCard extends React.Component {
       this.handleDelete(true);
     } else if (choice === "View Dish Details"){
       this.props.navigate('/dish/'+this.state.dishID)
-    } else if(choice === "Add to History") {
+    } else if(choice === "Select as a Meal") {
       this.setState({loading: true});
       const now = new Date();
       const YYYY = now.getFullYear();
@@ -236,7 +236,7 @@ class HomePageCard extends React.Component {
           >
             {this.state.options.map((option) => (
               <MenuItem key={option} onClick={() => this.handleClose(option)} style={{fontSize: "10px", fontWeight: "bold", backgroundColor: "#FEFDED"}}>
-                {"Add to History" == option? <FaRegBookmark /> : 
+                {"Select as a Meal" == option? <FaRegBookmark /> : 
                 option.includes("Edit") ? <BiEditAlt />:
                 option.includes("Delete") ? <MdDeleteOutline />:
                 "View Restaurant" == option? <GrRestaurant /> :
@@ -386,7 +386,7 @@ class HomePageCard extends React.Component {
                         return <tr>
                           <td>
                             <button className='button1' onClick={() => this.handleClose(opt)}>{
-                            "Add to History" == opt? <FaRegBookmark size={15}/> : 
+                            "Select as a Meal" == opt? <FaRegBookmark size={15}/> : 
                             opt.includes("Edit") ? <BiEditAlt size={15}/>:
                             opt.includes("Delete") ? <MdDeleteOutline size={15}/>:
                             opt.includes("Restaurant") ? <GrRestaurant size={15}/> : 
