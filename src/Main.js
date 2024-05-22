@@ -223,7 +223,7 @@ function Main() {
           <Routes>
             <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
             <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} isMobile={isTabletOrMobile}/> : < Navigate to="/"/>} />
-            <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies}/> } />
+            <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies} isMobile={isTabletOrMobile} /> } />
             <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
             <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
             <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage isMobile={isTabletOrMobile}/> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />

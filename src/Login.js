@@ -237,7 +237,7 @@ class Login extends React.Component {
             return <div style={{
                 alignContent: 'center',
                 height: window.innerHeight-(95*2),
-                marginTop: 15
+                marginTop: this.props.isMobile ? 0 : 15
             }}>
                 {
                 this.state.page == 0 ? 
@@ -249,7 +249,7 @@ class Login extends React.Component {
                     </div>
                 : this.state.page == 1 ?
                     <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
-                        <table style={{position: 'relative', margin: -30}}>
+                        <table style={{position: 'relative', margin: -30, marginLeft: 0}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>
                             </tr>
@@ -274,7 +274,7 @@ class Login extends React.Component {
                         <p onClick={() => this.changePage(3)} style={{marginBottom: -5}}><u>Do you want to create a user account?</u></p>
                     </div>
                 : <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
-                        <table style={{position: 'relative',  margin: -30}}>
+                        <table style={{position: 'relative',  margin: -30, marginLeft: 0}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>
                             </tr>
