@@ -1,7 +1,8 @@
 .RP {
     background-color: white;
     font-size: 17px;
-    width: 100%
+    width: 100%;
+    /* word-wrap: break-word; */
 }
 
 hr {
@@ -41,6 +42,9 @@ hr {
     /* border: 1px solid black; */
     padding: 10px 30px;
     margin-bottom: 20px;
+    margin: 10;
+    /* overflow-y: hidden;
+    overflow-x: hidden; */
 }
 
 .restoBody > * {
@@ -48,11 +52,12 @@ hr {
 }
 
 #rpname {
-    font-size: 40px;
+    font-size: 35px;
     margin: 0px;
     margin-top: 3px;
     font-weight: 900;
     letter-spacing: 2px;
+    overflow-wrap: break-word;
     /* font-weight: bold; */
 }
 
@@ -110,7 +115,11 @@ hr {
     /* margin-left: auto; */
     /* margin-right: auto; */
     /* margin-left: -5px; */
-    border: 1px solid #ededed;
+    /* word-wrap: break-word; */
+    /* overflow-wrap: break-word; */
+    /* border: 1px solid #ededed; */
+    overflow-x: hidden;
+    position: relative;
     /* margin-top: -5px; */
 }
 

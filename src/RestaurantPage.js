@@ -180,6 +180,7 @@ function RestaurantPage({isMobile}) {
         textAlign: isMobile ? 'center' : 'left',
         fontFamily: "Rubik",
         overflowY: isMobile ? "scroll" : "hidden",
+        // overflowY: "hidden",
         overflowX: "hidden"
     }
 
@@ -190,7 +191,7 @@ function RestaurantPage({isMobile}) {
     const style3 = {
         marginLeft: "auto",
         marginRight: "auto",
-        paddingRight: 20
+        // paddingRight: 20
     }
 
     const style4 = {
@@ -279,12 +280,18 @@ function RestaurantPage({isMobile}) {
                     </table></div>}
                 </div>
                 <div className='restoBody' style={{
-                    width: isMobile ? width-15 : (width/2)-122,
+                    width: isMobile ? width-65 : (width/2)-122,
                     position: isMobile? "relative": "fixed",
+                    // border: "1px solid black",
+                    marginLeft: 2,
+                    marginTop: isMobile ? -30 : 0
                 }}>
-                    <table style={ isMobile? {position: 'relative', marginLeft: "auto", marginRight: "auto"} : {position: 'relative'}}>
+                    <table align={isMobile ? "center" : "left"} style={{position: 'relative'}}>
                         <tr>
-                            <td><p id='rpname' style={{paddingRight: 10}}>{restoname} </p></td>
+                            <td><p id='rpname' style={{
+                                paddingRight: 10, 
+                                // border: "1px solid black",
+                                textAlign: userID == userInfo.id ? "right" : "center" }}>{restoname} </p></td>
                             {userID == userInfo.id ? 
                             <td style={{paddingTop: 5}}><BiEditAlt size={40} onClick={handleOpen}/></td>
                             : null}
@@ -293,7 +300,7 @@ function RestaurantPage({isMobile}) {
                             : null}
                         </tr>
                     </table>
-                    <table id='rateTable' style={isMobile ? style3 : {left: "-6px"}}>
+                    <table id='rateTable' align={isMobile ? "center" : "left"} style={isMobile ? style3 : {left: "-6px"}}>
                         <tr>
                             <td>
                                 <p id='stars'>{
@@ -305,7 +312,7 @@ function RestaurantPage({isMobile}) {
                             </td>
                         </tr>
                     </table>
-                    <table className='tableHours' style={isMobile ? style3 :{}}>
+                    <table className='tableHours' align={isMobile ? "center" : "left"} style={isMobile ? style3 :{}}>
                         <tr>
                             <td>{bhours[0]}</td>
                             <td>-</td>
@@ -323,7 +330,7 @@ function RestaurantPage({isMobile}) {
                         </tr>
                     </table>
                     {
-                        isMobile ? <table className='tableHours' style={isMobile ? style3 :{}}>
+                        isMobile ? <table className='tableHours' align={isMobile ? "center" : "left"} style={isMobile ? style3 :{}}>
                             <tr>
                             {daysOpen.map((d) => {
                                 if(d == daysOpen.slice(-1)[0]) {
@@ -337,14 +344,14 @@ function RestaurantPage({isMobile}) {
                     <textarea id="descTextarea" value={rdesc} rows={2} 
                     style={{
                         fontFamily: "Rubik", 
-                        width: isMobile ? width-150 : (width/2)-122-40,
+                        width: isMobile ? width-100 : (width/2)-122-40,
                         textAlign: isMobile ? "center": "left",
-                        marginLeft: isMobile ? -20 : 0,
+                        // marginLeft: isMobile ? -20 : 0,
                     }} maxlength="300" onChange={handleChange} disabled/>
                     
                     <table className='priceTable' style={isMobile ? style3 : {marginLeft: "-10px", fontSize: 25}}>
                         <tr>
-                            <td>{walkdel ? "Walk-in" : "Online App"} Price:</td>
+                            <td>{walkdel ? "Walk-in Price:" : "Price Online:"}</td>
                             <td>P{walkdel ? priceRange[0] : onlinePriceRange[0]}</td>
                             {
                                 walkdel ? 
@@ -368,62 +375,66 @@ function RestaurantPage({isMobile}) {
                     <table style={isMobile ? style3 : {marginLeft: -1}}>
                         <tr>
                             <td style={{paddingRight: 5}}>Payment Options:</td>
-                            <td>
+                            <td style={{textAlign: "left"}}>
                             {
                                 payment.map((pay) => {
-                                    return <td className="paymentBut"> {pay} </td>
+                                    return <button className='paymentTags'> {pay} </button>
+                                    // return <td className="paymentBut"> {pay} </td>
                                 })
                             }</td>
                         </tr>
                     </table>
                     
                     <div onClick={handleOpenMaps} className='Raddress' style={isMobile ? 
-                        {width: width-50,
-                        marginLeft: -15, marginTop: 10} : 
+                        {width: width-45,
+                        marginLeft: -15, 
+                        marginTop: 10, border: "1px solid #ededed"} : 
                         {width: (width/2)-125,
-                        marginLeft: -5, marginTop: 10}}
+                        marginLeft: -5, marginTop: 10, border: "1px solid #ededed"}}
                     ><MdLocationPin /> <u>{address}</u> </div>
-                    <table className='socialsTable' style={isMobile ? {width: width-32, marginLeft: -18} : {width: (width/2)-112, marginLeft: -5}}>
+                    <table className='socialsTable' style={isMobile ? {width: width-28, marginLeft: -18} : {width: (width/2)-112, marginLeft: -5}}>
                         <tr>
-                            <td>
+                            <td style={{border: "1px solid #ededed"}}>
                             { cpnumber ?
-                                <div className='Raddress'> <FaPhoneVolume /> {cpnumber}</div>
-                                : <div className='Raddress'> No Contact Number Provided </div>
+                                <div className='Raddress' 
+                                style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                > <FaPhoneVolume /> {cpnumber}</div>
+                                : <div className='Raddress' 
+                                style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                > No Contact Number Provided </div>
                             }
                             </td>
-                            <td>
+                            <td style={{border: "1px solid #ededed"}}>
                                 { email ?
-                                    <div className='Raddress'><MdEmail /> {email} </div>
+                                    <div className='Raddress' 
+                                    style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                    ><MdEmail /> <b>{email}</b> </div>
                                     : <div></div>
                                 }
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style={{border: "1px solid #ededed"}}>
                                 {socials[0] ?
-                                <div className='Raddress'><FaFacebookF /> {socials[0]}</div>
+                                <div className='Raddress' 
+                                style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                ><FaFacebookF /> {socials[0]}</div>
                                 : <div></div>}
                             </td>
-                            <td>
+                            <td style={{border: "1px solid #ededed"}}>
                                 {socials[1] ?
-                                <div className='Raddress'><FaInstagram /> {socials[1]}</div>
+                                <div className='Raddress' 
+                                style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                ><FaInstagram /> {socials[1]}</div>
                                 : <div></div>}
                             </td>
-                            {/* <td>
-                                {socials[1] ?
-                                <div className='Raddress'><FaFacebookMessenger /> {socials[1]}</div>
-                                : <div></div>}
-                            </td> */}
                         </tr>
                         <tr>
-                            {/* <td>
+                            <td style={{border: "1px solid #ededed"}}>
                                 {socials[2] ?
-                                <div className='Raddress'><FaInstagram /> {socials[2]}</div>
-                                : <div></div>}
-                            </td> */}
-                            <td>
-                                {socials[2] ?
-                                <div className='Raddress'><FaXTwitter /> {socials[2]}</div>
+                                <div className='Raddress' 
+                                style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
+                                ><FaXTwitter /> {socials[2]}</div>
                                 : <div></div>}
                             </td>
                         </tr>

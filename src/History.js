@@ -213,7 +213,9 @@ function History({data, isMobile}) {
                         <table style={{position: 'relative'}} align='center'>
                             <tr>
                                 <td>
-                                <div className='pie'>
+                                <div className='pie' style={{
+                                        // border: "1px solid black",
+                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5 }}>
                                 <div style={{marginLeft: -75, position: 'relative'}}>
                                     <PieChart
                                         series={[pieSettings(calories, standardCalories)]}
@@ -229,8 +231,13 @@ function History({data, isMobile}) {
                         <table style={{position: 'relative'}} align='center'>
                                 <tr>
                                     <td>
-                                    <div className='pie'>
-                                    <div style={{marginLeft: -75, position: 'relative'}}>
+                                    <div className='pie' style={{
+                                        // border: "1px solid black",
+                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5 }}>
+                                    <div style={{
+                                        // marginLeft: width/3 > (234.6-75) ? -75 : ((width/3)-(234.6-75)), 
+                                        marginLeft: -75,
+                                        position: 'relative'}}>
                                         <PieChart
                                             series={[pieSettings(micro, stanmicro)]}
                                             height={300}
@@ -245,7 +252,9 @@ function History({data, isMobile}) {
                         <table style={{position: 'relative'}} align='center'>
                             <tr>
                                 <td>
-                                <div className='pie' >
+                                <div className='pie' style={{
+                                        // border: "1px solid black",
+                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5 }}>
                                 <div style={{marginLeft: -75, position: 'relative'}}>
                                     <PieChart
                                         series={[pieSettings(sodium, standardSodium)]}
