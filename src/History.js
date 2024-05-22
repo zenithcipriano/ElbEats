@@ -281,7 +281,7 @@ function History({data, isMobile}) {
                         {/* <hr/> */}
                     </td>
                     <td className='DailyHistorycell'>
-                        <table style={{position: 'relative'}} align='center'>
+                        <table style={{position: 'relative', zIndex: 1000}} align='center'>
                             <tr>
                                 {dayDisplayed == 0 ? <td style={{paddingTop:5}} onClick={() => setDay(-1)}><IoCaretBackOutline size={30}/></td> : null}
                                 <td>{dayDisplayed != 0 ? "Yesterday" : "Today"}</td>
