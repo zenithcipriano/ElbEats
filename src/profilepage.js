@@ -140,7 +140,12 @@ function ProfilePage({isMobile}) {
     }, []);
 
     if (loading) {
-        return <ProgressBar1 height={200}/>
+        return <div style={{
+            marginTop: isMobile ? -35 : -85, 
+            height: isMobile ? window.innerHeight - (118.36) : window.innerHeight,
+            alignContent: 'center'}}>
+            <ProgressBar1 height={200}/>
+        </div>
     } else {
         return (
             <div className='ProfilePage'>
@@ -162,7 +167,13 @@ function ProfilePage({isMobile}) {
                                         marginLeft: isMobile ? 0 : 2.5
                                     }}
                                     >
-                                        <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
+                                        <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
+                                            {isMobile ? <tr><td >
+                                            <div id='profileIcon'><CgProfile size={150}/></div>
+                                            <div className='userProfile'>
+                                                <h1 style={{paddingBottom: 20}}>{username}</h1>
+                                            </div>
+                                            </td></tr> : null }
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true}/>
                                         </table>
                                     </div> : "You have not reviewed any dish"
