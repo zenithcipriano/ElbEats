@@ -31,7 +31,7 @@ function RestaurantPage({isMobile}) {
 
     const [userID, setID] = useState(-1);
     const [restoname, setRN] = useState("");
-    const numRev = 30
+    const [numRev, setNumRev] = useState(0);
     const [bhours, setBH] = useState(["", ""]); 
     const [rdesc, setRdesc] = useState("");
     const [priceRange, setWalkPrices] = useState([]);
@@ -72,6 +72,11 @@ function RestaurantPage({isMobile}) {
         }).then(async (res) => {
             if(res.data.success){
                 const data = res.data.resto;
+                console.log(data);
+
+                setNumRev(data.numRevs);
+                setRatings(parseFloat(data.ratings).toFixed(1));
+                setStars(rateFun(parseFloat(data.ratings), 25));
                 setCoordinates({lat: parseFloat(data.lat), lng: parseFloat(data.lng)})
                 setWalkPrices(data.walkPrices);
                 setOnlinePrices(data.onlinePrices);
@@ -103,7 +108,7 @@ function RestaurantPage({isMobile}) {
                     // setTempData(rearrangeData((isMobile ? width : width/2), Array(10).fill(data.dishes[0])));
 
                     setData(data.dishes);
-                    setTempData(rearrangeData((isMobile ? width : width/2), data.dishes));
+                    setTempData(rearrangeData((isMobile ? width : width/2), data.dishes, data.userID));
                 }
                 setRetDish(true);
                 setLoading(false);
@@ -128,7 +133,7 @@ function RestaurantPage({isMobile}) {
     }
     
     // Rate Comp
-    const rating = 2
+    const [rating, setRatings] = useState(0);
     const rateFun = (rate, iconSize) => {
         const numFilled = Math.floor(rate, 1)
         const filled = Array(numFilled).fill(<FaStar size={iconSize}/>)
@@ -137,13 +142,21 @@ function RestaurantPage({isMobile}) {
         const outlined = Array(5-tempstars.length).fill(<FaRegStar size={iconSize}/>)
         return tempstars.concat(outlined)
     }
-    const stars = rateFun(rating, 25)
+    const [stars, setStars] = useState(rateFun(rating, 25));
 
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
 
+    const userInfo = {
+        id: localStorage.getItem("user_reference"),
+        type: localStorage.getItem("user_type")
+    }
 
-    const rearrangeData = (width, dat) => {
+    const rearrangeData = (width, dat, userID) => {
+        if(userID == userInfo.id) {
+            dat = [0, ...dat]
+        }
+        console.log(dat);
         const tempDataRowSize = Math.floor(width/320);
         const tempData1 = []
         let tempRow = []
@@ -161,18 +174,18 @@ function RestaurantPage({isMobile}) {
         return tempData1
     }
 
-    const [tempData, setTempData] = useState(rearrangeData(isMobile ? width : width/2, data1))
+    const [tempData, setTempData] = useState(rearrangeData(isMobile ? width : width/2, data1, userID))
 
     window.onresize = function(event) {
         setWidth(window.innerWidth)
         setHeight(window.innerHeight)
-        setTempData(rearrangeData((isMobile ? window.innerWidth-30 : window.innerWidth/2-10), data1))
+        setTempData(rearrangeData((isMobile ? window.innerWidth-30 : window.innerWidth/2-10), data1, userID))
     }
 
     useEffect(() => {
         setWidth(window.innerWidth)
         setHeight(window.innerHeight)
-        setTempData(rearrangeData((isMobile ? window.innerWidth-30 : window.innerWidth/2-10), data1))
+        setTempData(rearrangeData((isMobile ? window.innerWidth-30 : window.innerWidth/2-10), data1, userID))
     }, [isMobile]);
 
     const [openDel, setOpenDel] = useState(false);
@@ -219,11 +232,6 @@ function RestaurantPage({isMobile}) {
     const handleClose = () => setOpen(false);
     const [restoData, setRestoData] = useState({});
 
-    const userInfo = {
-        id: localStorage.getItem("user_reference"),
-        type: localStorage.getItem("user_type")
-    }
-
     const [walkdel, setWalkDel] = useState(true);
 
 
@@ -249,6 +257,7 @@ function RestaurantPage({isMobile}) {
                         opacity: switch2 ? 0.5:1,
                         borderBottom: switch2 ? "1px solid #ededed": "1px solid rgba(0, 0, 0, 0)",
                         marginTop: isMobile ? 0 : -10,
+                        marginLeft: 0
                     }} onClick={() => setSwitch2(false)}>Dishes</button>:<div></div>}
                     {!isMobile?<hr/>:<div></div>}
 
@@ -286,7 +295,7 @@ function RestaurantPage({isMobile}) {
                     style={{width: (width/2)+30, height: height-120}}
                     >
                     <table className='rdishtable'>
-                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id}/>
                     </table></div>}
                 </div>
                 <div className='restoBody' style={{
@@ -296,7 +305,7 @@ function RestaurantPage({isMobile}) {
                     marginLeft: 2,
                     marginTop: isMobile ? -30 : 0
                 }}>
-                    <table align={isMobile ? "center" : "left"} style={{position: 'relative'}}>
+                    <table align={isMobile ? "center" : ""} style={{position: 'relative'}}>
                         <tr>
                             <td><p id='rpname' style={{
                                 paddingRight: 10, 
@@ -310,7 +319,7 @@ function RestaurantPage({isMobile}) {
                             : null}
                         </tr>
                     </table>
-                    <table id='rateTable' align={isMobile ? "center" : "left"} style={isMobile ? style3 : {left: "-6px"}}>
+                    <table id='rateTable' align={isMobile ? "center" : ""} style={isMobile ? style3 : {left: "-6px"}}>
                         <tr>
                             <td>
                                 <p id='stars'>{
@@ -322,7 +331,7 @@ function RestaurantPage({isMobile}) {
                             </td>
                         </tr>
                     </table>
-                    <table className='tableHours' align={isMobile ? "center" : "left"} style={isMobile ? style3 :{}}>
+                    <table className='tableHours' align={isMobile ? "center" : ""} style={isMobile ? style3 :{}}>
                         <tr>
                             <td>{bhours[0]}</td>
                             <td>-</td>
@@ -340,7 +349,7 @@ function RestaurantPage({isMobile}) {
                         </tr>
                     </table>
                     {
-                        isMobile ? <table className='tableHours' align={isMobile ? "center" : "left"} style={isMobile ? style3 :{}}>
+                        isMobile ? <table className='tableHours' align={isMobile ? "center" : ""} style={isMobile ? style3 :{}}>
                             <tr>
                             {daysOpen.map((d) => {
                                 if(d == daysOpen.slice(-1)[0]) {
@@ -351,13 +360,13 @@ function RestaurantPage({isMobile}) {
                             })}
                         </tr></table> : null
                     }
-                    <textarea id="descTextarea" value={rdesc} rows={2} 
+                    {rdesc ? <textarea id="descTextarea" value={rdesc} rows={2} 
                     style={{
                         fontFamily: "Rubik", 
                         width: isMobile ? width-100 : (width/2)-122-40,
                         textAlign: isMobile ? "center": "left",
                         // marginLeft: isMobile ? -20 : 0,
-                    }} maxlength="300" onChange={handleChange} disabled/>
+                    }} maxlength="300" onChange={handleChange} disabled/> : null}
                     
                     <table className='priceTable' style={isMobile ? style3 : {marginLeft: "-10px", fontSize: 25}}>
                         <tr>
@@ -414,46 +423,43 @@ function RestaurantPage({isMobile}) {
                                 > No Contact Number Provided </div>
                             }
                             </td>
-                            <td style={{border: "1px solid #ededed"}}>
-                                { email ?
+                            { email ?
+                                <td style={{border: "1px solid #ededed"}}>
+                                
                                     <div className='Raddress' 
                                     style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
-                                    ><MdEmail /> {email}</div>
-                                    : <div></div>
-                                }
-                            </td>
+                                    ><MdEmail /> {email}</div></td>
+                                    : <div></div>}
                         </tr>
                         <tr>
+                            {socials[0] ?
                             <td style={{border: "1px solid #ededed"}}>
-                                {socials[0] ?
                                 <div className='Raddress' 
                                 style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
-                                ><FaFacebookF /> {socials[0]}</div>
+                                ><FaFacebookF /> {socials[0]}</div></td>
                                 : <div></div>}
-                            </td>
+                            
+                            {socials[1] ?
                             <td style={{border: "1px solid #ededed"}}>
-                                {socials[1] ?
                                 <div className='Raddress' 
                                 style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
-                                ><FaInstagram /> {socials[1]}</div>
+                                ><FaInstagram /> {socials[1]}</div></td>
                                 : <div></div>}
-                            </td>
                         </tr>
                         <tr>
+                            {socials[2] ?
                             <td style={{border: "1px solid #ededed"}}>
-                                {socials[2] ?
                                 <div className='Raddress' 
                                 style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
-                                ><FaXTwitter /> {socials[2]}</div>
+                                ><FaXTwitter /> {socials[2]}</div></td>
                                 : <div></div>}
-                            </td>
                         </tr>
                     </table>
                 </div>
                 { isMobile?
                 <div style={{position: 'relative', marginLeft: -10}}>
                     <table className='rdishtable' align='center'>
-                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id}/>
                     </table>
                 </div>
                 : <div></div>}

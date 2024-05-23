@@ -212,7 +212,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
                 </td>
             </tr>
             <tr>
-                <td colSpan={3}><input type='reset' value="Clear" style={{width: 100, marginTop: 10, marginRight: 2}}/> </td>
+                <td colSpan={3}><input type='reset' value="Clear" style={{width: 100, marginTop: 10, marginRight: 2}} onClick={SearchDishes}/> </td>
                 <td colSpan={3}><input type='submit' value="Submit" style={{width: 100, marginTop: 10, marginLeft: 2}}/></td>
             </tr>
         </table> 

@@ -121,6 +121,12 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
             if(!ret) {
                 setRet(true);
 
+                let warning = "";
+
+                if(mainPicture.length == 0) {
+                    warning += "Images"
+                }
+                
                 const formData = new FormData();
                 mainPicture.forEach((image) => {
                     if (image.preview) {
@@ -138,25 +144,50 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                 
                 let pm = [...paymentOptions];
 
-                if(pm.length == 0 && !dotw) {
+                if(!dotw) {
+                    if(warning == "") {
+                        warning += "Days of the Week"
+                    } else {
+                        warning += " and Days of the Week"
+                    }
+                }
+
+                if(pm.length == 0) {
+                    if(warning == "") {
+                        warning += "Modes of Payment"
+                    } else {
+                        warning += " and Modes of Payment"
+                    }
+                }
+
+                if(warning) {
+                    warning += " Missing"
+                    setAlertMess(warning)
                     setOpenAlert(true);
-                    setAlertMess("Days of the Week and Modes of Payment Missing");
-                    // alert("Missing:\n Days of the Week\n Modes of Payment");
-                    setRet(false);
-                    return
-                }else if(!dotw) {
-                    setOpenAlert(true);
-                    setAlertMess("Days of the Week Missing");
-                    // alert("Missing: Days of the Week");
-                    setRet(false);
-                    return
-                } else if (pm.length == 0) {
-                    // alert("Missing: Modes of Payment");
-                    setOpenAlert(true);
-                    setAlertMess("Modes of Payment Missing");
                     setRet(false);
                     return
                 }
+
+
+                // if(pm.length == 0 && !dotw) {
+                //     setOpenAlert(true);
+                //     setAlertMess("Days of the Week and Modes of Payment Missing");
+                //     // alert("Missing:\n Days of the Week\n Modes of Payment");
+                //     setRet(false);
+                //     return
+                // }else if(!dotw) {
+                //     setOpenAlert(true);
+                //     setAlertMess("Days of the Week Missing");
+                //     // alert("Missing: Days of the Week");
+                //     setRet(false);
+                //     return
+                // } else if (pm.length == 0) {
+                //     // alert("Missing: Modes of Payment");
+                //     setOpenAlert(true);
+                //     setAlertMess("Modes of Payment Missing");
+                //     setRet(false);
+                //     return
+                // }
 
                 if (!location) {
                     setOpenAlert(true);
@@ -184,6 +215,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                     lng: coordinates.lng
                 }
                 
+                console.log(newResto);
                 let counter = 0;
                 const tempImages = [];
                 console.log("start");
@@ -205,6 +237,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                         url: process.env.REACT_APP_API_URL+"/createResto",
                         data: newResto,
                     }).then((res) => {
+                        console.log(res);
                         setRet(false);
                         if(res.data.success){
                             // alert(res.data.message);
@@ -278,6 +311,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
             resetButton()
         }
     }, [open]);
+
     // const [files, setFiles] = useState([]);
     // const selectFileHandler = (e) => {
     //     setFiles([...e.target.files]);
@@ -457,6 +491,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                             <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>
                                                 <input style={{fontSize: 16, marginLeft: -2}} type="text" value={paymentTemp} onChange={(event) => setPaymentTemp(event.target.value)} className='inputModal' placeholder='GCash'
                                                 onKeyDown={(event) => {
+                                                    if(paymentTemp) {
                                                     if(event.key.includes("Enter")) {
                                                         setEnteringPayment(true);
                                                         const pmTemp = [...paymentOptions];
@@ -465,17 +500,19 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                                             setpay(pmTemp);
                                                         }
                                                         setPaymentTemp("");
-                                                    }
+                                                    }}
                                                 }}/>
                                             </td>
                                             <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} 
-                                            onClick={() => {
-                                                    const pmTemp = [...paymentOptions];
-                                                    if(!pmTemp.includes(paymentTemp)) {
-                                                        pmTemp.push(paymentTemp);
-                                                        setpay(pmTemp);
+                                                onClick={() => {
+                                                    if(paymentTemp) {
+                                                        const pmTemp = [...paymentOptions];
+                                                        if(!pmTemp.includes(paymentTemp)) {
+                                                            pmTemp.push(paymentTemp);
+                                                            setpay(pmTemp);
+                                                        }
+                                                        setPaymentTemp("");
                                                     }
-                                                    setPaymentTemp("");
                                                 }}><FiPlusCircle size={25}/></td>
                                         </tr>
                                     </table>
@@ -661,6 +698,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                         <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>
                                             <input style={{fontSize: 16, marginLeft: -2}} type="text" value={paymentTemp} onChange={(event) => setPaymentTemp(event.target.value)} className='inputModal' placeholder='GCash'
                                             onKeyDown={(event) => {
+                                                if(paymentTemp) {
                                                 if(event.key.includes("Enter")) {
                                                     setEnteringPayment(true);
                                                     const pmTemp = [...paymentOptions];
@@ -669,17 +707,19 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                                         setpay(pmTemp);
                                                     }
                                                     setPaymentTemp("");
-                                                }
+                                                }}
                                             }}/>
                                         </td>
                                         <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} 
                                         onClick={() => {
-                                                const pmTemp = [...paymentOptions];
-                                                if(!pmTemp.includes(paymentTemp)) {
-                                                    pmTemp.push(paymentTemp);
-                                                    setpay(pmTemp);
+                                                if(paymentTemp) {
+                                                    const pmTemp = [...paymentOptions];
+                                                    if(!pmTemp.includes(paymentTemp)) {
+                                                        pmTemp.push(paymentTemp);
+                                                        setpay(pmTemp);
+                                                    }
+                                                    setPaymentTemp("");
                                                 }
-                                                setPaymentTemp("");
                                             }}><FiPlusCircle size={25}/></td>
                                     </tr>
                                 </table>

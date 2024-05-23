@@ -110,6 +110,7 @@ function History({data, isMobile}) {
         }).then((res) => {
             if(res.data.success){
                 const dishList = res.data.dishList
+                // console.log(dishList);
 
                 setSampleData(dishList);
                 let caltotal = 0;
@@ -311,11 +312,11 @@ function History({data, isMobile}) {
                 </tr>
             </table>
             { sampleData.length > 0 ?
-            <div className='cardsdiv'>
+            (!isMobile ? <div className='cardsdiv'>
                 <table className='cardstable'>
                     <tr>
                         {
-                            sampleData.reverse().map((dish) => {
+                            sampleData.map((dish) => {
                                 const cur = new Date(dish.dateSelected);
                                 const HH = cur.getHours() < 10 ? (cur.getHours() == 0 ? 12 : "0"+cur.getHours()) : (cur.getHours() > 12 ? cur.getHours()-12 : cur.getHours());
                                 const AMPM = cur.getHours() > 12 ? "PM" : "AM";
@@ -327,7 +328,7 @@ function History({data, isMobile}) {
                     </tr>
                     <tr>
                         {
-                            sampleData.reverse().map((dish) => {
+                            sampleData.map((dish) => {
                                 return  <td className='cards'>
                                     <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} history={true} /> 
                                 </td>
@@ -335,7 +336,38 @@ function History({data, isMobile}) {
                         }
                     </tr>
                 </table>
-            </div>
+            </div> : <div>
+                <table className='cardstable' style={{width: "100%"}}>
+                    <tr>
+                        <td>
+                        {
+                            sampleData.map((dish) => {
+                                const cur = new Date(dish.dateSelected);
+                                const HH = cur.getHours() < 10 ? (cur.getHours() == 0 ? 12 : "0"+cur.getHours()) : (cur.getHours() > 12 ? cur.getHours()-12 : cur.getHours());
+                                const AMPM = cur.getHours() > 12 ? "PM" : "AM";
+                                const MI = cur.getMinutes() < 10 ? "0"+cur.getMinutes() : cur.getMinutes();
+                                const SS = cur.getSeconds() < 10 ? "0"+cur.getSeconds() : cur.getSeconds();
+                                return  <table align='center' style={{position: 'relative'}}>
+                                    <tr><td className='cardsdate'> {HH}:{MI}:{SS} {AMPM} </td>
+                                </tr><tr>
+                                <td className='cards'>
+                                    <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} history={true} /> 
+                                </td></tr></table>
+                            })
+                        }
+                    </td>
+                    </tr>
+                    {/* <tr>
+                        {
+                            sampleData.map((dish) => {
+                                return  <td className='cards'>
+                                    <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} history={true} /> 
+                                </td>
+                            })
+                        }
+                    </tr> */}
+                </table>
+            </div>)
             : <div style={{position: 'relative', marginTop: isMobile ? 225-40 : 225, fontSize: 20, width: width-20, height: height-340, alignContent: 'center'}}>
                 <table style={{position: 'relative'}} align='center'>No dish selected for today.</table>
             </div>}

@@ -162,7 +162,17 @@ function ProfilePage({isMobile}) {
                                 <h1 style={{paddingBottom: 20}}>{username}</h1>
                             </div>
                         </td> : null }
-                        <td style={isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0}}><div>
+                        <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10}}>
+                                <table align='center' style={{position: 'relative'}}>
+                                    <tr>
+                                        <td>
+                                            <CgProfile size={30}/>
+                                        </td>
+                                        <td><h1>{username}</h1></td>
+                                    </tr>
+                                </table>
+                            </div> : null }
                             {
                                 dishList.length > 0 ?
                                     <div className='dishdiv' 
@@ -173,12 +183,6 @@ function ProfilePage({isMobile}) {
                                     }}
                                     >
                                         <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
-                                            {/* {isMobile ? <tr><td >
-                                            <div id='profileIcon'><CgProfile size={150}/></div>
-                                            <div className='userProfile'>
-                                                <h1 style={{paddingBottom: 20}}>{username}</h1>
-                                            </div>
-                                            </td></tr> : null } */}
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true} isMobile={isMobile}/>
                                         </table>
                                     </div> : "You have not reviewed any dish"

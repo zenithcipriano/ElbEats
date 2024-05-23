@@ -88,7 +88,7 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
                                 width: "100%",
                                 // width: (width/2) - 23 - (permissionGiven ? 75 : 0) - 40,
                                 textOverflow: "ellipsis"
-                                }}>{address1}</div></td>
+                                }}>{address1 ? address1 : "Please pin your location on the map."}</div></td>
                             {permissionGiven ? <td style={{width: 50}} onClick={onSubmit}><div style={{border: "1px solid black", padding: "5px 10px"}}>Submit</div></td> : null }
                             <td onClick={handleClose} style={{padding: 10, width: 10, paddingRight: 0}}><IoIosCloseCircleOutline size={30} /></td>
                         </tr>

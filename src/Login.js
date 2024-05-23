@@ -268,14 +268,14 @@ class Login extends React.Component {
             }}>
                 {
                 this.state.page == 0 ? 
-                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
+                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40, border: this.props.isMobile ? "" : "1px solid #6e2323"}}>
                         <h1>Welcome</h1>
                         <h2 className='pageLabelOpening' onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></h2>
                         <h2 className='pageLabelOpening' style={{marginTop: 20}} onClick={() => this.changePage(1)}><u>Do you already have an account?</u></h2>
                         <h2 className='pageLabelOpening' onClick={() => this.changePage(3)}><u>Do you want to create a user account?</u></h2>
                     </div>
                 : this.state.page == 1 ?
-                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
+                    <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40, border: this.props.isMobile ? "" : "1px solid #6e2323"}}>
                         <table style={{position: 'relative', margin: -30, marginLeft: 0}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>
@@ -300,7 +300,7 @@ class Login extends React.Component {
                         <p onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></p>
                         <p onClick={() => this.changePage(3)} style={{marginBottom: -5}}><u>Do you want to create a user account?</u></p>
                     </div>
-                : <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40}}>
+                : <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40, border: this.props.isMobile ? "" : "1px solid #6e2323"}}>
                         <table style={{position: 'relative',  margin: -30, marginLeft: 0}}>
                             <tr>
                                 <td><IoMdArrowRoundBack size={40} onClick={() => this.changePage(0)}/></td>

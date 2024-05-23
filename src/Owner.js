@@ -243,6 +243,16 @@ function OwnerPage({isMobile}) {
                         </td> : null}
                         {/* isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0} */}
                         <td style={isMobile ? {} : {padding: 20, paddingRight: 10, paddingTop: 0}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85}}>
+                                    <table align='center' style={{position: 'relative'}}>
+                                        <tr>
+                                            <td>
+                                                <CgProfile size={30}/>
+                                            </td>
+                                            <td><h1>{username}</h1></td>
+                                        </tr>
+                                    </table>
+                                </div> : null }
                             <table className='OwnerTable'>
                                 {/* {isMobile ? <tr><td style={{padding: 10}}>
                                     <div id='profileIcon'><CgProfile size={150}/></div>

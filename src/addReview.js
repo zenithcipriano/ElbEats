@@ -190,7 +190,7 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     <table className='reviewTable' align='center' style={{marginBottom: -62}}>
                         <tr>
                             <td> 
-                                <h2> {action} Review </h2>
+                                <h2> {action == "Edit" ? "Edit" : "Write a"} Review </h2>
                             </td>
                         </tr>
                     </table>

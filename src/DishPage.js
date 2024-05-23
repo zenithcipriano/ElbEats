@@ -475,7 +475,7 @@ function DishPage({isMobile, navigate}) {
 
                             </td>
                             {userInfo.type == "reviewer" && !isMobile ? 
-                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
+                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction == "Edit" ? "Edit" : "Write a"} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
                             </td> : null}
                             {userInfo.type == "reviewer" && revAction == "Edit" && !isMobile ? 
                             <td><button style={{fontSize: 17}} onClick={ () => {
@@ -489,14 +489,17 @@ function DishPage({isMobile, navigate}) {
                     {isMobile ? 
                     <table id='rateTable' style={isMobile ? style3 : {left: "-8px"}}>
                         <tr>
-                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
+                            <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction == "Edit" ? "Edit" : "Write a"} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
                             </td>
+
+                            {userInfo.type == "reviewer" && revAction == "Edit" ? 
                             <td><button style={{fontSize: 17}} onClick={ () => {
                                 handleOpenDel();
                                 setDelAction("review");
                                 setDelID(curRev.reviewID);
                             }}>Delete Review <RiDeleteBin6Line /></button>
-                            </td>
+                            </td >: null}
+
                         </tr>
                     </table> :null}
 
@@ -536,14 +539,14 @@ function DishPage({isMobile, navigate}) {
                                 {!isMobile || !showBreakDown ? 
                                     <table className='proteinTable'>
                                         {
-                                            protein.map((prot, index) => {
+                                            protein.length > 0 ? protein.map((prot, index) => {
                                                 return (
                                                     <tr>
                                                         <td> {prot} </td>
                                                         <td style={{width: "40%"}}> {proteinType[index]} </td>
                                                     </tr>
                                                 )
-                                            })
+                                            }) : "This dish has no proteins."
                                         }
                                     </table>
                                     : <table className="catTable">{

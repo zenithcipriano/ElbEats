@@ -55,7 +55,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                     if(res.data.success){
                         // alert(res.data.message);
                         handleClose();
-                        if(pathname == "/profile") {
+                        if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
@@ -81,7 +81,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                         handleClose();
                         // navigate("/profile");
                         // window.location.reload();
-                        if(pathname == "/profile") {
+                        if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
@@ -107,7 +107,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                         handleClose();
                         // navigate("/profile");
                         // window.location.reload();
-                        if(pathname == "/profile") {
+                        if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
