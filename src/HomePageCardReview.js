@@ -15,6 +15,7 @@ import AddReview from './addReview';
 import DeleteModal from './DeleteModal';
 import axios from 'axios';
 import { GiKnifeFork } from 'react-icons/gi';
+import AlertModal from './alertModal';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const outlined0 = <FaRegStar size={15} color='#6e2323'/>;
@@ -51,7 +52,10 @@ class HomePageCardReview extends React.Component {
             type: localStorage.getItem("user_type")
         },
         clicked: false,
-        loading: false
+        loading: false,
+        openAlert: false,
+        alertMess: "",
+        isSuccess: false
     };
 
     // this.handleClick = this.handleClick.bind(this);
@@ -59,6 +63,16 @@ class HomePageCardReview extends React.Component {
     this.reviewClickedF = this.reviewClickedF.bind(this);
     this.clickedSet = this.clickedSet.bind(this);
     this.choose = this.choose.bind(this);
+    this.alertOpen = this.alertOpen.bind(this);
+    this.alertClose = this.alertClose.bind(this);
+  }
+
+  alertOpen(mess, val) {
+    this.setState({openAlert: true, alertMess: mess, isSuccess: val});
+  }
+
+  alertClose() {
+    this.setState({openAlert: false});
   }
 
   // options = [
@@ -112,7 +126,9 @@ class HomePageCardReview extends React.Component {
             data,
         }).then((res) => {
             this.setState({loading: false});
-            alert(res.data.message);
+            this.alertOpen("Having trouble adding to today's meal list. Please try again later.", res.data.success);
+
+            // alert(res.data.message);
             // if(res.data.success){
                 // this.setState({open: false});
 
@@ -270,6 +286,7 @@ class HomePageCardReview extends React.Component {
         </div>
         <AddReview open={this.state.openReview} handleClose={() => this.setState({openReview: false})} height={window.innerHeight} dishID={this.state.dishID} action={"Edit"} curRev={this.state.reviewData}/>
         <DeleteModal open={this.state.openDel} handleClose={() => this.setState({openDel: false})} userInfo={this.state.userInfo} ID={this.state.reviewData.reviewID} type={"review"} name={this.state.dishName} rname={this.state.resName}/>
+        <AlertModal open={this.state.openAlert} handleClose={this.alertClose} message={this.state.alertMess} isSuccess={this.state.isSuccess}/>
       </div>;
     }
 }

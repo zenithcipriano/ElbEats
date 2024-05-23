@@ -16,6 +16,7 @@ import DeleteModal from './DeleteModal';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { GoBookmarkSlash } from "react-icons/go";
+import AlertModal from './alertModal';
 
 class HomePageCard extends React.Component {
   constructor(props) {
@@ -87,13 +88,25 @@ class HomePageCard extends React.Component {
         openDish : false,
         openDel: false,
         options: options,
-        loading: false
+        loading: false,
+        openAlert: false,
+        alertMess: ""
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.alertOpen = this.alertOpen.bind(this);
+    this.alertClose = this.alertClose.bind(this);
+  }
+
+  alertOpen(mess) {
+    this.setState({openAlert: true, alertMess: mess});
+  }
+
+  alertClose() {
+    this.setState({openAlert: false});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -153,7 +166,8 @@ class HomePageCard extends React.Component {
           data,
       }).then((res) => {
           this.setState({loading: false});
-          alert(res.data.message);
+          // this.alertOpen('Successfully added ');
+          // alert(res.data.message);
           if(res.data.success){
               this.setState({open: false});
 
@@ -163,6 +177,8 @@ class HomePageCard extends React.Component {
               // if (this.props.history) {
               window.location.reload();
               // }
+          } else {
+            this.alertOpen("Having trouble adding to today's meal list. Please try again later.");
           }
       })
     } else if(choice === "Remove from History") {
@@ -178,10 +194,12 @@ class HomePageCard extends React.Component {
           data,
       }).then((res) => {
           this.setState({loading: false});
-          alert(res.data.message);
+          // alert(res.data.message);
           if(res.data.success){
               this.setState({open: false});
               window.location.reload();
+          } else {
+            this.alertOpen("Having trouble removing from today's meal list. Please try again later.");
           }
       })
     }
@@ -408,6 +426,7 @@ class HomePageCard extends React.Component {
         </ Card>
         <AddDishModal open={this.state.openDish} handleClose={() => this.handleEdit(false)} height={window.innerHeight} action={"Edit"} loadingModal={false} restoID={this.state.restoID} dishData={this.props.data} isMobile={this.props.isMobile}/>
         <DeleteModal open={this.state.openDel} handleClose={() => this.handleDelete(false)} userInfo={this.props.userInfo} ID={this.state.dishID} type={"dish"} name={this.state.dishName} rname={this.state.resName}/>
+        <AlertModal open={this.state.openAlert} handleClose={this.alertClose} message={this.state.alertMess} isSuccess={false}/>
       </div>;
     }
 }

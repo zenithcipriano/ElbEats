@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  
 import DishCardTable from './DishCardTable';
 import ProgressBar1 from './progress';
+import AlertModal from './alertModal';
 
 // const Reviews = [
 //     {
@@ -74,8 +75,6 @@ function ProfilePage({isMobile}) {
     const [resizeDishesV, setRD] = useState([[]]);
 
     const resizeDishes = (col, samp, isResize) => {
-        console.log(col)
-
         if (col == 0) {
             col = 1;
         }
@@ -130,7 +129,9 @@ function ProfilePage({isMobile}) {
                 }
                 // const user = res.data.user;
             } else{
-                alert(res.data.message);
+                setOpenAlert(true);
+                setAlertMess("Having trouble retrieving your reviews. Please try again later.");
+                // alert(res.data.message);
             }
             setLoading(false);
         })
@@ -138,6 +139,10 @@ function ProfilePage({isMobile}) {
     useEffect(() => {
         Retrieving();
     }, []);
+
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
 
     if (loading) {
         return <div style={{
@@ -174,13 +179,14 @@ function ProfilePage({isMobile}) {
                                                 <h1 style={{paddingBottom: 20}}>{username}</h1>
                                             </div>
                                             </td></tr> : null } */}
-                                            <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true}/>
+                                            <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true} isMobile={isMobile}/>
                                         </table>
                                     </div> : "You have not reviewed any dish"
                             }
                         </div></td>
                     </tr>
                 </table>
+                <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
             </div>
         );
     }

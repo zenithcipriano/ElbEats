@@ -91,7 +91,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
             if(ingList.length == 0) {
                 setOpenAlert(true);
                 setAlertMess("Ingredients Missing");
-                setIsSuccess(false);
                 // alert("Missing:\n Ingredients");
                 setRet(false);
                 return;
@@ -130,7 +129,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
             if(mainPicture.length == 0) {   
                 setOpenAlert(true);
                 setAlertMess("Images Missing");
-                setIsSuccess(false);
 
                 // alert("Missing:\n Images");
                 setRet(false);
@@ -177,7 +175,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                     } else {
                         setOpenAlert(true);
                         setAlertMess(`Dish '${dishname}' already exist in the system.`);
-                        setIsSuccess(false);
                         // alert(`Dish '${dishname}' already exist in the system.`)
                     }
                 })
@@ -197,7 +194,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                     } else {
                         setOpenAlert(true);
                         setAlertMess(`Updating Dish '${dishname}' failed.`);
-                        setIsSuccess(false);
                         // alert(`Dish '${dishname}' already exist in the system.`)
                         // alert(`Updating Dish '${restoname}' failed.`)
                     }
@@ -263,8 +259,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                         setResults(res.data.results);
                     } else {
                         setOpenAlert(true);
-                        setAlertMess(res.data.message);
-                        setIsSuccess(false);
+                        setAlertMess('Having trouble retrieving the ingredient list. Please try again later.');
                         // alert(res.data.message);
                     }
                 })
@@ -301,7 +296,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
 
     const [openAlert, setOpenAlert] = useState(false);
     const [alertMess, setAlertMess] = useState("");
-    const [isSuccess, setIsSuccess] = useState(false);
     const alertClose = () => {setOpenAlert(false)};
 
     if(loadingModal || ret) {
@@ -365,18 +359,18 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                                 }}
                                             >
                                                 { mainPicture.map((upFile, index) => (
-                                                    <div key={index} className="img-wrap">
+                                                    <div key={index} className="img-wrap" style={{border: "1px solid rgba(0, 0, 0, 0.2)"}}>
                                                         <img src={upFile.preview ? upFile.preview : upFile} alt="..."/>
                                                     </div>
                                                 ))}
                                             </Carousel>
-                                        : <div {...getRootProps()} style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
+                                        : <div {...getRootProps()} style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
                                             No images.
                                         </div>
                                         }
                                         <div {...getRootProps()} >
                                         <input {...getInputProps()} />
-                                            <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative'}}>
+                                            <div style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5, position: 'relative'}}>
                                                 {/* {"Drag 'n drop images here, or click to select files"}  */}
                                                 Click to select files
                                             </div>
@@ -531,7 +525,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 </form>
             </Box>
         </Modal>
-        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={isSuccess}/>
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
         </div>
     } else {
         return <div><Modal
@@ -583,18 +577,18 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                                 }}
                                             >
                                                 { mainPicture.map((upFile, index) => (
-                                                    <div key={index} className="img-wrap">
+                                                    <div key={index} className="img-wrap" style={{border: "1px solid rgba(0, 0, 0, 0.2)"}}>
                                                         <img src={upFile.preview ? upFile.preview : upFile} alt="..."/>
                                                     </div>
                                                 ))}
                                             </Carousel>
-                                        : <div {...getRootProps()} style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
+                                        : <div {...getRootProps()} style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
                                             No images.
                                         </div>
                                         }
                                         <div {...getRootProps()} >
                                         <input {...getInputProps()} />
-                                            <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative'}}>
+                                            <div style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5, position: 'relative'}}>
                                                 Click to select files
                                             </div>
                                         </div>
@@ -747,7 +741,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 </form>
             </Box>
         </Modal>
-        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={isSuccess}/>
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
         </div>
     } 
 }

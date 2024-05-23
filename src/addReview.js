@@ -14,6 +14,7 @@ import { colors } from '@mui/material';
 import { FaSearch } from 'react-icons/fa';
 import "./addReview.css";
 import { FaRegStar, FaStarHalfAlt, FaStar } from "react-icons/fa";
+import AlertModal from './alertModal';
 
 function AddReview ({open, handleClose, height, action, dishID, curRev}) {
     const style = {
@@ -41,10 +42,18 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
     // const [dishID, setdishID] = useState(-1);
     
     useEffect(() => {
-        changeStarNum(curRev.rate-1);
-        if(curRev.review) setCount(curRev.review.length);
-        setReview(curRev.review);
+        if(open) {
+            changeStarNum(curRev.rate-1);
+            if(curRev.review) setCount(curRev.review.length);
+            setReview(curRev.review);
+        } else {
+            resetButton();
+        }
     }, [open]);
+
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
 
     const [ret, setRet] = useState(false);
     const handleSubmit = async (event) => {
@@ -74,12 +83,16 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     url: process.env.REACT_APP_API_URL+"/createReview",
                     data: reviewbody,
                 }).then((res) => {
-                    alert(res.data.message);
+                    // alert(res.data.message);
                     setRet(false);
                     if(res.data.success){
                         resetButton();
                         handleClose();
                         window.location.reload();
+                    } else {
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble saving your review. Please try again later.');
+                        // setAlertMess(res.data.message);
                     }
                 })
             } else if (action = "Edit"){
@@ -89,12 +102,16 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     url: process.env.REACT_APP_API_URL+"/updateReview",
                     data: reviewbody,
                 }).then((res) => {
-                    alert(res.data.message);
+                    // alert(res.data.message);
                     setRet(false);
                     if(res.data.success){
                         resetButton();
                         handleClose();
                         window.location.reload();
+                    } else {
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble saving your review. Please try again later.');
+                        // setAlertMess(res.data.message);
                     }
                 })
             } else {
@@ -162,7 +179,7 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
             </Box>
         </Modal>
     } else {
-        return <Modal
+        return <div><Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -210,6 +227,8 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                 </div>
             </Box>
         </Modal>
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+        </div>
     }
 }
 export default AddReview;

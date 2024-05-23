@@ -15,6 +15,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineCursorClick } from "react-icons/hi";
 import DeleteModal from './DeleteModal';
+import AlertModal from './alertModal';
 
 function OwnerPage({isMobile}) {
     const navigate = useNavigate();
@@ -84,7 +85,9 @@ function OwnerPage({isMobile}) {
                         setRD([[0]]);
                     }
                 } else{
-                    alert(res.data.message);
+                    setOpenAlert(true);
+                    setAlertMess("Having trouble retrieving dish information. Please try again later.");
+                    // alert(res.data.message);
                 }
                 setRetDish(true);
     })}}
@@ -97,6 +100,10 @@ function OwnerPage({isMobile}) {
     const [loading, setLoading] = useState(false);
 
     const resizeDishes = (col, samp, isResize) => {
+        if (col == 0) {
+            col = 1;
+        }
+
         if (isResize == 0) {
             const temp = [];
             const sampTemp = JSON.parse(JSON.stringify(samp));
@@ -156,7 +163,9 @@ function OwnerPage({isMobile}) {
                     setRD([[0]]);
                 }
             } else{
-                alert(res.data.message);
+                setOpenAlert(true);
+                setAlertMess("Having trouble retrieving user and restaurant information. Please try again later.");
+                // alert(res.data.message);
             }
             setRetDish(true);
             setLoading(false);
@@ -181,12 +190,16 @@ function OwnerPage({isMobile}) {
     const [loadingModalDish, setLoadingModalDish] = useState(false);
     const [restoData, setRestoData] = useState({});
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
+
     const retrieveRestoInfo =  async (act) => {
-        handleOpen()
         setAction(act)
         if (act == "Add") {
             setRestoData({});
-            setLoadingModal(false)
+            setLoadingModal(false);
+            handleOpen();
         } else if (act == "Edit"){
             await axios({
                 method: 'post',
@@ -199,8 +212,11 @@ function OwnerPage({isMobile}) {
                     const data = res.data.resto;
                     // console.log(data);
                     setRestoData(data);
+                    handleOpen();
                 } else {
-                    alert(res.data.message);
+                    setOpenAlert(true);
+                    setAlertMess("Having trouble retrieving restaurant information. Please try again later.");
+                    // alert(res.data.message);
                 }
                 setLoadingModal(false);
             })
@@ -322,6 +338,7 @@ function OwnerPage({isMobile}) {
                 </table>
             <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos.length > 0 ? restos[curResto].restoID : null} restoData={restoData} loadingModal={loadingModal} width={width}/>  
             <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos.length > 0 ? restos[curResto].restoID : null} type={"restaurant"} name={restos.length > 0 ? restos[curResto].restoname : null}/>
+            <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
         </div>
     }
 }

@@ -12,15 +12,21 @@ import { Carousel } from "react-responsive-carousel";
 import { colors } from '@mui/material';
 import GMaps from './locationModal';
 import { MdLocationPin } from "react-icons/md";
+import { useMediaQuery } from 'react-responsive';
+import { FiPlusCircle } from 'react-icons/fi';
+import AlertModal from './alertModal';
 
 function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, restoData, loadingModal, width}) {
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const style = {
         position: 'absolute',
         fontFamily: "Rubik",
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: window.innerWidth-40,
+        maxWidth: 600,
+        // width: 600,
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
@@ -41,10 +47,12 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         setX("");
         setopenT("");
         setcloseT("");
-        setpay(new Array(pays.length).fill(false));
+        setpay([]);
         setname("");
         setMainPicture([]);
     }
+
+    const [paymentTemp, setPaymentTemp] = useState("");
 
     const userID = userInfo.id;
     const [restoname, setname] = useState("");
@@ -68,16 +76,16 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         setDaysOpen(updated);
     }
 
-    const pays = ["Cash", "GCash", "Debit/Credit Card", "Bank Transfer"]
-    const [paymentOptions, setpay] = useState(new Array(pays.length).fill(false));
-    // const [days, setDaysOpen] = useState(new Array(7).fill(false));
-    const handlePays = (position) => {
-        const updated = paymentOptions.map((item, index) =>
-            index === position ? !item : item
-        );
+    // const pays = ["Cash", "GCash", "Debit/Credit Card", "Bank Transfer"]
+    // const [paymentOptions, setpay] = useState(new Array(pays.length).fill(false));
+    const [paymentOptions, setpay] = useState([]);
+    // const handlePays = (position) => {
+    //     const updated = paymentOptions.map((item, index) =>
+    //         index === position ? !item : item
+    //     );
 
-        setpay(updated);
-    }
+    //     setpay(updated);
+    // }
 
     const [cpNum, setNum] = useState("");
     const handleNum = (event) => setNum(event.target.value);
@@ -99,124 +107,137 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
     //     "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg"
     // ]);
   
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
 
     const [ret, setRet] = useState(false);
+    const [enteringPayment, setEnteringPayment] = useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(!ret) {
-            setRet(true);
+        if(enteringPayment) {
+            setEnteringPayment(false);
+        } else {
+            if(!ret) {
+                setRet(true);
 
-            const formData = new FormData();
-            mainPicture.forEach((image) => {
-                if (image.preview) {
-                    // console.log(image);
-                    formData.append("file", image);
+                const formData = new FormData();
+                mainPicture.forEach((image) => {
+                    if (image.preview) {
+                        // console.log(image);
+                        formData.append("file", image);
+                    }
+                });
+
+                let dotw = ""
+                days.forEach((dy, index) => {
+                    if(dy) {
+                        dotw += (index+1)
+                    }
+                })
+                
+                let pm = [...paymentOptions];
+
+                if(pm.length == 0 && !dotw) {
+                    setOpenAlert(true);
+                    setAlertMess("Days of the Week and Modes of Payment Missing");
+                    // alert("Missing:\n Days of the Week\n Modes of Payment");
+                    setRet(false);
+                    return
+                }else if(!dotw) {
+                    setOpenAlert(true);
+                    setAlertMess("Days of the Week Missing");
+                    // alert("Missing: Days of the Week");
+                    setRet(false);
+                    return
+                } else if (pm.length == 0) {
+                    // alert("Missing: Modes of Payment");
+                    setOpenAlert(true);
+                    setAlertMess("Modes of Payment Missing");
+                    setRet(false);
+                    return
                 }
-            });
 
-            let dotw = ""
-            days.forEach((dy, index) => {
-                if(dy) {
-                    dotw += (index+1)
+                if (!location) {
+                    setOpenAlert(true);
+                    setAlertMess("Restaurant Address Missing");
+                    // alert("Missing: Restaurant Address");
+                    setRet(false);
+                    return
                 }
-            })
-            
-            let pm = [];
-            paymentOptions.forEach((py, index) => {
-                if(py) {
-                    pm.push(pays[index]);
+
+                const newResto = {
+                    userID,
+                    restoname,
+                    location,
+                    restoDesc,
+                    openingTime: openingTime+":00",
+                    closingTime: closingTime+":00",
+                    days: dotw,
+                    paymentOptions: pm,
+                    cpNum, 
+                    email,       
+                    facebook,        
+                    instagram,       
+                    twitter,
+                    lat: coordinates.lat,
+                    lng: coordinates.lng
                 }
-            })
-
-            if(pm.length == 0 && !dotw) {
-                alert("Missing:\n Days of the Week\n Modes of Payment");
-                setRet(false);
-                return
-            }else if(!dotw) {
-                alert("Missing: Days of the Week");
-                setRet(false);
-                return
-            } else if (pm.length == 0) {
-                alert("Missing: Modes of Payment");
-                setRet(false);
-                return
-            }
-
-            if (!location) {
-                alert("Missing: Restaurant Address");
-                setRet(false);
-                return
-            }
-
-            const newResto = {
-                userID,
-                restoname,
-                location,
-                restoDesc,
-                openingTime: openingTime+":00",
-                closingTime: closingTime+":00",
-                days: dotw,
-                paymentOptions: pm,
-                cpNum, 
-                email,       
-                facebook,        
-                instagram,       
-                twitter,
-                lat: coordinates.lat,
-                lng: coordinates.lng
-            }
-            
-            let counter = 0;
-            const tempImages = [];
-            console.log("start");
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/saveImages`, formData);
-            mainPicture.forEach((image) => {
-                if (image.preview) {
-                    tempImages.push(response.data.imageUrl[counter]);
-                    counter += 1;
+                
+                let counter = 0;
+                const tempImages = [];
+                console.log("start");
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/saveImages`, formData);
+                mainPicture.forEach((image) => {
+                    if (image.preview) {
+                        tempImages.push(response.data.imageUrl[counter]);
+                        counter += 1;
+                    } else {
+                        tempImages.push(image);
+                    }
+                });
+                newResto.images = tempImages;
+                // console.log(tempImages);
+                // setRet(false);
+                if(action == "Add") {
+                    await axios({
+                        method: 'post',
+                        url: process.env.REACT_APP_API_URL+"/createResto",
+                        data: newResto,
+                    }).then((res) => {
+                        setRet(false);
+                        if(res.data.success){
+                            // alert(res.data.message);
+                            handleClose();
+                            window.location.reload();
+                        } else {
+                            setOpenAlert(true);
+                            setAlertMess(`Restaurant '${restoname}' already exist in the system.`)
+                            // alert("Creating New Restaurant Failed.")
+                        }
+                    })
+                } else if (action = "Edit"){
+                    newResto.restoID = restoID;
+                    await axios({
+                        method: 'post',
+                        url: process.env.REACT_APP_API_URL+"/updateResto",
+                        data: newResto,
+                    }).then((res) => {
+                        // alert(res.data.message);
+                        setRet(false);
+                        if(res.data.success){
+                            // alert(res.data.message);
+                            handleClose();
+                            window.location.reload();
+                        } else {
+                            setOpenAlert(true);
+                            setAlertMess(`Restaurant '${restoname}' already exist in the system.`)
+                            // alert(`Updating Restaurant '${restoname}' failed.`)
+                        }
+                    })
                 } else {
-                    tempImages.push(image);
+                    setRet(false);
                 }
-            });
-            newResto.images = tempImages;
-            // console.log(tempImages);
-            // setRet(false);
-            if(action == "Add") {
-                await axios({
-                    method: 'post',
-                    url: process.env.REACT_APP_API_URL+"/createResto",
-                    data: newResto,
-                }).then((res) => {
-                    setRet(false);
-                    if(res.data.success){
-                        alert(res.data.message);
-                        handleClose();
-                        window.location.reload();
-                    } else {
-                        alert(`Restaurant '${restoname}' already exist in the system.`)
-                        // alert("Creating New Restaurant Failed.")
-                    }
-                })
-            } else if (action = "Edit"){
-                newResto.restoID = restoID;
-                await axios({
-                    method: 'post',
-                    url: process.env.REACT_APP_API_URL+"/updateResto",
-                    data: newResto,
-                }).then((res) => {
-                    // alert(res.data.message);
-                    setRet(false);
-                    if(res.data.success){
-                        alert(res.data.message);
-                        handleClose();
-                        window.location.reload();
-                    } else {
-                        alert(`Restaurant '${restoname}' already exist in the system.`)
-                        // alert(`Updating Restaurant '${restoname}' failed.`)
-                    }
-                })
-            } else {
-                setRet(false);
             }
         }
     }
@@ -245,13 +266,14 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
             setopenT(restoData.openingTime.substring(0,5));
             setcloseT(restoData.closingTime.substring(0,5));
 
-            const tempPay = [];
+            // const tempPay = [];
             const pys = restoData.paymentOptions;
-            for (let i=0; i<pays.length; i++) {
-                tempPay.push(pys.includes(pays[i]));
-            }
+            // for (let i=0; i<pays.length; i++) {
+            //     tempPay.push(pys.includes(pays[i]));
+            // }
 
-            setpay(tempPay);
+            // setpay(tempPay);
+            setpay(pys);
         } else {
             resetButton()
         }
@@ -313,8 +335,8 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
             </Modal>
     } else if(openMaps) {
         return <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={location} height={height} width={width} permissionGiven={true} restoName={restoname} setAddress={setAddress} setCoordinates={setCoordinates}/>
-    } else {
-        return <Modal
+    } else if(!isTabletOrMobile) {
+        return <div><Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -368,7 +390,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                                 }}
                                             >
                                                 { mainPicture.map((upFile, index) => (
-                                                    <div key={index} className="img-wrap">
+                                                    <div key={index} className="img-wrap" style={{border: "1px solid rgba(0, 0, 0, 0.2)"}}>
                                                         <img src={upFile.preview ? upFile.preview : upFile} alt="..."/>
                                                     </div>
                                                 ))}
@@ -420,7 +442,44 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                         <tr>
                             <td colSpan={4}><fieldset>
                                 <legend>Modes of Payment: </legend>
-                                <table style={{position: "relative", width: "100%"}}><tr>
+                                    <table style={{position: "relative", width: "100%"}}>
+                                        {paymentOptions.map((dw, index) =>{
+                                            return <tr>
+                                                <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>{dw}</td>
+                                                <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} onClick={() => {
+                                                    const pmTemp = [...paymentOptions];
+                                                    pmTemp.splice(index, 1)
+                                                    setpay(pmTemp);
+                                                }}><IoIosCloseCircleOutline size={30}/></td>
+                                            </tr>
+                                        })}
+                                        <tr>
+                                            <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>
+                                                <input style={{fontSize: 16, marginLeft: -2}} type="text" value={paymentTemp} onChange={(event) => setPaymentTemp(event.target.value)} className='inputModal' placeholder='GCash'
+                                                onKeyDown={(event) => {
+                                                    if(event.key.includes("Enter")) {
+                                                        setEnteringPayment(true);
+                                                        const pmTemp = [...paymentOptions];
+                                                        if(!pmTemp.includes(paymentTemp)) {
+                                                            pmTemp.push(paymentTemp);
+                                                            setpay(pmTemp);
+                                                        }
+                                                        setPaymentTemp("");
+                                                    }
+                                                }}/>
+                                            </td>
+                                            <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} 
+                                            onClick={() => {
+                                                    const pmTemp = [...paymentOptions];
+                                                    if(!pmTemp.includes(paymentTemp)) {
+                                                        pmTemp.push(paymentTemp);
+                                                        setpay(pmTemp);
+                                                    }
+                                                    setPaymentTemp("");
+                                                }}><FiPlusCircle size={25}/></td>
+                                        </tr>
+                                    </table>
+                                {/* <table style={{position: "relative", width: "100%"}}><tr>
                                 {
                                     paymentOptions.map((dw, index) =>{
                                         return (
@@ -430,7 +489,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                             </td>
                                         )
                                     })
-                                }</tr></table>
+                                }</tr></table> */}
                             </fieldset></td>
                         </tr>
                         <tr>
@@ -460,13 +519,212 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                             </fieldset></td>
                         </tr>
                         <tr>
-                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
-                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input type="submit" value="Submit" disabled={ret}/></td>
+                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
+                            <td colSpan={2} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="submit" value="Submit" disabled={ret}/></td>
                         </tr>
                     </table>
                 </form>
             </Box>
         </Modal>
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+        </div>
+    } else {
+        return <div><Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        // style={{marginTop: 100}} 
+        >
+            <Box sx={style}>
+                <table className='modalTable' style={{marginBottom: -5}}>
+                    <tr>
+                        <td>
+                            <h2>Restaurant Information </h2>
+                        </td>
+                        <td style={{textAlign: "right"}}> <IoIosCloseCircleOutline size={40} onClick={handleClose}/> </td>
+                    </tr>
+                </table>
+                <form onSubmit={handleSubmit} style={{fontFamily: "Rubik", marginBottom: -15}}>
+                    <table className="inputTables">
+                        <tr>
+                            <td colSpan={2}>
+                                <fieldset>
+                                    <legend>Restaurant Name: </legend>
+                                    <input required type="text" value={restoname} onChange={handleNameChange} className='inputModal' placeholder='Kahit Saan'/>
+                                </fieldset>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td colSpan={2}>
+                                <fieldset onClick={handleOpenMaps}>
+                                    <legend>Restaurant Address: </legend>
+                                    <div className='inputModal'><MdLocationPin/>{location ? location : "Click Me"}</div>
+                                    {/* <input required type="text" value={location} className='inputModal' placeholder='Brgy. Batong Malake' disabled onClick={handleOpenMaps}/> */}
+                                </fieldset>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>
+                                <fieldset>
+                                    <legend>Images: </legend>
+                                        {mainPicture.length > 0 ? 
+                                            <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true} showThumbs={false}
+                                                statusFormatter={(current, total) => {
+                                                    return (
+                                                        <div style={{fontSize: 15, 
+                                                            width: 250,
+                                                            // border: "1px solid black",
+                                                            marginTop: -18,
+                                                            marginRight: -5,
+                                                        }}>
+                                                            <table style={{position: 'relative', width: "100%"}}>
+                                                                <tr>
+                                                                    <td style={{position: 'relative', width: 200, textAlign: "left"}}>{current} of {total}</td>
+                                                                    <td style={{textAlign: "left", paddingTop: 5, zIndex: 100, }}> <IoIosCloseCircleOutline size={20} onClick={() => removeImage(current-1)} style={{backgroundColor: "rgba(255, 255, 255)", color: "#6e2323", borderRadius: 10}}/> </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    )
+                                                }}
+                                            >
+                                                { mainPicture.map((upFile, index) => (
+                                                    <div key={index} className="img-wrap" style={{border: "1px solid rgba(0, 0, 0, 0.2)"}}>
+                                                        <img src={upFile.preview ? upFile.preview : upFile} alt="..."/>
+                                                    </div>
+                                                ))}
+                                            </Carousel>
+                                        : <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
+                                            No images.
+                                        </div>
+                                        }
+                                        <div {...getRootProps()} >
+                                        <input {...getInputProps()} />
+                                            <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative'}}>
+                                                Drag 'n drop images here, or click to select files
+                                            </div>
+                                        </div>
+                                        
+                                </fieldset>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Restaurant Description (Optional): </legend>
+                                <textarea rows={4} style={{fontFamily: "Rubik"}} value={restoDesc} onChange={handleDescChange} className='textAreaModal' placeholder="Description here."/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Opening time: </legend>
+                                <input required type="time" className='timeI' style={{fontFamily: "Rubik"}} value={openingTime} onChange={handleOpenT}/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Closing time: </legend>
+                                <input required type="time" className='timeI' style={{fontFamily: "Rubik"}} value={closingTime} onChange={handleCloseT} />
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Days of the Week: </legend>
+                                <table style={{position: "relative", width: "100%", tableLayout: "fixed", marginBottom:-2, marginRight: -10, width: width-90}}><tr>
+                                {
+                                    days.map((dw, index) =>{
+                                        return (
+                                            <td>
+                                                <input type="checkbox" className='checkbox' id={dow[index]} checked={dw} onChange={() =>handleDays(index)}/><br/>
+                                                <label htmlFor={dow[index]}>{dow[index]}</label>
+                                            </td>
+                                        )
+                                    })
+                                }</tr></table>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Modes of Payment: </legend>
+                                <table style={{position: "relative", width: "100%"}}>
+                                    {paymentOptions.map((dw, index) =>{
+                                        return <tr>
+                                            <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>{dw}</td>
+                                            <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} onClick={() => {
+                                                const pmTemp = [...paymentOptions];
+                                                pmTemp.splice(index, 1)
+                                                setpay(pmTemp);
+                                            }}><IoIosCloseCircleOutline size={30}/></td>
+                                        </tr>
+                                    })}
+                                    <tr>
+                                        <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", padding: 5}}>
+                                            <input style={{fontSize: 16, marginLeft: -2}} type="text" value={paymentTemp} onChange={(event) => setPaymentTemp(event.target.value)} className='inputModal' placeholder='GCash'
+                                            onKeyDown={(event) => {
+                                                if(event.key.includes("Enter")) {
+                                                    setEnteringPayment(true);
+                                                    const pmTemp = [...paymentOptions];
+                                                    if(!pmTemp.includes(paymentTemp)) {
+                                                        pmTemp.push(paymentTemp);
+                                                        setpay(pmTemp);
+                                                    }
+                                                    setPaymentTemp("");
+                                                }
+                                            }}/>
+                                        </td>
+                                        <td style={{border: "1px solid rgba(0, 0, 0, 0.2)", textAlign: "center", padding: 5, paddingBottom: 1}} 
+                                        onClick={() => {
+                                                const pmTemp = [...paymentOptions];
+                                                if(!pmTemp.includes(paymentTemp)) {
+                                                    pmTemp.push(paymentTemp);
+                                                    setpay(pmTemp);
+                                                }
+                                                setPaymentTemp("");
+                                            }}><FiPlusCircle size={25}/></td>
+                                    </tr>
+                                </table>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Contact Number (Optional): </legend>
+                                <input type="text" value={cpNum} onChange={handleNum} className='inputModal' placeholder='09*********'/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Email Address (Optional): </legend>
+                                <input type="email" value={email} onChange={handleEmail} className='inputModal' placeholder='juan@gmail.com'/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Facebook (Optional):</legend>
+                                <input type="text" value={facebook} onChange={handleFB} className='inputModal' placeholder='facebook.com/kahitsaan'/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>Instagram (Optional): </legend>
+                                <input type="text" value={instagram} onChange={handleInsta} className='inputModal' placeholder='instagram.com/kahitsaan'/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><fieldset>
+                                <legend>X (Optional): </legend>
+                                <input type="text" value={twitter} onChange={handleX} className='inputModal' placeholder='twitter.com/kahitsaan'/>
+                            </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={1} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="reset" value="Reset" onClick={resetButton}  disabled={ret}/></td>
+                            <td colSpan={1} style={{textAlign: "center", paddingBottom: 10}}> <input style={{maxWidth: 235, width: 2*window.innerWidth/5}} type="submit" value="Submit" disabled={ret}/></td>
+                        </tr>
+                    </table>
+                </form>
+            </Box>
+        </Modal>
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+        </div>
     }
 }
 export default AddRestoModal;

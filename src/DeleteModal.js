@@ -7,6 +7,8 @@ import "./addrestomodal.css";
 import axios from 'axios';
 import "@fontsource/rubik";
 import { useLocation, useNavigate } from 'react-router-dom';  
+import { Alert } from 'react-bootstrap';
+import AlertModal from './alertModal';
 
 function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
     const style = {
@@ -29,6 +31,10 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
+
     const [ret, setRet] = useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -47,15 +53,17 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                     // alert(res.data.message);
                     setRet(false);
                     if(res.data.success){
-                        alert(res.data.message);
+                        // alert(res.data.message);
                         handleClose();
                         if(pathname == "/profile") {
                             window.location.reload();
                         } else {
-                            navigate();
+                            navigate('/profile');
                         }
                     } else {
-                        alert("Deletion failed.");
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble deleting this restaurant. Please try again later.');
+                        // alert("Deletion failed.");
                     }
                 })
             } else if (type == "dish") {
@@ -69,17 +77,19 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                     // alert(res.data.message);
                     setRet(false);
                     if(res.data.success){
-                        alert(res.data.message);
+                        // alert(res.data.message);
                         handleClose();
                         // navigate("/profile");
                         // window.location.reload();
                         if(pathname == "/profile") {
                             window.location.reload();
                         } else {
-                            navigate();
+                            navigate('/profile');
                         }
                     } else {
-                        alert("Deletion failed.");
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble deleting this dish. Please try again later.');
+                        // alert("Deletion failed.");
                     }
                 })
             } else if (type == "review") {
@@ -93,17 +103,19 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                     // alert(res.data.message);
                     setRet(false);
                     if(res.data.success){
-                        alert(res.data.message);
+                        // alert(res.data.message);
                         handleClose();
                         // navigate("/profile");
                         // window.location.reload();
                         if(pathname == "/profile") {
                             window.location.reload();
                         } else {
-                            navigate();
+                            navigate('/profile');
                         }
                     } else {
-                        alert("Deletion failed.");
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble deleting this review. Please try again later.');
+                        // alert("Deletion failed.");
                     }
                 })
             } else {
@@ -113,7 +125,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
         }
     }
 
-    return <Modal
+    return <div><Modal
     open={open}
     onClose={handleClose}
     aria-labelledby="modal-modal-title"
@@ -153,5 +165,7 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
             </form>
         </Box>
     </Modal>
+    <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+    </div>
 }
 export default DeleteModal;

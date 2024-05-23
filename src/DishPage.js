@@ -19,6 +19,7 @@ import AddDishModal from './AddDishModal';
 import DeleteModal from './DeleteModal';
 import GMaps from './locationModal';
 import AddReview from './addReview';
+import AlertModal from './alertModal';
 
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -87,6 +88,13 @@ function DishPage({isMobile, navigate}) {
     const [retDish, setRetDish] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showBreakDown, setShowBD] = useState(false);
+
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {
+        setOpenAlert(false)
+        navigate('/');
+    };
 
     const Retrieving = async () => {
         await axios({
@@ -158,12 +166,14 @@ function DishPage({isMobile, navigate}) {
                 setCat(cat1);
                 setcatper(catAmount);
 
+                setRetDish(true);
+                setLoading(false);
             } else{
-                alert(res.data.message);
-                navigate('/');
+                // alert(res.data.message);
+                setOpenAlert(true);
+                setAlertMess("Having trouble retrieving this dish's information. Please try again later.");
+                // navigate('/');
             }
-            setRetDish(true);
-            setLoading(false);
     })}
 
     useEffect(() => {
@@ -578,6 +588,7 @@ function DishPage({isMobile, navigate}) {
                     <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={address} height={height} width={width} permissionGiven={false} restoName={rname} />
                     <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo} isMobile={isMobile}/>
                     <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={delID} type={delAction} name={dname} rname={rname}/>
+                    <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
                 </div>
             </div>
         );

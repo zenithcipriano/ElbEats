@@ -17,6 +17,7 @@ import DishCardTable from './DishCardTable';
 import DeleteModal from './DeleteModal';
 import ProgressBar1 from './progress';
 import GMaps from './locationModal';
+import AlertModal from './alertModal';
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -53,6 +54,14 @@ function RestaurantPage({isMobile}) {
 
     const [retDish, setRetDish] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {
+        setOpenAlert(false)
+        navigate('/');
+    };
+
     const Retrieving = async () => {
         await axios({
             method: 'post',
@@ -96,12 +105,14 @@ function RestaurantPage({isMobile}) {
                     setData(data.dishes);
                     setTempData(rearrangeData((isMobile ? width : width/2), data.dishes));
                 }
+                setRetDish(true);
+                setLoading(false);
             } else{
-                alert(res.data.message);
-                navigate('/');
+                setOpenAlert(true);
+                setAlertMess("Having trouble retrieving restaurant information. Please try again later.");
+                // alert(res.data.message);
+                // navigate('/');
             }
-            setRetDish(true);
-            setLoading(false);
     })}
 
     useEffect(() => {
@@ -453,6 +464,7 @@ function RestaurantPage({isMobile}) {
                         <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restoID} type={"restaurant"} name={restoname}/>
                     </div>)
                 : null }
+                <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
             </div>
         );
     }

@@ -9,6 +9,7 @@ import "@fontsource/rubik";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 import { height } from '@mui/system';
 import { FaSearch } from "react-icons/fa";
+import AlertModal from './alertModal';
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -24,6 +25,10 @@ function HomePage({isMobile, submittedInput, keywords}) {
     const [border, setBorder] = useState((window.innerWidth - ((tempCol * perCard) + (tableBorder*3))) / 2 - 10);
 
     const setDataWithRows = (samp, col) => {
+        if (col == 0) {
+            col = 1;
+        }
+
         const temp = [];
         const sampTemp = [...samp];
 
@@ -57,6 +62,10 @@ function HomePage({isMobile, submittedInput, keywords}) {
         // }
     }, [submittedInput])
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {setOpenAlert(false)};
+
     const SearchDishes = async () => {
         const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${day < 10 ? "0" + day : day} 00:00:00`;
         // console.log(time);
@@ -82,7 +91,9 @@ function HomePage({isMobile, submittedInput, keywords}) {
                 setDataWithRows(dishList, tempCol);
                 // setDataWithRows(Array(1).fill(dishList));
             } else {
-                alert(res.data.message);
+                setOpenAlert(true);
+                setAlertMess("Having trouble retrieving dish information. Please try again later.");
+                // alert(res.data.message);
             }
         })
         // }
@@ -99,7 +110,8 @@ function HomePage({isMobile, submittedInput, keywords}) {
         const max = event.target.maxPrice.value; 
         if( min != "" && max != "") {
             if( !(parseInt(max) > parseInt(min))) {
-                alert("Maximum Price should be greater than Minimum Price.")
+                setOpenAlert(true);
+                setAlertMess("Maximum Price should be greater than Minimum Price");
                 return
             }
         }
@@ -138,7 +150,9 @@ function HomePage({isMobile, submittedInput, keywords}) {
                     setDataWithRows(dishList, tempCol);
                     // setDataWithRows(Array(1).fill(dishList));
                 } else {
-                    alert(res.data.message);
+                    setOpenAlert(true);
+                    setAlertMess("Having trouble retrieving dish information. Please try again later.");
+                    // alert(res.data.message);
                 }
             })
         }
@@ -262,6 +276,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
                     }) : "No dish matched your search."
                 }
             </table>
+            <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
         </div>
     }
 }

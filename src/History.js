@@ -8,6 +8,7 @@ import ProgressBar1 from './progress';
 import axios from 'axios';
 import MicroModal from './MicroModal';
 import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5';
+import AlertModal from './alertModal';
 
 function History({data, isMobile}) {
     const navigate = useNavigate();
@@ -85,6 +86,13 @@ function History({data, isMobile}) {
         type: localStorage.getItem("user_type")
     }
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertMess, setAlertMess] = useState("");
+    const alertClose = () => {
+        setOpenAlert(false)
+        navigate('/');
+    };
+
     const Retrieving = async () => {
         const tempDay = day + dayDisplayed
         const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${tempDay < 10 ? "0" + tempDay : tempDay} 00:00:00`;
@@ -100,8 +108,6 @@ function History({data, isMobile}) {
                 nextDate: nextTime
             }
         }).then((res) => {
-            setLoading(false);
-            console.log(res.data);
             if(res.data.success){
                 const dishList = res.data.dishList
 
@@ -161,8 +167,12 @@ function History({data, isMobile}) {
                 );
 
                 // setSampleData(Array(1).fill(dishList));
+                setLoading(false);
+                // console.log(res.data);
             } else {
-                alert(res.data.message);
+                // alert(res.data.message);
+                setOpenAlert(true);
+                setAlertMess(`Having trouble retrieving your meals ${dayDisplayed != 0 ? "yesterday" : "for today"}. Please try again later.`);
             }
         })
     }
@@ -206,7 +216,7 @@ function History({data, isMobile}) {
             <ProgressBar1 height={200}/>
         </div>
     } else {
-        return (<div className="HistoryPage" style={{height: width<1224 ? height-160:height-90}}>
+        return <div className="HistoryPage" style={{height: width<1224 ? height-160:height-90}}>
             <table className='History' style={{width:width}}>
                 <tr>
                     <td>
@@ -334,7 +344,8 @@ function History({data, isMobile}) {
             values={[calcium, phosphorus, iron, zinc, A, B1, B2, B3, C, K]}
             stanvalues={[stancalcium, stanphosphorus, staniron, stanzinc, stanA, stanB1, stanB2, stanB3, stanC, stanK]}
             />
-        </div>)
+        <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+        </div>
     }
 }
 
