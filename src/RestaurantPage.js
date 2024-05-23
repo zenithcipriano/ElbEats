@@ -1,7 +1,6 @@
 import React  from 'react';
 import { useState, useEffect } from "react";
 import "./RestaurantPage.css";
-import HomePageCard from './HomePageCard';
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -276,7 +275,7 @@ function RestaurantPage({isMobile}) {
                     style={{width: (width/2)+30, height: height-120}}
                     >
                     <table className='rdishtable'>
-                        <DishCardTable dishList={tempData} navigate={navigate}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile}/>
                     </table></div>}
                 </div>
                 <div className='restoBody' style={{
@@ -443,7 +442,7 @@ function RestaurantPage({isMobile}) {
                 { isMobile?
                 <div style={{position: 'relative', marginLeft: -10}}>
                     <table className='rdishtable' align='center'>
-                        <DishCardTable dishList={tempData} navigate={navigate}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile}/>
                     </table>
                 </div>
                 : <div></div>}

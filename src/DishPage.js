@@ -576,7 +576,7 @@ function DishPage({isMobile, navigate}) {
                     </div>
                     <AddReview open={open} handleClose={handleClose} height={height} dishID={dishID} action={revAction} curRev={curRev}/>
                     <GMaps open={openMaps} handleClose={handleCloseMaps} coordinates={coordinates} address={address} height={height} width={width} permissionGiven={false} restoName={rname} />
-                    <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo}/>
+                    <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Edit"} loadingModal={!retDish} restoID={restoID} dishData={dishInfo} isMobile={isMobile}/>
                     <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={delID} type={delAction} name={dname} rname={rname}/>
                 </div>
             </div>

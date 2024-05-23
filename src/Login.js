@@ -127,9 +127,9 @@ class Login extends React.Component {
                         localStorage.setItem("user_type", res.data.type);
                         this.state.checkLog();
                         // this.setState({openAlert: true, message: res.data.message})
-                        this.props.setOpenAlert(true);
-                        this.props.setAlertMess(res.data.message);
-                        this.props.setIsSuccess(true);
+                        // this.props.setOpenAlert(true);
+                        // this.props.setAlertMess(res.data.message);
+                        // this.props.setIsSuccess(true);
                     } else{
                         this.props.setOpenAlert(true);
                         this.props.setAlertMess(res.data.message);
@@ -171,9 +171,9 @@ class Login extends React.Component {
                             localStorage.setItem("user_type", res.data.type);
                             this.state.checkLog();
                             
-                            this.props.setOpenAlert(true);
-                            this.props.setAlertMess(res.data.message);
-                            this.props.setIsSuccess(true);
+                            // this.props.setOpenAlert(true);
+                            // this.props.setAlertMess(res.data.message);
+                            // this.props.setIsSuccess(true);
                         } else {
                             this.props.setOpenAlert(true);
                             this.props.setAlertMess(res.data.message)

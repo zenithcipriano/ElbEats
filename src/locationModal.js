@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import ProgressBar1 from './progress';
 
 function GMaps({open, handleClose, height, width, coordinates, address, permissionGiven, restoName, setAddress, setCoordinates}) {
     const style = {
@@ -19,7 +20,7 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
         boxShadow: 24,
         p: 4,
         // width: window.innerWidth,
-        height: 3*height/4,
+        // height: 3*height/4,
         // overflowY: "scroll",
         padding: 2
     };
@@ -48,7 +49,8 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
 
     const onSubmit = () => {
         setAddress(address1);
-        setCoordinates({lng:center.lng(), lat:center.lat()});
+        setCoordinates({lng: (typeof center.lng) == "function" ? center.lng() : center.lng, 
+                        lat: (typeof center.lat) == "function" ? center.lat() : center.lat});
         handleClose();
     }
     
@@ -77,27 +79,23 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
         aria-describedby="modal-modal-description">
             <Box sx={style}>
                 <div>
-                    <table style={{width: "100%", position: "relative"}}> 
+                    <table style={{width: "100%", position: "relative", marginBottom: -5, marginTop: -10}}> 
                         <tr> 
-                            <td style={{border: "1px solid black", padding: 10}}>
-                                <div style={{whiteSpace: "nowrap",
-                                overflow: "hidden", 
+                            <td style={{padding: 10}}>
+                                <div style={{
+                                // whiteSpace: "nowrap",
+                                // overflow: "hidden", 
                                 width: "100%",
                                 // width: (width/2) - 23 - (permissionGiven ? 75 : 0) - 40,
                                 textOverflow: "ellipsis"
                                 }}>{address1}</div></td>
-                            {permissionGiven ? <td style={{border: "1px solid black", padding: 10, width: 50}} onClick={onSubmit}> Submit </td> : null }
-                            <td style={{padding: 10, width: 10}}><IoIosCloseCircleOutline size={30} onClick={handleClose}/></td>
+                            {permissionGiven ? <td style={{width: 50}} onClick={onSubmit}><div style={{border: "1px solid black", padding: "5px 10px"}}>Submit</div></td> : null }
+                            <td onClick={handleClose} style={{padding: 10, width: 10, paddingRight: 0}}><IoIosCloseCircleOutline size={30} /></td>
                         </tr>
                     </table>
                 </div>
-                <div style={{padding: "10px 0px", textAlign: "center", fontSize: 15}}>
-                {
-                    permissionGiven ? "(Click to pin. Hold click to move.)" : "(Hold click to move map.)"
-                }
-                </div>
                 {!isLoaded ? 
-                    (<h1>Loading...</h1>)
+                    <ProgressBar1 />
                     : 
                     <GoogleMap
                         mapContainerStyle={{ width: '100%', height: (3*height/4)-100, position: 'relative'}}
@@ -123,6 +121,11 @@ function GMaps({open, handleClose, height, width, coordinates, address, permissi
 
                         }}/>
                 }
+                <div style={{padding: "10px 0px", textAlign: "center", fontSize: 15, marginBottom: -15}}>
+                {
+                    permissionGiven ? "(Click to pin. Hold click to move.)" : "(Hold click to move map.)"
+                }
+                </div>
                 </Box>
         </Modal>
 }

@@ -5,7 +5,7 @@ import { FiPlusCircle } from 'react-icons/fi';
 import AddDishModal from './AddDishModal';
 import HomePageCardReview from './HomePageCardReview';
 
-function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height, restoID, reviewFlag}) {
+function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height, restoID, reviewFlag, isMobile}) {
     const [openDish, setOpenDish] = useState(false);
     const handleOpenDish = () => setOpenDish(true);
     const handleCloseDish = () => setOpenDish(false);
@@ -22,14 +22,14 @@ function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height
                     return  <td>
                     {privilege ? 
                         (rindex == 0 && dindex == 0 ? <div className="dishCard" style={{height: 125, padding: "110px 15px"}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
-                            :   <HomePageCard data={dish} navigate={navigate} userInfo={userInfo}/> )
+                            :   <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> )
                         : reviewFlag ? <HomePageCardReview data={dish} navigate={navigate} userInfo={userInfo} />
-                        :<HomePageCard data={dish} navigate={navigate} userInfo={userInfo} />
+                        :<HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile} />
                     }
                     </td>
                 })    
             }</td>
-            <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Add"} loadingModal={loadingModalDish} restoID={restoID} dishData={{}}/>
+            <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Add"} loadingModal={loadingModalDish} restoID={restoID} dishData={{}} isMobile={isMobile} />
         </tr>
         })
 }

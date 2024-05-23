@@ -15,7 +15,6 @@ import { BiEditAlt } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineCursorClick } from "react-icons/hi";
 import DeleteModal from './DeleteModal';
-import AddDishModal from './AddDishModal';
 
 function OwnerPage({isMobile}) {
     const navigate = useNavigate();
@@ -229,12 +228,12 @@ function OwnerPage({isMobile}) {
                         {/* isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0} */}
                         <td style={isMobile ? {} : {padding: 20, paddingRight: 10, paddingTop: 0}}>
                             <table className='OwnerTable'>
-                                {isMobile ? <tr><td style={{padding: 10}}>
+                                {/* {isMobile ? <tr><td style={{padding: 10}}>
                                     <div id='profileIcon'><CgProfile size={150}/></div>
                                     <div className='userProfile'>
                                         <h1 style={{paddingBottom: 20}}>{username}</h1>
                                     </div>
-                                    </td></tr> : null }
+                                    </td></tr> : null } */}
                                 <tr>
                                     <td>
                                         {restos.length == 0 ? <table 
@@ -314,7 +313,7 @@ function OwnerPage({isMobile}) {
                                             // marginLeft: "auto", marginRight: "auto"
                                             }}>
                                             <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
-                                                <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={true} loadingModalDish={loadingModalDish} height={height} restoID={restos[curResto].restoID}/>
+                                                <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={true} loadingModalDish={loadingModalDish} height={height} restoID={restos[curResto].restoID} isMobile={isMobile}/>
                                             </table>
                                         </div> : null
                                 }

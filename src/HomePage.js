@@ -255,7 +255,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
                             <td>{
                                 row.map((dish) => {
                                     return  <td>
-                                        <HomePageCard data={dish} navigate={navigate} userInfo={userInfo}/> </td>
+                                        <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> </td>
                                 })    
                             }</td>
                         </tr>

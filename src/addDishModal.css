@@ -1,7 +1,7 @@
 .resultsTable {
     /* table-layout: fixed; */
     position: relative;
-    width: 100%;
+    /* width: 100%; */
 }
 
 .resultsTable > tr > th, .resultsTable > tr > td {

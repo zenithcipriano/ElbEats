@@ -168,12 +168,12 @@ function ProfilePage({isMobile}) {
                                     }}
                                     >
                                         <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
-                                            {isMobile ? <tr><td >
+                                            {/* {isMobile ? <tr><td >
                                             <div id='profileIcon'><CgProfile size={150}/></div>
                                             <div className='userProfile'>
                                                 <h1 style={{paddingBottom: 20}}>{username}</h1>
                                             </div>
-                                            </td></tr> : null }
+                                            </td></tr> : null } */}
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true}/>
                                         </table>
                                     </div> : "You have not reviewed any dish"

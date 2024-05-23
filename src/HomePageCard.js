@@ -356,8 +356,10 @@ class HomePageCard extends React.Component {
 
                 <table className='hometable' style={{
                   fontSize: "14px", 
-                  width: "0px", 
-                  marginTop: "-30px"
+                  // width: "0px", 
+                  width: 150,
+                  marginTop: "-30px",
+                  textAlign: "left"
                   // marginTop: "5px"
                   }}>
                   <tr>
@@ -366,7 +368,9 @@ class HomePageCard extends React.Component {
                           paddingRight: "6px", 
                           paddingBottom: "3px",
                           color: (this.state.available == 1 ? "#013B3F": "#6e2323"),
-                          fontSize: 18
+                          fontSize: 18,
+                          // border: "1px solid black",
+                          // width: 1000
                         }}>
                           {this.state.available == 1 ? "Available" : "Not Available"}
                       </td>
@@ -402,7 +406,7 @@ class HomePageCard extends React.Component {
                 </table>
               </div> : null }
         </ Card>
-        <AddDishModal open={this.state.openDish} handleClose={() => this.handleEdit(false)} height={window.innerHeight} action={"Edit"} loadingModal={false} restoID={this.state.restoID} dishData={this.props.data}/>
+        <AddDishModal open={this.state.openDish} handleClose={() => this.handleEdit(false)} height={window.innerHeight} action={"Edit"} loadingModal={false} restoID={this.state.restoID} dishData={this.props.data} isMobile={this.props.isMobile}/>
         <DeleteModal open={this.state.openDel} handleClose={() => this.handleDelete(false)} userInfo={this.props.userInfo} ID={this.state.dishID} type={"dish"} name={this.state.dishName} rname={this.state.resName}/>
       </div>;
     }
