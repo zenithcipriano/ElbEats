@@ -408,7 +408,7 @@ function RestaurantPage({isMobile}) {
                                 { email ?
                                     <div className='Raddress' 
                                     style={isMobile ? {width: (width-60)/2, overflowWrap: 'break-word', height: "100%"} : {}}
-                                    ><MdEmail /> <b>{email}</b> </div>
+                                    ><MdEmail /> {email}</div>
                                     : <div></div>
                                 }
                             </td>

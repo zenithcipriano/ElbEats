@@ -25,6 +25,7 @@ import { RiProfileLine } from "react-icons/ri";
 import OwnerPage from './Owner.js';
 import ProgressBar1 from './progress.js';
 import { GiMeal } from 'react-icons/gi';
+import AlertModal from './alertModal.js';
 
 function Main() {
   // const isDesktopOrLaptop = useMediaQuery({
@@ -163,6 +164,10 @@ function Main() {
     }
   };
 
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMess, setAlertMess] = useState("");
+  const [isSuccess, setIsSuccess] = useState(true);
+
   const [submittedInput, setSU] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -223,7 +228,7 @@ function Main() {
           <Routes>
             <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
             <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} isMobile={isTabletOrMobile}/> : < Navigate to="/"/>} />
-            <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login checkLog={checkLog} cookies={cookies} isMobile={isTabletOrMobile} /> } />
+            <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login setOpenAlert={setOpenAlert} setAlertMess={setAlertMess} setIsSuccess={setIsSuccess} checkLog={checkLog} cookies={cookies} isMobile={isTabletOrMobile} /> } />
             <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
             <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
             <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage isMobile={isTabletOrMobile}/> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />
@@ -335,6 +340,7 @@ function Main() {
           </tr>
         </table>}
         
+        <AlertModal open={openAlert} handleClose={() => setOpenAlert(false)} message={alertMess} isSuccess={isSuccess}/>
         {/* <section className='footer'>
         </section> */}
       </div>

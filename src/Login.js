@@ -45,7 +45,12 @@ class Login extends React.Component {
         this.chooseType = this.chooseType.bind(this);
         this.resetValues = this.resetValues.bind(this);
         this.changePage = this.changePage.bind(this);
+        // this.handleOpenAlert = this.handleOpenAlert.bind(this);
     }
+
+    // handleOpenAlert(val) {
+    //     this.setState({openAlert: val})
+    // }
 
     handleChangeUsername(event) {
         this.setState({username: event.target.value});
@@ -104,8 +109,8 @@ class Login extends React.Component {
                         password: this.state.password,
                     }
                 }).then((res) => {
+                    this.setState({loading: false})
                     if(res.data.success){
-                        this.setState({loading: false})
                         this.resetValues()
                         // const cookies = new Cookies();
                         this.state.cookies.set(
@@ -121,9 +126,14 @@ class Login extends React.Component {
                         localStorage.setItem("user_reference", res.data.id);
                         localStorage.setItem("user_type", res.data.type);
                         this.state.checkLog();
-                        alert(res.data.message)
+                        // this.setState({openAlert: true, message: res.data.message})
+                        this.props.setOpenAlert(true);
+                        this.props.setAlertMess(res.data.message);
+                        this.props.setIsSuccess(true);
                     } else{
-                        alert(res.data.message)
+                        this.props.setOpenAlert(true);
+                        this.props.setAlertMess(res.data.message);
+                        this.props.setIsSuccess(false);
                     }
                 })
 
@@ -141,8 +151,8 @@ class Login extends React.Component {
                             type: this.state.page == 2 ? 1 : 0
                         }
                     }).then((res) => {
+                        this.setState({loading: false})
                         if(res.data.success){
-                            this.setState({loading: false})
                             // this.resetValues()
                             // alert(res.data.message)
                             this.resetValues()
@@ -160,16 +170,24 @@ class Login extends React.Component {
                             localStorage.setItem("user_reference", res.data.id);
                             localStorage.setItem("user_type", res.data.type);
                             this.state.checkLog();
-                            alert(res.data.message)
+                            
+                            this.props.setOpenAlert(true);
+                            this.props.setAlertMess(res.data.message);
+                            this.props.setIsSuccess(true);
                         } else {
-                            alert(res.data.message)
+                            this.props.setOpenAlert(true);
+                            this.props.setAlertMess(res.data.message)
+                            // this.props.setAlertMess("Error! Please contact Ms. Cipriano.");
+                            this.props.setIsSuccess(false);
                         }
                     })
                     // } else {
                     //     alert("User type: Reviewer or Owner?")
                     // }
                 } else {
-                    alert("Password does not match!")
+                    this.props.setOpenAlert(true);
+                    this.props.setAlertMess("Password does not match!")
+                    this.props.setIsSuccess(false);
                 }
             }
         }
@@ -177,15 +195,22 @@ class Login extends React.Component {
 
     sendEmail(event) {
         event.preventDefault();
-        alert(this.state.email);
+        this.props.setOpenAlert(true);
+        this.props.setAlertMess(this.state.email);
+        this.props.setIsSuccess(true);
     }
 
     verifyPin(event) {
         event.preventDefault();
         if(this.state.email == "") {
-            alert("Please enter your email address.");
+            this.props.setOpenAlert(true);
+            this.props.setAlertMess("Please enter your email address.");
+            this.props.setIsSuccess(false);
         } else {
-            alert(this.state.pin);
+            // this.props.setOpenAlert(true);
+            // this.props.setAlertMess(this.state.pin);
+            // this.props.setIsSuccess(true);
+
             this.setState({resetPasswordValue: true, forgotPasswordValue: false, loginValue:true,
             showpassword:false, showConPas: false, password:"", confirmPassword:""})
         }
@@ -194,11 +219,13 @@ class Login extends React.Component {
     resetPassword(event) {
         event.preventDefault()
         if(this.state.password.localeCompare(this.state.confirmPassword) == 0) {
-            alert(this.state.password);
+            // alert(this.state.password);
             this.setState({resetPasswordValue: false, forgotPasswordValue: false, loginValue:true, 
                 password:"", confirmPassword:"", showpassword: false})
         } else {
-            alert("Passwords do not match");
+            this.props.setOpenAlert(true);
+            this.props.setAlertMess("Passwords do not match");
+            this.props.setIsSuccess(false);
         }
     }
 
@@ -427,6 +454,7 @@ class Login extends React.Component {
                     }
                 </div>
                 } */}
+            {/* <AlertModal open={this.state.openAlert} handleClose={() => this.handleOpenAlert(false)} message={this.state.message}/> */}
             </div>
         }
     }

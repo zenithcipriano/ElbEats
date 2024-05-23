@@ -276,6 +276,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         return <Modal 
         open={open}
         onClose={handleClose}
+        // style={{backgroundColor: "cyan"}}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
             <Box sx={style}>
