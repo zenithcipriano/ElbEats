@@ -390,7 +390,7 @@ function DishPage({isMobile, navigate}) {
     } else {
         return (
             <div className='DishPage' style={style1}>
-                <div style={{width: isMobile ? width-15 : width/2}} className={isMobile ? "" : "Carousel"}>
+                <div style={isMobile ? {width: width} : {width: width/2}} className={isMobile ? "" : "Carousel"}>
                     <Carousel useKeyboardArrows={true} showArrows={true} swipeable={true}
                         statusFormatter={(current, total) => {
                             return (
@@ -402,7 +402,10 @@ function DishPage({isMobile, navigate}) {
                         }}
                         renderArrowPrev={(clickHandler, hasPrev) => {
                             return (
-                                <div className='ArrowBack' onClick={clickHandler} style={{opacity: hasPrev ? 1 : 0}}>
+                                <div style={{opacity: hasPrev ? 1 : 0, 
+                                height: isMobile? 250 : 350,
+                                // marginTop: isMobile ? -20 : 0
+                                }} onClick={clickHandler} className='ArrowBack'>
                                     <IoIosArrowBack size={50}/>
                                 </div>
                             );
@@ -410,16 +413,23 @@ function DishPage({isMobile, navigate}) {
                         
                         renderArrowNext={(clickHandler, hasNext) => {
                             return (
-                                <div onClick={clickHandler} className='ArrowNext' style={{opacity: hasNext ? 1 : 0}}>
+                                <div onClick={clickHandler} style={{
+                                    opacity: hasNext ? 1 : 0, 
+                                    height: isMobile? 250 : 350,
+                                    marginTop: isMobile ? -250 : -350
+                                    }} className='ArrowNext'>
                                     <IoIosArrowForward size={50}/>
                                 </div>
                             );
                         }}
+                        renderThumbs={() => {
+                            return imgList.map((URL, index) => (
+                                <img className="slideImg" style={{maxHeight: 75}} alt="sample_file" src={URL} key={index} />
+                            ))
+                        }}
                     >
                         {imgList.map((URL, index) => (
-                            <div>
-                                <img className="slideImg" alt="sample_file" src={URL} key={index} />
-                            </div>
+                            <img className="slideImg" style={{height: isMobile? 250 : 350}} alt="sample_file" src={URL} key={index} />
                         ))}
                     </Carousel>
                 </div>
@@ -429,6 +439,8 @@ function DishPage({isMobile, navigate}) {
                         : null} */}
                 <div className="dishBody" style={isMobile ? {} : style2}>
                     <table className='resto' style={isMobile? {marginTop: -20} : {}}>
+                    {/* <table className='resto' style={isMobile? {marginTop: 200} : {}}> */}
+
                         <tr>
                             <td style={{maxWidth: 120}}>
                             <button onClick={() => navigate('/restaurant/'+restoID)}

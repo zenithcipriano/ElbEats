@@ -245,7 +245,7 @@ function RestaurantPage({isMobile}) {
     } else {
         return (
             <div className='RP' style={style1}>
-                <div style={{width: isMobile ? width-15 : width/2, marginLeft: isMobile ? 0 : width/2-60}} 
+                <div style={{width: isMobile ? width : width/2, marginLeft: isMobile ? 0 : width/2-60}} 
                 className={isMobile ? "" : "Carousel1"}>
 
                     {!isMobile?<button className='rswitch' style={{
@@ -270,9 +270,13 @@ function RestaurantPage({isMobile}) {
                                 }}>{current} of {total}</p>
                             )
                         }}
+
                         renderArrowPrev={(clickHandler, hasPrev) => {
                             return (
-                                <div className='ArrowBack' onClick={clickHandler} style={{opacity: hasPrev ? 1 : 0}}>
+                                <div style={{opacity: hasPrev ? 1 : 0, 
+                                height: isMobile? 250 : 350,
+                                // marginTop: isMobile ? -20 : 0
+                                }} onClick={clickHandler} className='ArrowBack'>
                                     <IoIosArrowBack size={50}/>
                                 </div>
                             );
@@ -280,15 +284,25 @@ function RestaurantPage({isMobile}) {
                         
                         renderArrowNext={(clickHandler, hasNext) => {
                             return (
-                                <div onClick={clickHandler} className='ArrowNext' style={{opacity: hasNext ? 1 : 0}}>
+                                <div onClick={clickHandler} style={{
+                                    opacity: hasNext ? 1 : 0, 
+                                    height: isMobile? 250 : 350,
+                                    marginTop: isMobile ? -250 : -350
+                                    }} className='ArrowNext'>
                                     <IoIosArrowForward size={50}/>
                                 </div>
                             );
                         }}
+
+                        renderThumbs={() => {
+                            return imgList.map((URL, index) => (
+                                <img className="slideImg" style={{maxHeight: 75}} alt="sample_file" src={URL} key={index} />
+                            ))
+                        }}
                     >
                         {imgList.map((URL, index) => (
                             <div>
-                                <img className="slideImg" alt="sample_file" src={URL} key={index} />
+                                <img className="slideImg" style={{height: isMobile? 250 : 350}} alt="sample_file" src={URL} key={index} />
                             </div>
                         ))}
                     </Carousel>:<div className="scrollable1" 

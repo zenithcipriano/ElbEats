@@ -165,19 +165,26 @@ hr {
 .ArrowBack {
     position:absolute;
     z-index: 1;
-    padding: 140px 20px;
-    height: 100%;
+    padding-left: 20px; 
+    padding-right: 20px;
+    align-content: center; 
+    /* margin-top: -20px; */
+    /* height: 100%; */
     /* background-color: aqua; */
 }
 
 .ArrowNext {
     /* background-color: aqua; */
+    padding-left: 20px; 
+    padding-right: 20px;
     right: 0px;
-    padding: 140px 20px;
-    margin-top: -350px;
+    align-content: center; 
+    /* padding: 140px 20px; */
+    /* margin-top: -270px; */
     z-index: 1;
     position:absolute;
-    height: 100%;
+    /* height: 100%; */
+    /* height: 250px; */
 }
 
 .ArrowBack:hover, .ArrowNext:hover {
