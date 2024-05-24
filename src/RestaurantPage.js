@@ -74,9 +74,10 @@ function RestaurantPage({isMobile}) {
                 const data = res.data.resto;
                 console.log(data);
 
+                const tempRate = data.ratings ? data.ratings : 0;
                 setNumRev(data.numRevs);
-                setRatings(parseFloat(data.ratings).toFixed(1));
-                setStars(rateFun(parseFloat(data.ratings), 25));
+                setRatings(parseFloat(tempRate).toFixed(1));
+                setStars(rateFun(parseFloat(tempRate), 25));
                 setCoordinates({lat: parseFloat(data.lat), lng: parseFloat(data.lng)})
                 setWalkPrices(data.walkPrices);
                 setOnlinePrices(data.onlinePrices);
@@ -137,7 +138,9 @@ function RestaurantPage({isMobile}) {
     const rateFun = (rate, iconSize) => {
         const numFilled = Math.floor(rate, 1)
         const filled = Array(numFilled).fill(<FaStar size={iconSize}/>)
+        console.log(filled);
         const halfed = Array(rate-numFilled == 0 ? 0 : 1).fill(<FaStarHalfAlt size={iconSize}/>)
+        console.log(halfed);
         const tempstars = filled.concat(halfed)
         const outlined = Array(5-tempstars.length).fill(<FaRegStar size={iconSize}/>)
         return tempstars.concat(outlined)
