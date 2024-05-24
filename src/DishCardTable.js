@@ -18,6 +18,7 @@ function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height
     if(dishList.length == 0 && privilege) {
         return <tr><td>
             <div className="dishCard" style={{height: 125, padding: "110px 15px", textAlign: 'center'}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
+            <AddDishModal open={openDish} handleClose={handleCloseDish} height={height} action={"Add"} loadingModal={loadingModalDish} restoID={restoID} dishData={{}} isMobile={isMobile} />
         </td></tr>
     } else if(dishList.length == 0 && !privilege) {
         return <tr><td style={{padding: 10}}>No dish has been listed yet.</td></tr>
@@ -28,8 +29,10 @@ function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height
                     row.map((dish, dindex) => {
                         return  <td>
                         {privilege ? 
-                            (rindex == 0 && dindex == 0 ? <div className="dishCard" style={{height: 125, padding: "110px 15px", textAlign: 'center'}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
-                                :   <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> )
+                            (
+                                rindex == 0 && dindex == 0 ? <div className="dishCard" style={{height: 125, padding: "110px 15px", textAlign: 'center'}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
+                                :   
+                                <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> )
                             : reviewFlag ? <HomePageCardReview data={dish} navigate={navigate} userInfo={userInfo} />
                             :<HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile} />
                         }
