@@ -191,7 +191,7 @@ function Main() {
         <section>
         <div id='searchDiv1' >
           <table className='header' 
-          style={style1}
+          style={{zIndex: 1, marginLeft: isTabletOrMobile ? -20 : 0}}
           >
               <tr>
                 <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo"/> </th>
