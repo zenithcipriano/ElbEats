@@ -333,11 +333,12 @@ class HomePageCard extends React.Component {
                   // color: "#013b3f", 
                   fontSize: "14px",
                   marginBottom: "-5px",
+                  textAlign: 'left'
                   // width:"70%"
                   }} >
                   <tr>
-                    <td> <div style={{marginRight:"5px"}}>*Calories: {this.state.calories} kcal</div></td>
-                    <td> <div>*Sodium: {this.state.sodium} mg </div></td>
+                    <td> <div style={{marginRight:"5px", border: '1px solid black'}}>*Calories: {this.state.calories} kcal</div></td>
+                    <td> <div style={{border: '1px solid black'}}>*Sodium: {this.state.sodium} mg </div></td>
                   </tr>
                 </table>
 
