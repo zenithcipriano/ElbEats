@@ -436,7 +436,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                         <div {...getRootProps()} >
                                         <input {...getInputProps()} />
                                             <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative'}}>
-                                                Drag 'n drop images here, or click to select files
+                                                Click to select files
                                             </div>
                                         </div>
                                         
