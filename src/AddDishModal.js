@@ -27,8 +27,8 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
-        maxHeight: 3*height/4,
-        height: 3*height/4,
+        maxHeight: window.innerHeight-100,
+        height: window.innerHeight-100,
         overflowY: "scroll",
         padding: 2,
         // paddingRight: 0

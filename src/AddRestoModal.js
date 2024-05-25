@@ -30,7 +30,8 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
-        height: 3*height/4,
+        maxHeight: window.innerHeight-100,
+        height: window.innerHeight-100,
         overflowY: "scroll",
         padding: 2
     };
