@@ -177,7 +177,7 @@ function ProfilePage({isMobile}) {
                                 dishList.length > 0 ?
                                     <div className='dishdiv' 
                                     style={{
-                                        height: isMobile ? height-155 : height-90, 
+                                        height: isMobile ? height-205 : height-90, 
                                         width: isMobile? width-10 : (width/4 > ProfWidth ?(3*width/4) + 20 : width-ProfWidth),
                                         marginLeft: isMobile ? 0 : 2.5
                                     }}

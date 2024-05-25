@@ -332,13 +332,13 @@ function OwnerPage({isMobile}) {
                                 {
                                     restos.length > 0 ?
                                         <div className='dishdiv' style={{
-                                            height: isMobile ? height-233 : height-158, 
+                                            height: isMobile ? height-283 : height-158, 
                                             // height: width <= 805 ? height-293 : (isMobile ? height-233 : height-158), 
                                             width: isMobile? width-10 : (width/4 > ProfWidth ? (3*width/4) : width-ProfWidth),
                                             marginLeft: 2.5,
                                             // marginLeft: "auto", marginRight: "auto"
                                             }}>
-                                            <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
+                                            <table style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20, marginLeft: isMobile ? -23 : 0}}>
                                                 <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={true} loadingModalDish={loadingModalDish} height={height} restoID={restos[curResto].restoID} isMobile={isMobile}/>
                                             </table>
                                         </div> : null
