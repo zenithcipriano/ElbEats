@@ -17,7 +17,7 @@ import { HiOutlineCursorClick } from "react-icons/hi";
 import DeleteModal from './DeleteModal';
 import AlertModal from './alertModal';
 
-function OwnerPage({isMobile}) {
+function OwnerPage({isMobile, setIsLoggedIn, cookies}) {
     const navigate = useNavigate();
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
@@ -91,6 +91,8 @@ function OwnerPage({isMobile}) {
                 }
                 setRetDish(true);
     })}}
+
+    const [delAction, setDelAction] = useState("");
 
     const userInfo = {
         id: localStorage.getItem("user_reference"),
@@ -237,19 +239,25 @@ function OwnerPage({isMobile}) {
                     <tr>
                         {!isMobile ? <td style={{width: width/4, padding: 20, paddingTop: 0}}>
                             <div id='profileIcon'><CgProfile size={150}/></div>
-                            <div className='userProfile'>
-                                <h1 style={{paddingBottom: 20}}>{username}</h1>
+                            <div className='userProfile' style={{position: 'relative', zIndex: 100}}>
+                                <table style={{position: 'relative'}} align='center'>
+                                    <tr>
+                                        <td><h1 style={{paddingBottom: 20}}>{username}</h1></td>
+                                        <td onClick={() => {setDelAction("user"); handleOpenDel()}}><RiDeleteBin6Line size={30} style={{marginTop: -30}}/></td>
+                                    </tr>
+                                </table>
                             </div>
                         </td> : null}
                         {/* isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0} */}
                         <td style={isMobile ? {} : {padding: 20, paddingRight: 10, paddingTop: 0}}>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85, maxWidth: width-10, marginLeft: 3, width: width-10}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85, maxWidth: width-10, marginLeft: 3, width: width-10, position: 'relative', zIndex: 100}}>
                                     <table align='center' style={{position: 'relative'}}>
                                         <tr>
-                                            <td>
+                                            {/* <td>
                                                 <CgProfile size={30}/>
-                                            </td>
+                                            </td> */}
                                             <td><h1>{username}</h1></td>
+                                            <td onClick={() => {setDelAction("user"); handleOpenDel()}}><RiDeleteBin6Line size={30} style={{marginTop: 0}}/></td>
                                         </tr>
                                     </table>
                                 </div> : null }
@@ -316,7 +324,7 @@ function OwnerPage({isMobile}) {
                                                                         <td onClick={() => {retrieveRestoInfo("Edit")}}>
                                                                             <BiEditAlt size={30} />
                                                                         </td>
-                                                                        <td onClick={handleOpenDel}>
+                                                                        <td onClick={() => {setDelAction("restaurant"); handleOpenDel()}}>
                                                                             <RiDeleteBin6Line size={30} />
                                                                         </td>
                                                                     {/* <td><HiOutlineCursorClick size={20} /></td> */}
@@ -347,7 +355,7 @@ function OwnerPage({isMobile}) {
                     </tr>
                 </table>
             <AddRestoModal open={open} handleOpen={handleOpen} handleClose={handleClose} userInfo={userInfo} height={height} action={action} restoID={restos.length > 0 ? restos[curResto].restoID : null} restoData={restoData} loadingModal={loadingModal} width={width}/>  
-            <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos.length > 0 ? restos[curResto].restoID : null} type={"restaurant"} name={restos.length > 0 ? restos[curResto].restoname : null}/>
+            <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} ID={restos.length > 0 ? restos[curResto].restoID : null} type={delAction} name={delAction == 'user' ? username : restos.length > 0 ? restos[curResto].restoname : null} setIsLoggedIn={setIsLoggedIn} cookies={cookies}/>
             <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
         </div>
     }

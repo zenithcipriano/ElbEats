@@ -19,7 +19,6 @@
     position: relative;
     /* border: 1px solid #ededed; */
     border: 1px solid rgba(110, 35, 35, 0.2);
-    margin-top: -75px;
     padding-top: 85px;
     z-index: -1;
 }
@@ -43,5 +42,6 @@
     height: 150px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: -75px;
     z-index: 1;
 }

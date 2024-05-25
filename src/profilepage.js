@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import DishCardTable from './DishCardTable';
 import ProgressBar1 from './progress';
 import AlertModal from './alertModal';
+import DeleteModal from './DeleteModal';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 // const Reviews = [
 //     {
@@ -36,7 +38,7 @@ const rateFun = (rate, iconSize) => {
     return tempstars.concat(outlined)
 }
 
-function ProfilePage({isMobile}) {
+function ProfilePage({isMobile, setIsLoggedIn, cookies}) {
     const navigate = useNavigate();
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
@@ -73,6 +75,10 @@ function ProfilePage({isMobile}) {
     }
     const [loading, setLoading] = useState(true);
     const [resizeDishesV, setRD] = useState([[]]);
+
+    const [openDel, setOpenDel] = useState(false);
+    const handleOpenDel = () => setOpenDel(true);
+    const handleCloseDel = () => setOpenDel(false);
 
     const resizeDishes = (col, samp, isResize) => {
         if (col == 0) {
@@ -158,8 +164,13 @@ function ProfilePage({isMobile}) {
                     <tr>
                         {!isMobile ? <td style={{width: width/4, padding: 20}}>
                             <div id='profileIcon'><CgProfile size={150}/></div>
-                            <div className='userProfile'>
-                                <h1 style={{paddingBottom: 20}}>{username}</h1>
+                            <div className='userProfile' style={{position: 'relative', zIndex: 100}}>
+                                <table style={{position: 'relative'}} align='center'>
+                                    <tr>
+                                        <td><h1 style={{paddingBottom: 20}}>{username}</h1></td>
+                                        <td onClick={handleOpenDel}><RiDeleteBin6Line size={30} style={{marginTop: -30}}/></td>
+                                    </tr>
+                                </table>
                             </div>
                         </td> : null }
                         <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
@@ -170,6 +181,7 @@ function ProfilePage({isMobile}) {
                                             <CgProfile size={30}/>
                                         </td>
                                         <td><h1>{username}</h1></td>
+                                        <td onClick={handleOpenDel}><RiDeleteBin6Line size={30} style={{marginTop: 0}}/></td>
                                     </tr>
                                 </table>
                             </div> : null }
@@ -191,6 +203,7 @@ function ProfilePage({isMobile}) {
                     </tr>
                 </table>
                 <AlertModal open={openAlert} handleClose={alertClose} message={alertMess} isSuccess={false}/>
+                <DeleteModal open={openDel} handleClose={handleCloseDel} userInfo={userInfo} type={"user"} setIsLoggedIn={setIsLoggedIn} cookies={cookies} name={username}/>
             </div>
         );
     }

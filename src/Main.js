@@ -231,7 +231,7 @@ function Main() {
             <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login setOpenAlert={setOpenAlert} setAlertMess={setAlertMess} setIsSuccess={setIsSuccess} checkLog={checkLog} cookies={cookies} isMobile={isTabletOrMobile} /> } />
             <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />
             <Route path="/restaurant/:id" element={<RestaurantPage isMobile={isTabletOrMobile}/>} />
-            <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage isMobile={isTabletOrMobile}/> : <OwnerPage isMobile={isTabletOrMobile}/> : < Navigate to="/login"/>} />
+            <Route path="/profile" element={ isLoggedIn == 1 ? userInfo.type == "reviewer" ? <ProfilePage isMobile={isTabletOrMobile} setIsLoggedIn={setIsLoggedIn} cookies={cookies}/> : <OwnerPage isMobile={isTabletOrMobile} setIsLoggedIn={setIsLoggedIn} cookies={cookies}/> : < Navigate to="/login"/>} />
             {/* <Route path="/*" element={ < Navigate to="/"/> }/> */}
           </Routes>
         </section>

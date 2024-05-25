@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import AlertModal from './alertModal';
 
-function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
+function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname, setIsLoggedIn, cookies}) {
     const style = {
         position: 'absolute',
         fontFamily: "Rubik",
@@ -118,6 +118,36 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                         // alert("Deletion failed.");
                     }
                 })
+            } else if (type == "user") {
+                await axios({
+                    method: 'post',
+                    url: process.env.REACT_APP_API_URL+"/deleteUser",
+                    data: {
+                        userID
+                    },
+                }).then((res) => {
+                    // alert(res.data.message);
+                    if(res.data.success){
+                        // alert(res.data.message);
+                        setIsLoggedIn(0);
+                        cookies.remove("authToken");
+                        localStorage.removeItem("user_reference");
+                        localStorage.removeItem("user_type");
+                        handleClose();
+                        // navigate("/profile");
+                        // window.location.reload();
+                        // if(pathname == "/profile" || type == "review") {
+                        //     window.location.reload();
+                        // } else {
+                        //     navigate('/profile');
+                        // }
+                    } else {
+                        setOpenAlert(true);
+                        setAlertMess('Having trouble deleting this review. Please try again later.');
+                        // alert("Deletion failed.");
+                    }
+                    setRet(false);
+                })
             } else {
                 setRet(false);
                 console.log("hi");
@@ -153,7 +183,8 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname}) {
                                type == "restaurant" ?
                                <p>Deleting this restaurant will also <b>delete all its listed dishes and reviews</b>.</p>
                                : type == "dish" ? <p>Deleting this dish will also <b>delete all its reviews</b>.</p>
-                               : <p>You are deleting your review on <b> {name}</b> of <b>{rname}</b>.</p>
+                               : type == "review" ? <p>You are deleting your review on <b> {name}</b> of <b>{rname}</b>.</p>
+                               : <p>You are deleting your account and all of its contents.</p>
                             }
                         </td>
                     </tr>
