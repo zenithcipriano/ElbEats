@@ -312,7 +312,7 @@ function RestaurantPage({isMobile}) {
                     style={{width: (width/2)+30, height: height-120}}
                     >
                     <table className='rdishtable'>
-                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id} restoID={restoID}/>
                     </table></div>}
                 </div>
                 <div className='restoBody' style={{
