@@ -476,7 +476,7 @@ function RestaurantPage({isMobile}) {
                 { isMobile?
                 <div style={{position: 'relative', marginLeft: -10}}>
                     <table className='rdishtable' align='center'>
-                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id}/>
+                        <DishCardTable dishList={tempData} navigate={navigate} isMobile={isMobile} privilege={userID == userInfo.id} restoID={restoID}/>
                     </table>
                 </div>
                 : <div></div>}
