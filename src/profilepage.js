@@ -163,7 +163,7 @@ function ProfilePage({isMobile}) {
                             </div>
                         </td> : null }
                         <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 3, width: width-10}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 0, width: width-10}}>
                                 <table align='center' style={{position: 'relative'}}>
                                     <tr>
                                         <td>
@@ -177,7 +177,7 @@ function ProfilePage({isMobile}) {
                                 dishList.length > 0 ?
                                     <div className='dishdiv' 
                                     style={{
-                                        height: isMobile ? height-205 : height-90, 
+                                        height: isMobile ? height-215 : height-90, 
                                         width: isMobile? width-10 : (width/4 > ProfWidth ?(3*width/4) + 20 : width-ProfWidth),
                                         marginLeft: isMobile ? 0 : 2.5
                                     }}
