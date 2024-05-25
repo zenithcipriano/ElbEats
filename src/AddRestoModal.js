@@ -429,7 +429,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                                                     </div>
                                                 ))}
                                             </Carousel>
-                                        : <div style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
+                                        : <div {...getRootProps()} style={{border: "1px solid #6e2323", padding: 5, position: 'relative', marginBottom: 10, padding: 75}}>
                                             No images.
                                         </div>
                                         }

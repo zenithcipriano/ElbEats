@@ -27,6 +27,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
+        maxHeight: 3*height/4,
         height: 3*height/4,
         overflowY: "scroll",
         padding: 2,
@@ -255,8 +256,8 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 }).then((res) => {
                    setfindIng(false);
                     if(res.data.success){
-                        setSearchPushed(true);
                         setResults(res.data.results);
+                        setSearchPushed(true);
                     } else {
                         setOpenAlert(true);
                         setAlertMess('Having trouble retrieving the ingredient list. Please try again later.');
