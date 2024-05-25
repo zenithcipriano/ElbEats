@@ -163,7 +163,7 @@ function ProfilePage({isMobile}) {
                             </div>
                         </td> : null }
                         <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 3, width: width-10}}>
                                 <table align='center' style={{position: 'relative'}}>
                                     <tr>
                                         <td>

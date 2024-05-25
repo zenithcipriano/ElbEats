@@ -243,7 +243,7 @@ function OwnerPage({isMobile}) {
                         </td> : null}
                         {/* isMobile ? {paddingTop: 20} : {padding: 20, paddingRight: 0} */}
                         <td style={isMobile ? {} : {padding: 20, paddingRight: 10, paddingTop: 0}}>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85, maxWidth: width-10, marginLeft: 3, width: width-10}}>
                                     <table align='center' style={{position: 'relative'}}>
                                         <tr>
                                             <td>
@@ -307,8 +307,8 @@ function OwnerPage({isMobile}) {
                                                                     <td> 
                                                                         <button className='restoCard' 
                                                                         // onClick={() => changeResto(index)} 
-                                                                        style={{fontFamily: "Rubik", textAlign: "left"
-                                                                        // maxWidth: width <= 805 ? 500 : 200
+                                                                        style={{fontFamily: "Rubik", textAlign: "left",
+                                                                        maxWidth: isMobile ? width-95 : width
                                                                         }} onClick={() => navigate('/restaurant/'+restos[curResto].restoID)}>
                                                                         <b className='restoName'>{rest.restoname}</b><br/>
                                                                         <a className='restoLoc'>{rest.restoLocation}</a>
