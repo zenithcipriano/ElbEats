@@ -182,7 +182,7 @@ function ProfilePage({isMobile}) {
                                         marginLeft: isMobile ? 0 : 2.5
                                     }}
                                     >
-                                        <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20}}>
+                                        <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20, marginLeft: isMobile ? -23 : 0}}>
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true} isMobile={isMobile}/>
                                         </table>
                                     </div> : "You have not reviewed any dish"
