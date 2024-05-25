@@ -337,8 +337,13 @@ class HomePageCard extends React.Component {
                   // width:"70%"
                   }} >
                   <tr>
-                    <td> <div style={{marginRight:"5px", textAlign: 'left'}}>*Calories: {this.state.calories}kcal</div></td>
-                    <td> <div style={{textAlign: 'right'}}>*Sodium: {this.state.sodium}mg </div></td>
+                    <td> <div style={{marginRight:"5px", textAlign: 'left', 
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"}}>*Calories: {this.state.calories}kcal</div></td>
+                    <td> <div style={{textAlign: 'right', whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"}}>*Sodium: {this.state.sodium}mg </div></td>
                   </tr>
                 </table>
 
