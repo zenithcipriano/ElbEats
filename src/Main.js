@@ -191,10 +191,10 @@ function Main() {
         <section>
         <div id='searchDiv1' >
           <table className='header' 
-          style={{zIndex: 1, marginLeft: isTabletOrMobile ? -20 : 0}}
+          style={style1}
           >
               <tr>
-                <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo"/> </th>
+                <th style={{textAlign: "left", width: "0px"}}> <img onClick={() => changeTabColor(1)} className="logo" src={logo} alt="ElbEats logo" style={{marginLeft: isTabletOrMobile ? -20 : 0}}/> </th>
               </tr>
           </table>
         {/* <div id='searchDiv1' > */}
