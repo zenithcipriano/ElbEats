@@ -109,7 +109,6 @@ class Login extends React.Component {
                         password: this.state.password,
                     }
                 }).then((res) => {
-                    this.setState({loading: false})
                     if(res.data.success){
                         this.resetValues()
                         // const cookies = new Cookies();
@@ -135,6 +134,7 @@ class Login extends React.Component {
                         this.props.setAlertMess(res.data.message);
                         this.props.setIsSuccess(false);
                     }
+                    this.setState({loading: false})
                 })
 
             // Signup
@@ -151,7 +151,6 @@ class Login extends React.Component {
                             type: this.state.page == 2 ? 1 : 0
                         }
                     }).then((res) => {
-                        this.setState({loading: false})
                         if(res.data.success){
                             // this.resetValues()
                             // alert(res.data.message)
@@ -180,6 +179,7 @@ class Login extends React.Component {
                             // this.props.setAlertMess("Error! Please contact Ms. Cipriano.");
                             this.props.setIsSuccess(false);
                         }
+                        this.setState({loading: false})
                     })
                     // } else {
                     //     alert("User type: Reviewer or Owner?")
@@ -188,6 +188,7 @@ class Login extends React.Component {
                     this.props.setOpenAlert(true);
                     this.props.setAlertMess("Password does not match!")
                     this.props.setIsSuccess(false);
+                    this.setState({loading: false})
                 }
             }
         }
