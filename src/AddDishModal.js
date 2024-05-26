@@ -231,8 +231,14 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     }
 
     const selectIng = (index) => {
+        for (let i=0; i<ingList; i++) {
+            if(ingList[i].ingNameDesc == results[index].ingNameDesc) {
+                clearIng()
+                return
+            }
+        } 
         setIngList([...ingList, results[index]]);
-        clearIng();
+        clearIng()
     }
 
     const removeIng = (index) => {
