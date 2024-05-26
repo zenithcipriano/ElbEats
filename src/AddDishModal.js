@@ -231,7 +231,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
     }
 
     const selectIng = (index) => {
-        for (let i=0; i<ingList; i++) {
+        for (let i=0; i<ingList.length; i++) {
             if(ingList[i].ingNameDesc == results[index].ingNameDesc) {
                 clearIng()
                 return
