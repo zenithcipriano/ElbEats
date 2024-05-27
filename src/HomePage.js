@@ -45,7 +45,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
     const [retDishes, setRetDishes] = useState(false);
     const [loading, setLoading] = useState(false);
     const [reloaded, setReload] = useState(false);
-    const [showFilters, setshowfilters] = useState(false);
+    const [showFilters, setshowfilters] = useState(true);
 
     const d = new Date();
     const monthD = d.getMonth();

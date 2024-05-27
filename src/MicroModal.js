@@ -48,7 +48,7 @@ function MicroModal ({open, handleClose, mlist, values, stanvalues}) {
                 {mlist.map((label, index) => {
                     return <tr>
                         <td style={{padding: 10, border: "1px solid rgba(0,0,0,0.15)"}}>{label}  ({parseFloat(values[index]).toFixed(2)} mg / {stanvalues[index]} mg)</td>
-                        <td style={{padding: 10, border: "1px solid rgba(0,0,0,0.15)", width: 10, whiteSpace: "nowrap" }}>{Math.floor(values[index]/stanvalues[index]*100)}%</td>
+                        <td style={{padding: 10, border: "1px solid rgba(0,0,0,0.15)", width: 10, whiteSpace: "nowrap" }}>{(values[index]/stanvalues[index]*100).toFixed(2)}%</td>
                         {/* <td style={{padding: 10, border: "1px solid rgba(0,0,0,0.15)", width: 10, whiteSpace: "nowrap" }}>{parseFloat(values[index]).toFixed(2)} mg / {stanvalues[index]} mg</td> */}
                     </tr>
                 })}

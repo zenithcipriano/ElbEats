@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import { IoHome } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { BiSolidFoodMenu } from "react-icons/bi";
-import logo from "./assets/finalLogo.png";
+import logo from "./assets/finalLogo1.png";
 import { useState, useEffect } from 'react'
 import HomePage from "./HomePage.js";
 import Login from './Login.js';
@@ -177,7 +177,7 @@ function Main() {
     setSU(keywords);
   }
 
-  const [openSearch, setOpenSearch] = useState(true);
+  const [openSearch, setOpenSearch] = useState(false);
 
   if(isLoggedIn == -1) {
     return <div style={{

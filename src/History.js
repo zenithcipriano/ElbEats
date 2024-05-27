@@ -80,9 +80,23 @@ function History({data, isMobile}) {
 
     const [stanmicro, setstanmicro] = useState(1);
     useEffect(() => {
-        setstanmicro(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK);
+        const temp1 = stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK;
+        // console.log(temp1);
+        setstanmicro(temp1);
+        setmicro(
+            Math.floor(calcium/stancalcium * 100 >= 100 ? 100 : calcium/stancalcium * 100) + 
+            Math.floor(phosphorus/stanphosphorus * 100 >= 100 ? 100 : phosphorus/stanphosphorus * 100) + 
+            Math.floor(iron/staniron * 100 >= 100 ? 100 : iron/staniron * 100) + 
+            Math.floor(zinc/stanzinc * 100 >= 100 ? 100 : zinc/stanzinc * 100) + 
+            Math.floor(A/stanA * 100 >= 100 ? 100 : A/stanA * 100) + 
+            Math.floor(B1/stanB1 * 100 >= 100 ? 100 : B1/stanB1 * 100) + 
+            Math.floor(B2/stanB2 * 100 >= 100 ? 100 : B2/stanB2 * 100) + 
+            Math.floor(B3/stanB3 * 100 >= 100 ? 100 : B3/stanB3 * 100) + 
+            Math.floor(C/stanC * 100 >= 100 ? 100 : C/stanC * 100) + 
+            Math.floor(K/stanK * 100 >= 100 ? 100 : K/stanK * 100)
+        );
     }, [stancalcium]);
-    // useState(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC, + stanK);
+    useState(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC, + stanK);
 
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
@@ -97,6 +111,40 @@ function History({data, isMobile}) {
         setHeight(window.innerHeight);
     }
 
+    const microSettings = () => {
+        const calcProgress =  calcium < stancalcium ? calcium/stancalcium * 100 : 100;
+        const phosProg = phosphorus < stanphosphorus ? phosphorus/stanphosphorus * 100 : 100;
+        const irProg = iron < staniron ? iron/staniron * 100 : 100;
+        const znProg = zinc < stanzinc ? zinc/stanzinc * 100 : 100;
+        const AProg = A < stanA ? A/stanA * 100 : 100;
+        const CProg = C < stanC ? C/stanC * 100 : 100;
+        const KProg = K < stanK ? K/stanK * 100 : 100;
+        const B1Prog = B1 < stanB1 ? B1/stanB1 * 100 : 100;
+        const B2Prog = B2 < stanB2 ? B2/stanB2 * 100 : 100;
+        const B3Prog = B3 < stanB3 ? B3/stanB3 * 100 : 100;
+
+        const data = [
+            // { value: progress, color: percent < 20 ? "#6e2323" : percent < 40 ? "orange" : percent < 60 ? "yellow" : percent < 80 ? "#9ACD32" : percent > 110 ? "#6e2323" : "#337357"},
+            {value: calcProgress, label: 'Calcium', color: calcium/stancalcium * 100 < 20 ? "#6e2323" : calcium/stancalcium * 100 < 40 ? "orange" : calcium/stancalcium * 100 < 60 ? "yellow" : calcium/stancalcium * 100 < 80 ? "#9ACD32" : calcium/stancalcium * 100 > 110 ? "#6e2323" : "#337357"},
+            // {value: stancalcium-calcium < 0 ? 0 : 100-(calcium/stancalcium * 100), color: "#C0D6E8"},
+            {value: phosProg, label: 'Phosphorus', color: phosphorus/stanphosphorus * 100 < 20 ? "#6e2323" : phosphorus/stanphosphorus * 100 < 40 ? "orange" : phosphorus/stanphosphorus * 100 < 60 ? "yellow" : phosphorus/stanphosphorus * 100 < 80 ? "#9ACD32" : phosphorus/stanphosphorus * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: irProg, label: 'Iron', color: iron/staniron * 100 < 20 ? "#6e2323" : iron/staniron * 100 < 40 ? "orange" : iron/staniron * 100 < 60 ? "yellow" : iron/staniron * 100 < 80 ? "#9ACD32" : iron/staniron * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: znProg, label: 'Zinc', color: zinc/stanzinc * 100 < 20 ? "#6e2323" : zinc/stanzinc * 100 < 40 ? "orange" : zinc/stanzinc * 100 < 60 ? "yellow" : zinc/stanzinc * 100 < 80 ? "#9ACD32" : zinc/stanzinc * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: AProg, label: 'Vitamin A', color: A/stanA * 100 < 20 ? "#6e2323" : A/stanA * 100 < 40 ? "orange" : A/stanA * 100 < 60 ? "yellow" : A/stanA * 100 < 80 ? "#9ACD32" : A/stanA * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: B1Prog, label: 'Vitamin B1', color: B1/stanB1 * 100 < 20 ? "#6e2323" : B1/stanB1 * 100 < 40 ? "orange" : B1/stanB1 * 100 < 60 ? "yellow" : B1/stanB1 * 100 < 80 ? "#9ACD32" : B1/stanB1 * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: B2Prog, label: 'Vitamin B2', color: B2/stanB2 * 100 < 20 ? "#6e2323" : B2/stanB2 * 100 < 40 ? "orange" : B2/stanB2 * 100 < 60 ? "yellow" : B2/stanB2 * 100 < 80 ? "#9ACD32" : B2/stanB2 * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: B3Prog, label: 'Vitamin B3', color: B3/stanB3 * 100 < 20 ? "#6e2323" : B3/stanB3 * 100 < 40 ? "orange" : B3/stanB3 * 100 < 60 ? "yellow" : B3/stanB3 * 100 < 80 ? "#9ACD32" : B3/stanB3 * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: CProg, label: 'Vitamin C', color: C/stanC * 100 < 20 ? "#6e2323" : C/stanC * 100 < 40 ? "orange" : C/stanC * 100 < 60 ? "yellow" : C/stanC * 100 < 80 ? "#9ACD32" : C/stanC * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: KProg, label: 'Vitamin K', color: K/stanK * 100 < 20 ? "#6e2323" : K/stanK * 100 < 40 ? "orange" : K/stanK * 100 < 60 ? "yellow" : K/stanK * 100 < 80 ? "#9ACD32" : K/stanK * 100 > 110 ? "#6e2323" : "#337357"},
+            {value: (10*100) - (calcProgress + phosProg + irProg + znProg + AProg + B1Prog + B2Prog + B3Prog + CProg + KProg)
+                , color: "#C0D6E8"}
+            // {value: stancalcium-calcium < 0 ? 0 : 100-(calcium/stancalcium * 100), color: "#C0D6E8"},
+            // { value:stanmicro-micro < 0 ? 
+            //     0 : stanmicro-micro, 
+            //     color: "#C0D6E8" },
+        ]
+        return data;
+    }
     const pieSettings = (progress, standard) => {
         const percent = progress/standard * 100
         const data1 = {data: [
@@ -194,18 +242,21 @@ function History({data, isMobile}) {
                 setB3(B31); setStanB3(age, gender);
                 setC(C1); setStanC(gender);
                 setK(K1); setStanK(age, gender);
-                setmicro(
-                    Math.floor(calcium1/stancalcium * 100 >= 100 ? 100 : calcium1/stancalcium * 100) + 
-                    Math.floor(phosphorus1/stanphosphorus * 100 >= 100 ? 100 : phosphorus1/stanphosphorus * 100) + 
-                    Math.floor(iron1/staniron * 100 >= 100 ? 100 : iron1/staniron * 100) + 
-                    Math.floor(zinc1/stanzinc * 100 >= 100 ? 100 : zinc1/stanzinc * 100) + 
-                    Math.floor(A1/stanA * 100 >= 100 ? 100 : A1/stanA * 100) + 
-                    Math.floor(B11/stanB1 * 100 >= 100 ? 100 : B11/stanB1 * 100) + 
-                    Math.floor(B21/stanB2 * 100 >= 100 ? 100 : B21/stanB2 * 100) + 
-                    Math.floor(B31/stanB3 * 100 >= 100 ? 100 : B31/stanB3 * 100) + 
-                    Math.floor(C1/stanC * 100 >= 100 ? 100 : C1/stanC * 100) + 
-                    Math.floor(K1/stanK * 100 >= 100 ? 100 : K1/stanK * 100)
-                );
+                // const temp1 = stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK;
+                // console.log(temp1);
+                // setstanmicro(temp1);
+                // setmicro(
+                //     Math.floor(calcium1/stancalcium * 100 >= 100 ? 100 : calcium1/stancalcium * 100) + 
+                //     Math.floor(phosphorus1/stanphosphorus * 100 >= 100 ? 100 : phosphorus1/stanphosphorus * 100) + 
+                //     Math.floor(iron1/staniron * 100 >= 100 ? 100 : iron1/staniron * 100) + 
+                //     Math.floor(zinc1/stanzinc * 100 >= 100 ? 100 : zinc1/stanzinc * 100) + 
+                //     Math.floor(A1/stanA * 100 >= 100 ? 100 : A1/stanA * 100) + 
+                //     Math.floor(B11/stanB1 * 100 >= 100 ? 100 : B11/stanB1 * 100) + 
+                //     Math.floor(B21/stanB2 * 100 >= 100 ? 100 : B21/stanB2 * 100) + 
+                //     Math.floor(B31/stanB3 * 100 >= 100 ? 100 : B31/stanB3 * 100) + 
+                //     Math.floor(C1/stanC * 100 >= 100 ? 100 : C1/stanC * 100) + 
+                //     Math.floor(K1/stanK * 100 >= 100 ? 100 : K1/stanK * 100)
+                // );
 
                 // setSampleData(Array(1).fill(dishList));
                 setLoading(false);
@@ -290,7 +341,23 @@ function History({data, isMobile}) {
                                         marginLeft: -75,
                                         position: 'relative'}}>
                                         <PieChart
-                                            series={[pieSettings(micro, stanmicro)]}
+                                            series={[
+                                                // const percent = progress/standard * 100
+                                                {data: microSettings(),
+                                                highlightScope: { faded: 'global', highlighted: 'item' },
+                                                faded: { innerRadius: 30, additionalRadius: -10, color: 'gray' },
+                                                innerRadius: 30,
+                                                outerRadius: 80,
+                                                paddingAngle: 1,
+                                                cornerRadius: 4,
+                                                startAngle: 180,
+                                                endAngle: -180,
+                                                cx: 150,
+                                                cy: 150,}
+                                            ]}
+                                            slotProps={{
+                                                legend: { hidden: true },
+                                            }}
                                             height={300}
                                             /> 
                                             </div>
