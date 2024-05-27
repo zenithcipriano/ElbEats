@@ -177,7 +177,7 @@ function Main() {
     setSU(keywords);
   }
 
-  const [openSearch, setOpenSearch] = useState(false);
+  const [openSearch, setOpenSearch] = useState(true);
 
   if(isLoggedIn == -1) {
     return <div style={{
@@ -202,7 +202,7 @@ function Main() {
           <form onSubmit={handleSubmit}>
             <table id="searchDiv" align={'center'}
             style={{width: "25%", zIndex: 1}}><tr>
-                <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search'/></td> 
+                <td><input id="searchInput" type="text" value={keywords} onChange={handleChange} placeholder='Search Dish or Restaurant'/></td> 
                 <td style={{width: "25px"}} onClick={handleSubmit}><FaSearch size={20} style={{marginTop: "1px"}}/> </td>
             </tr></table>
           </form>:

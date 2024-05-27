@@ -30,20 +30,58 @@ function History({data, isMobile}) {
     const [micro, setmicro] = useState(0);
     // const [vitamins, setVitamins] = useState(data.vitamins)
     // const [minerals, setMinerals] = useState(data.minerals)
-    const [standardCalories, setStandardCalories] = useState(2000);
+    const gender = 'M';
+    const age = 18; // age 18 - 29
+    const weight = gender == 'M' ? 60.5 : 52.5
+    // const weight
+    const [standardCalories, setStandardCalories] = useState(0);
+    const setStanCal = (age, gender) => {
+        setStandardCalories(age == 18 ? (gender == 'M' ? 3010 : 2280)
+                        : (gender == 'M' ? 2530 : 1930))
+    }
+
     // useState(data.gender.localeCompare("man") == 0 ? 2500:2000)
-    const [standardSodium, setStandardSodium] = useState(2000)
-    const [stancalcium, setstancalcium] = useState(1000);
-    const [stanphosphorus, setstanphosphorus] = useState(700);
-    const [staniron, setstaniron] = useState(8);
-    const [stanzinc, setstanzinc] = useState(8);
-    const [stanA, setstanA] = useState(700);
-    const [stanB1, setstanB1] = useState(1.1);
-    const [stanB2, setstanB2] = useState(1.1);
-    const [stanB3, setstanB3] = useState(14);
-    const [stanC, setstanC] = useState(75);
-    const [stanK, setstanK] = useState(90);
-    const [stanmicro, setstanmicro] = useState(1000);
+    const standardSodium = 500;
+    const [stancalcium, setstancalcium] = useState(0);
+    const setStanCalc = (age) => age == 18 ? setstancalcium(1000) : setstancalcium(750);
+
+    const [stanphosphorus, setstanphosphorus] = useState(0);
+    const setStanPhos = (age) => age == 18 ? setstanphosphorus(1250) : setstanphosphorus(700);
+
+    const [staniron, setstaniron] = useState(0);
+    const setStanIr = (age, gender) => gender != 'M' ? setstaniron(28) : age == 18 ? setstaniron(14) : setstaniron(12);
+
+    const [stanzinc, setstanzinc] = useState(0);
+    const setStanZn = (age, gender) => {
+        setstanzinc(age == 18 ? (gender == 'M' ? 9.0 : 7.2)
+                        : (gender == 'M' ? 6.5 : 4.6))
+    }
+
+    const [stanA, setstandA] = useState(0);
+    const setStanA = (age, gender) => gender != 'M' ? setstandA(600) : age == 18 ? setstandA(800) : setstandA(700);
+
+    const [stanB1, setstandB1] = useState(0);
+    const setStanB1 = (age, gender) => gender != 'M' ? setstandB1(1.1) : age == 18 ? setstandB1(1.4) : setstandB1(1.2);
+
+    const [stanB2, setstandB2] = useState(0);
+    const setStanB2 = (age, gender) => gender != 'M' ? setstandB2(1.1) : age == 18 ? setstandB2(1.5) : setstandB2(1.3);
+
+    const [stanB3, setstandB3] = useState(0);
+    const setStanB3 = (age, gender) => gender != 'M' ? setstandB3(14) : age == 18 ? setstandB3(18) : setstandB3(16);
+
+    const [stanC, setstandC] = useState(0);
+    const setStanC = (gender) => gender == 'M' ? setstandC(70) : setstandC(60);
+
+    const [stanK, setstandK] = useState(0);
+    const setStanK = (age, gender) => {
+        setstandK(age == 18 ? (gender == 'M' ? 59 : 52)
+                        : (gender == 'M' ? 61 : 53))
+    }
+
+    const [stanmicro, setstanmicro] = useState(1);
+    useEffect(() => {
+        setstanmicro(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK);
+    }, [stancalcium]);
     // useState(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC, + stanK);
 
     const [width, setWidth] = useState(window.innerWidth)
@@ -141,19 +179,21 @@ function History({data, isMobile}) {
                     K1 += parseFloat(dish.ingKFinal); 
                 });
 
-                setCalories(caltotal);
+                const age = 18;
+                const gender = 'M';
+                setCalories(caltotal); setStanCal(age, gender);
                 setSodium(ingSodiumFinal);
 
-                setcalcium(calcium1);
-                setphosphorus(phosphorus1)
-                setiron(iron1)
-                setzinc(zinc1)
-                setA(A1)
-                setB1(B11)
-                setB2(B21)
-                setB3(B31)
-                setC(C1)
-                setK(K1)
+                setcalcium(calcium1); setStanCalc(age);
+                setphosphorus(phosphorus1); setStanPhos(age);
+                setiron(iron1); setStanIr(age, gender);
+                setzinc(zinc1); setStanZn(age, gender);
+                setA(A1); setStanA(age, gender);
+                setB1(B11); setStanB1(age, gender);
+                setB2(B21); setStanB2(age, gender);
+                setB3(B31); setStanB3(age, gender);
+                setC(C1); setStanC(gender);
+                setK(K1); setStanK(age, gender);
                 setmicro(
                     Math.floor(calcium1/stancalcium * 100 >= 100 ? 100 : calcium1/stancalcium * 100) + 
                     Math.floor(phosphorus1/stanphosphorus * 100 >= 100 ? 100 : phosphorus1/stanphosphorus * 100) + 
