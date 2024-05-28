@@ -74,9 +74,12 @@ function HomePage({isMobile, submittedInput, keywords}) {
         await axios({
             method: 'post',
             url: process.env.REACT_APP_API_URL+"/searchDish",
-            data: {
+            data: userInfo.type == 'reviewer' ? {
                 input: submittedInput,
                 userID: userInfo.id,
+                time: time
+            } : {
+                input: submittedInput,
                 time: time
             },
         }).then((res) => {
@@ -130,10 +133,12 @@ function HomePage({isMobile, submittedInput, keywords}) {
                 protein: event.target.protein.value,
                 exdish: event.target.exdish.value,
                 input: keywords,
-                userID: userInfo.id
             } 
-            console.log(input);
-
+            // console.log(input);
+            if(userInfo.type == 'reviewer') {
+                input.userID = userInfo.id
+            }
+            
             await axios({
                 method: 'post',
                 url: process.env.REACT_APP_API_URL+"/filterDish",
