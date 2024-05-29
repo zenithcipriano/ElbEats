@@ -127,8 +127,25 @@ class HomePageCard extends React.Component {
 
         this.setState({options: options, userInfo: this.props.userInfo})
       }
+
+      if(this.props.cardOpen == this.state.dishID) {
+        this.setState({open: true})
+      } else {
+        this.setState({open: false})
+      }
   }
 
+  handleClick(event) {
+    // this.props.setCardOpen(true);
+    // wait
+    // setCardOpen={setCardOpen} cardOpen={cardOpen}
+    // this.setState({open: !this.state.open})
+    if(this.state.dishID == this.props.cardOpen) {
+      this.setState({open: false})
+    } else {
+      this.props.setCardOpen(this.state.dishID)
+    }
+  }
   // handleClick(event) {
   //   this.setState({anchorEl: event.currentTarget, open: true});
   // };
@@ -204,10 +221,6 @@ class HomePageCard extends React.Component {
       })
     }
   };
-
-  handleClick(event) {
-    this.setState({open: !this.state.open})
-  }
 
   handleEdit(val) {
     this.setState({openDish: val, open: true})

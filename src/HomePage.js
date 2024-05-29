@@ -224,6 +224,8 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
         </form>
     }
 
+    const [cardOpen, setCardOpen] = useState(0);
+
     if (!retDishes) {
         return <div className='divH'
         style={{
@@ -274,7 +276,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                             <td>{
                                 row.map((dish) => {
                                     return  <td>
-                                        <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> </td>
+                                        <HomePageCard setCardOpen={setCardOpen} cardOpen={cardOpen} data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> </td>
                                 })    
                             }</td>
                         </tr>
