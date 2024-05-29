@@ -300,6 +300,8 @@ function History({data, isMobile}) {
     // });
 
     // const sampledates = Array.from(Array(numData).keys());
+    const [cardOpen, setCardOpen] = useState(0);
+
     if (loading) {
         return <div style={{
             marginTop: isMobile ? -35 : -85, 
@@ -438,7 +440,7 @@ function History({data, isMobile}) {
                         {
                             sampleData.map((dish) => {
                                 return  <td className='cards'>
-                                    <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} history={true} /> 
+                                    <HomePageCard setCardOpen={setCardOpen} cardOpen={cardOpen} data={dish} navigate={navigate} userInfo={userInfo} history={true} /> 
                                 </td>
                             })
                         }

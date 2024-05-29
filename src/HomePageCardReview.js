@@ -96,8 +96,24 @@ class HomePageCardReview extends React.Component {
     this.setState({reviewClicked: !val});
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.cardOpen != this.props.cardOpen) {
+      if(this.props.cardOpen == this.state.dishID) {
+        this.setState({clicked: true})
+      } else {
+        this.setState({clicked: false})
+      }
+    }
+  }
+
   clickedSet(val) {
-    this.setState({clicked: val})
+    if(this.state.dishID == this.props.cardOpen) {
+      // this.setState({clicked: false})
+      this.props.setCardOpen(0)
+    } else {
+      this.props.setCardOpen(this.state.dishID)
+    }
+    // this.setState({clicked: val})
   }
 
   async choose(val) {

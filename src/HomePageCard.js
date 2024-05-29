@@ -128,10 +128,12 @@ class HomePageCard extends React.Component {
         this.setState({options: options, userInfo: this.props.userInfo})
       }
 
-      if(this.props.cardOpen == this.state.dishID) {
-        this.setState({open: true})
-      } else {
-        this.setState({open: false})
+      if(prevProps.cardOpen != this.props.cardOpen) {
+        if(this.props.cardOpen == this.state.dishID) {
+          this.setState({open: true})
+        } else {
+          this.setState({open: false})
+        }
       }
   }
 
@@ -141,7 +143,8 @@ class HomePageCard extends React.Component {
     // setCardOpen={setCardOpen} cardOpen={cardOpen}
     // this.setState({open: !this.state.open})
     if(this.state.dishID == this.props.cardOpen) {
-      this.setState({open: false})
+      // this.setState({open: false})
+      this.props.setCardOpen(0)
     } else {
       this.props.setCardOpen(this.state.dishID)
     }

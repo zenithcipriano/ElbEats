@@ -15,6 +15,8 @@ function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height
         type: localStorage.getItem("user_type")
     }
 
+    const [cardOpen, setCardOpen] = useState(0);
+
     if(dishList.length == 0 && privilege) {
         return <tr><td>
             <div className="dishCard" style={{height: 125, padding: "110px 15px", textAlign: 'center'}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
@@ -32,9 +34,9 @@ function DishCardTable ({dishList, navigate, privilege, loadingModalDish, height
                             (
                                 rindex == 0 && dindex == 0 ? <div className="dishCard" style={{height: 125, padding: "110px 15px", textAlign: 'center'}} onClick={handleOpenDish}> <FiPlusCircle size={100} /> </div>
                                 :   
-                                <HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> )
-                            : reviewFlag ? <HomePageCardReview data={dish} navigate={navigate} userInfo={userInfo} />
-                            :<HomePageCard data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile} />
+                                <HomePageCard setCardOpen={setCardOpen} cardOpen={cardOpen} data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile}/> )
+                            : reviewFlag ? <HomePageCardReview setCardOpen={setCardOpen} cardOpen={cardOpen} data={dish} navigate={navigate} userInfo={userInfo} />
+                            :<HomePageCard setCardOpen={setCardOpen} cardOpen={cardOpen} data={dish} navigate={navigate} userInfo={userInfo} isMobile={isMobile} />
                         }
                         </td>
                     })    
