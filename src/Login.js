@@ -175,7 +175,7 @@ class Login extends React.Component {
                             // this.props.setIsSuccess(true);
                         } else {
                             this.props.setOpenAlert(true);
-                            this.props.setAlertMess(res.data.message)
+                            this.props.setAlertMess(res.data.message);
                             // this.props.setAlertMess("Error! Please contact Ms. Cipriano.");
                             this.props.setIsSuccess(false);
                         }

@@ -226,7 +226,7 @@ function Main() {
 
         <section className='body' style={{height: "100%"}} >
           <Routes>
-            <Route path="/" element={ <HomePage isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
+            <Route path="/" element={ <HomePage isLoggedIn={isLoggedIn} isMobile={isTabletOrMobile} submittedInput={submittedInput} keywords={keywords} /> } />
             <Route path="/history" element={ isLoggedIn == 1 && userInfo.type == "reviewer"? <History data={data1} isMobile={isTabletOrMobile}/> : < Navigate to="/"/>} />
             <Route path="/login" element={ isLoggedIn == 1 ? < Navigate to="/profile"/> : <Login setOpenAlert={setOpenAlert} setAlertMess={setAlertMess} setIsSuccess={setIsSuccess} checkLog={checkLog} cookies={cookies} isMobile={isTabletOrMobile} /> } />
             <Route path="/dish/:id" element={<DishPage isMobile={isTabletOrMobile} navigate={navigate}/>} />

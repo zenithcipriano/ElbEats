@@ -13,7 +13,7 @@ import AlertModal from './alertModal';
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
-function HomePage({isMobile, submittedInput, keywords}) {
+function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [isSet, setIsSet] = useState(0);
@@ -74,7 +74,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
         await axios({
             method: 'post',
             url: process.env.REACT_APP_API_URL+"/searchDish",
-            data: userInfo.type == 'reviewer' ? {
+            data: isLoggedIn == 1 ? {
                 input: submittedInput,
                 userID: userInfo.id,
                 time: time
@@ -135,7 +135,7 @@ function HomePage({isMobile, submittedInput, keywords}) {
                 input: keywords,
             } 
             // console.log(input);
-            if(userInfo.type == 'reviewer') {
+            if(isLoggedIn == 1) {
                 input.userID = userInfo.id
             }
             
