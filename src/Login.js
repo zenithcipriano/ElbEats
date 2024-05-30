@@ -1,6 +1,6 @@
 import React  from 'react';
 import { MdMailOutline } from "react-icons/md";
-import { FaRegUser, FaRegEye } from "react-icons/fa";
+import { FaRegUser, FaRegEye, FaAngleDown, FaCaretDown } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { TbPasswordUser, TbEyeClosed } from "react-icons/tb";
 import "./login.css";
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import ProgressBar1 from './progress';
 // import Cookies from "universal-cookie";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class Login extends React.Component {
     constructor(props) {
@@ -29,6 +30,9 @@ class Login extends React.Component {
             cookies: props.cookies,
             page: 0,
             loading: false,
+            sex: 'Sex',
+            age: '',
+            sexClicked: false,
         }
 
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
@@ -45,9 +49,25 @@ class Login extends React.Component {
         this.chooseType = this.chooseType.bind(this);
         this.resetValues = this.resetValues.bind(this);
         this.changePage = this.changePage.bind(this);
+
+        this.handleAge = this.handleAge.bind(this);
+        this.handleSex = this.handleSex.bind(this);
+        this.handleSexClicked = this.handleSexClicked.bind(this);
+
         // this.handleOpenAlert = this.handleOpenAlert.bind(this);
     }
 
+    handleSexClicked(val) {
+        this.setState({sexClicked: val});
+    }
+
+    handleAge(event) {
+        this.setState({age: event.target.value});
+    }
+
+    handleSex(val) {
+        this.setState({sex: val, sexClicked: false})
+    }
     // handleOpenAlert(val) {
     //     this.setState({openAlert: val})
     // }
@@ -333,6 +353,47 @@ class Login extends React.Component {
                                 <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Confirm Password'/> 
                                 {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
                             </div>
+
+                            <table style={{position: 'relative', width: 220, tableLayout: 'fixed', margin: 'auto'}}>
+                                <tr>
+                                    <td>
+                                        <div className='loginInput' style={{width: "100%", padding: 'auto', marginLeft: -8}}>
+                                            <input className='textLogin' value={this.state.age} onChange={this.handleAge} style={{width: 70, textAlign: 'center', margin: 'auto'}} required type="number" placeholder='Age' min={18} max={29} step="1"/> 
+                                            {/* {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/> */}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className='loginInput' style={{width: "100%", padding: 0, marginLeft: 5}}>
+                                            <Dropdown autoClose={true} style={{width: 100, marginLeft: 5}}>
+                                                <Dropdown.Toggle variant="success" id="dropdown-basic" style={{border: "rgba(0,0,0,0)", fontSize: 15, backgroundColor: "rgba(0,0,0,0)"}}>
+                                                    <table style={{position: 'relative', padding: 1, marginTop: 2, width: '100%'}} onClick={() => this.handleSexClicked(true)}>
+                                                        <tr>
+                                                            <td style={{opacity: this.state.sex=='Sex' ? 0.7 : 1, color: this.state.sex=='Sex' ? 'black' : '#6e2323'}}>
+                                                                {this.state.sex}
+                                                            </td>
+                                                            <td>
+                                                                <div style={{height: 10}}><FaCaretDown size={20} style={{marginTop: -5}} /></div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </Dropdown.Toggle>
+
+                                                { this.state.sexClicked ?
+                                                <Dropdown.Menu style={{border: "#6e2323", backgroundColor: "white", textAlign: 'left', fontSize: 15}}>
+                                                    <Dropdown.Item style={{color: "#6e2323", textDecoration: 'none', padding: 5, border: "6e2323"}} onClick={() => this.handleSex('Male')}>Male</Dropdown.Item><br/>
+                                                    <Dropdown.Item style={{color: "#6e2323", textDecoration: 'none', padding: 5, border: "6e2323"}} onClick={() => this.handleSex('Female')}>Female</Dropdown.Item>
+                                                </Dropdown.Menu> 
+                                                : null}
+                                            </Dropdown>
+                                            {/* <input className='textLogin' style={{width: 70}} required type="number" placeholder='Age' min={18} max={29} step="1"/>  */}
+                                            
+                                            {/* <RiLockPasswordLine className='icon'/> */}
+                                            {/* <input className='lockinput' required type={this.state.showConPas?"text":"password"} value={this.state.confirmPassword} onChange={this.handleChangeConPas} placeholder='Gender'/>  */}
+                                            {/* {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/> */}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                             <input style={{width: 235}} type="submit" value={"Submit"} />
                         </form>
 
