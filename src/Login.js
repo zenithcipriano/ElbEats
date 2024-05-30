@@ -377,6 +377,7 @@ class Login extends React.Component {
                                 {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/>
                             </div>
 
+                            {this.state.page == 3 ?
                             <table style={{position: 'relative', width: 220, tableLayout: 'fixed', margin: 'auto'}}>
                                 <tr>
                                     <td>
@@ -416,7 +417,7 @@ class Login extends React.Component {
                                         </div>
                                     </td>
                                 </tr>
-                            </table>
+                            </table> : null}
                             <input style={{width: 235}} type="submit" value={"Submit"} />
                         </form>
 
