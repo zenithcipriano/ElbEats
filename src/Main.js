@@ -156,6 +156,8 @@ function Main() {
       cookies.remove("authToken");
       localStorage.removeItem("user_reference");
       localStorage.removeItem("user_type");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("age");
       if (page == 1) {
         window.location.reload();
       }

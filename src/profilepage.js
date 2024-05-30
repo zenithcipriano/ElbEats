@@ -174,7 +174,7 @@ function ProfilePage({isMobile, setIsLoggedIn, cookies}) {
                             </div>
                         </td> : null }
                         <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 0, width: width-10}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 0, width: width-10, zIndex: 100}}>
                                 <table align='center' style={{position: 'relative'}}>
                                     <tr>
                                         <td>
@@ -197,7 +197,7 @@ function ProfilePage({isMobile, setIsLoggedIn, cookies}) {
                                         <table align={isMobile? "center" : "left"} style={{position: "relative", borderSpacing: "20px 10px", paddingRight: 20, marginLeft: isMobile ? -23 : 0}}>
                                             <DishCardTable dishList={resizeDishesV} navigate={navigate} privilege={false} loadingModalDish={loading} height={height} reviewFlag={true} isMobile={isMobile}/>
                                         </table>
-                                    </div> : "You have not reviewed any dish"
+                                    </div> : <div style={{marginTop: 20}}>You have not reviewed any dish</div>
                             }
                         </div></td>
                     </tr>

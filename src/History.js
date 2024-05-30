@@ -227,8 +227,8 @@ function History({data, isMobile}) {
                     K1 += parseFloat(dish.ingKFinal); 
                 });
 
-                const age = 18;
-                const gender = 'M';
+                const age = localStorage.getItem("age");
+                const gender = localStorage.getItem("sex");
                 setCalories(caltotal); setStanCal(age, gender);
                 setSodium(ingSodiumFinal);
 

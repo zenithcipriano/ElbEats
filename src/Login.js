@@ -111,7 +111,9 @@ class Login extends React.Component {
         pin: "",
         showpassword: false,
         showConPas: false,
-        type1: 1,})
+        type1: 1,
+        sex: 'Sex',
+        age: ''})
         // type1: -1,})
     }
 
@@ -139,11 +141,13 @@ class Login extends React.Component {
                             age: 60*60*24,
                             sameSite: "lax",
                         });
-                        console.log(this.state.cookies);
+                        console.log(res.data);
                         // cookies.remove("authToken");
 
                         localStorage.setItem("user_reference", res.data.id);
                         localStorage.setItem("user_type", res.data.type);
+                        localStorage.setItem("age", res.data.age);
+                        localStorage.setItem("sex", res.data.sex);
                         this.state.checkLog();
                         // this.setState({openAlert: true, message: res.data.message})
                         // this.props.setOpenAlert(true);
@@ -159,16 +163,30 @@ class Login extends React.Component {
 
             // Signup
             } else {
+                if(this.state.page == 3 && this.state.sex == 'Sex') {
+                    this.props.setOpenAlert(true);
+                    this.props.setAlertMess("Missing: Sex")
+                    this.props.setIsSuccess(false);
+                    this.setState({loading: false})
+                    return
+                }
                 if(this.state.password.localeCompare(this.state.confirmPassword) == 0) {
                     // if (this.state.type1 != -1) {
                     axios({
                         method: 'post',
                         url: process.env.REACT_APP_API_URL+"/signup",
-                        data: {
+                        data: this.state.page == 2 ? {
                             username: this.state.username,
                             email: this.state.email,
                             password: this.state.password,
-                            type: this.state.page == 2 ? 1 : 0
+                            type: 1
+                        } : {
+                            username: this.state.username,
+                            email: this.state.email,
+                            password: this.state.password,
+                            type: 0,
+                            age: this.state.age,
+                            sex: this.state.sex == 'Male' ? 'M' : 'F'
                         }
                     }).then((res) => {
                         if(res.data.success){
@@ -186,8 +204,13 @@ class Login extends React.Component {
                             console.log(this.state.cookies);
                             // cookies.remove("authToken");
 
+                            console.log(res.data.age);
+                            console.log(res.data.sex);
+
                             localStorage.setItem("user_reference", res.data.id);
                             localStorage.setItem("user_type", res.data.type);
+                            localStorage.setItem("age", res.data.age);
+                            localStorage.setItem("sex", res.data.sex);
                             this.state.checkLog();
                             
                             // this.props.setOpenAlert(true);
@@ -358,7 +381,7 @@ class Login extends React.Component {
                                 <tr>
                                     <td>
                                         <div className='loginInput' style={{width: "100%", padding: 'auto', marginLeft: -8}}>
-                                            <input className='textLogin' value={this.state.age} onChange={this.handleAge} style={{width: 70, textAlign: 'center', margin: 'auto'}} required type="number" placeholder='Age' min={18} max={29} step="1"/> 
+                                            <input required className='textLogin' value={this.state.age} onChange={this.handleAge} style={{width: 70, textAlign: 'center', margin: 'auto'}} type="number" placeholder='Age' min={18} max={29} step="1"/> 
                                             {/* {!this.state.showConPas?<FaRegEye className='icon' onClick={() => this.showPasFun(true, 2)}/>:<TbEyeClosed className='icon' onClick={() => this.showPasFun(false, 2)}/>} <br/> */}
                                         </div>
                                     </td>
