@@ -329,7 +329,7 @@ class Login extends React.Component {
                         </table>
                         
                         <h1>Sign Up</h1>
-                        <p className='pageLabel'>Create your {this.state.page == 2? "owner" : "user"} account</p>
+                        <p className='pageLabel'>Create your {this.state.page == 2? "owner" : "customer"} account</p>
                         
                         <form onSubmit={this.handleSubmit}>
                             <div className='loginInput'>
