@@ -181,8 +181,8 @@ function History({data, isMobile}) {
 
     const Retrieving = async () => {
         const tempDay = day + dayDisplayed
-        const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${tempDay < 10 ? "0" + tempDay : tempDay} 00:00:00`;
-        const nextTime = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${tempDay+1 < 10 ? "0" + tempDay+1 : tempDay+1} 00:00:00`;
+        const time = `${year}-${(1+monthD) < 10 ? "0" + (1+monthD) : (1+monthD)}-${tempDay < 10 ? "0" + tempDay : tempDay} 00:00:00`;
+        const nextTime = `${year}-${(1+monthD) < 10 ? "0" + (1+monthD) : (1+monthD)}-${tempDay+1 < 10 ? "0" + tempDay+1 : tempDay+1} 00:00:00`;
         console.log(time);
 
         await axios({
