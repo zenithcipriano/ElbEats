@@ -167,7 +167,7 @@ class HomePageCard extends React.Component {
       this.setState({loading: true});
       const now = new Date();
       const YYYY = now.getFullYear();
-      const MM = now.getMonth()+1 < 10 ? "0"+now.getMonth() : now.getMonth();
+      const MM = now.getMonth()+1 < 10 ? "0"+now.getMonth()+1 : now.getMonth()+1;
       const DD = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
       const HH = now.getHours() < 10 ? "0"+now.getHours() : now.getHours();
       const MI = now.getMinutes() < 10 ? "0"+now.getMinutes() : now.getMinutes();
