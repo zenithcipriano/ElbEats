@@ -166,12 +166,12 @@ class HomePageCard extends React.Component {
     } else if(choice === "Select as a Meal") {
       this.setState({loading: true});
       const now = new Date();
-      const YYYY = now.getFullYear();
-      const MM = now.getMonth()+1 < 10 ? "0"+now.getMonth()+1 : now.getMonth()+1;
-      const DD = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
-      const HH = now.getHours() < 10 ? "0"+now.getHours() : now.getHours();
-      const MI = now.getMinutes() < 10 ? "0"+now.getMinutes() : now.getMinutes();
-      const SS = now.getSeconds() < 10 ? "0"+now.getSeconds() : now.getSeconds();
+      const YYYY = parseInt(now.getFullYear());
+      const MM = parseInt(now.getMonth())+1 < 10 ? "0"+parseInt(now.getMonth())+1 : parseInt(now.getMonth())+1;
+      const DD = parseInt(now.getDate()) < 10 ? "0"+now.getDate() : now.getDate();
+      const HH = parseInt(now.getHours()) < 10 ? "0"+now.getHours() : now.getHours();
+      const MI = parseInt(now.getMinutes()) < 10 ? "0"+now.getMinutes() : now.getMinutes();
+      const SS = parseInt(now.getSeconds()) < 10 ? "0"+now.getSeconds() : now.getSeconds();
 
       const data = {
         dishName: this.state.dishName,
