@@ -70,6 +70,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                 temp.amount = dishData.amounts[index];
                 temp.ingNameDesc = ing;
                 temp.ingType = dishData.types[index];
+                temp.filText = dishData.filText[index];
                 tempIngs.push(temp);
                 //     fidList.push(ing.ingFID);
             })

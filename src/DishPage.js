@@ -63,6 +63,8 @@ function DishPage({isMobile, navigate}) {
     const [ing, setIng] = useState([]);
     const [ingGrams, setAmount] = useState([]);
     const [ingType, setType] = useState([]);
+    const [filText, setfilText] = useState([]);
+
     const [protein, setProtein] = useState([]);
     const [proteinType, setPType] = useState([]);
     const [Reviews, setreviews] = useState([]);
@@ -110,6 +112,7 @@ function DishPage({isMobile, navigate}) {
                 setCoordinates({lng: parseFloat(data.lng), lat: parseFloat(data.lat)})
                 setAvail(data.available);
                 setDishInfo(data);
+                console.log(data);
                 setPermissionGiven(data.permission == 1)
                 setServings(data.servings);
                 setrestoID(data.restoID);
@@ -124,6 +127,7 @@ function DishPage({isMobile, navigate}) {
                 setIng(data.ings);
                 setAmount(data.amounts);
                 setType(data.types);
+                setfilText(data.filText)
                 setProtein(data.protein);
                 setPType(data.proteinSource);
                 setreviews(data.reviews);
