@@ -199,7 +199,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                             <td><FaSearch size={18} style={{marginTop: 2, color: "rgb(110, 35, 35)", paddingRight: 5}}/></td>
                         </tr>
                     </table> */}
-                    <input type="text" className='hmInput' style={{width: 150}} name='protein' placeholder='pork'/>
+                    <input type="text" className='hmInput' style={{width: 150}} name='protein' placeholder='e.g. baboy, pork, baka, beef'/>
                 </td>
             </tr>
             <tr>
@@ -213,7 +213,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                             <td><FaSearch size={18} style={{marginTop: 2, color: "rgb(110, 35, 35)", paddingRight: 5}}/></td>
                         </tr>
                     </table> */}
-                    <input type="text" className='hmInput' style={{width: 150}} name='exdish' placeholder='patatas'/>
+                    <input type="text" className='hmInput' style={{width: 150}} name='exdish' placeholder='e.g. salt, asin, pechay, bawang'/>
                 </td>
             </tr>
             <tr>

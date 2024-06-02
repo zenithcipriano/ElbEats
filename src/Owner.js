@@ -286,7 +286,7 @@ function OwnerPage({isMobile, setIsLoggedIn, cookies}) {
                                                 <button className='restoCardtd' style={{padding: 10, fontFamily: "Rubik"}}>
                                                     <table style={{position: 'relative'}} onClick={() => {retrieveRestoInfo("Add")}}>
                                                         <tr>
-                                                            <td><b className='restoName'>Enter Your Restaurant Details</b></td>
+                                                            <td><b className='restoName'>Enter Your Restaurant Information</b></td>
                                                             <td style={{paddingTop: 5}}><FiPlusCircle size={20} /></td>
                                                         </tr>
                                                     </table></button>
