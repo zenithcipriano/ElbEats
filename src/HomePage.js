@@ -68,7 +68,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
 
     const SearchDishes = async () => {
         const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${day < 10 ? "0" + day : day} 00:00:00`;
-        // console.log(time);
+        console.log(time);
         // console.log(retDishes);
             
         await axios({
