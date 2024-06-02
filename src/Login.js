@@ -316,7 +316,7 @@ class Login extends React.Component {
                         <h1>Welcome</h1>
                         <h2 className='pageLabelOpening' onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></h2>
                         <h2 className='pageLabelOpening' style={{marginTop: 20}} onClick={() => this.changePage(1)}><u>Do you already have an account?</u></h2>
-                        <h2 className='pageLabelOpening' onClick={() => this.changePage(3)}><u>Do you want to create a user account?</u></h2>
+                        <h2 className='pageLabelOpening' onClick={() => this.changePage(3)}><u>Do you want to create a customer account?</u></h2>
                     </div>
                 : this.state.page == 1 ?
                     <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40, border: this.props.isMobile ? "" : "1px solid #6e2323"}}>
@@ -342,7 +342,7 @@ class Login extends React.Component {
                             <input style={{width: 235}} type="submit" value={"Login"} />
                         </form>
                         <p onClick={() => this.changePage(2)}><u>Do you want to register your establishment?</u></p>
-                        <p onClick={() => this.changePage(3)} style={{marginBottom: -5}}><u>Do you want to create a user account?</u></p>
+                        <p onClick={() => this.changePage(3)} style={{marginBottom: -5}}><u>Do you want to create a customer account?</u></p>
                     </div>
                 : <div className='Login' style={{maxWidth: 320, width: window.innerWidth-40, border: this.props.isMobile ? "" : "1px solid #6e2323"}}>
                         <table style={{position: 'relative',  margin: -30, marginLeft: 0}}>
@@ -422,7 +422,7 @@ class Login extends React.Component {
                         </form>
 
                         <p onClick={() => this.changePage(1)}><u>Do you already have an account?</u></p>
-                        <p style={{marginBottom: -10}} onClick={() => this.changePage(this.state.page == 2 ? 3 : 2)}><u>{this.state.page != 2 ? "Do you want to register your establishment?" : "Do you want to create a user account?"}</u></p>
+                        <p style={{marginBottom: -10}} onClick={() => this.changePage(this.state.page == 2 ? 3 : 2)}><u>{this.state.page != 2 ? "Do you want to register your establishment?" : "Do you want to create a customer account?"}</u></p>
                     </div>
                 }
 
