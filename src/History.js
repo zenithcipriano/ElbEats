@@ -337,7 +337,8 @@ function History({data, isMobile}) {
                                     <td>
                                     <div className='pie' style={{
                                         // border: "1px solid black",
-                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5 }}>
+                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5,
+                                        zIndex: 100 }}>
                                     <div style={{
                                         // marginLeft: width/3 > (234.6-75) ? -75 : ((width/3)-(234.6-75)), 
                                         marginLeft: -75,
