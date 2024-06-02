@@ -431,7 +431,7 @@ function History({data, isMobile}) {
                                 const hours = cur.getHours() + 4;
                                 console.log(hours);
                                 const HH = hours < 10 ? (hours == 0 ? 12 : "0"+hours) : (hours > 12 ? hours-12 : hours);
-                                const AMPM = hours < 12 ? "AM" : "PM";
+                                const AMPM = hours < 12 ? "PM" : "AM";
                                 const MI = cur.getMinutes() < 10 ? "0"+cur.getMinutes() : cur.getMinutes();
                                 const SS = cur.getSeconds() < 10 ? "0"+cur.getSeconds() : cur.getSeconds();
                                 return  <td className='cardsdate'> {HH}:{MI}:{SS} {AMPM} </td>
