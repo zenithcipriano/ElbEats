@@ -427,8 +427,8 @@ function History({data, isMobile}) {
                     <tr>
                         {
                             sampleData.map((dish) => {
-                                const hours = cur.getHours() + 4;
                                 const cur = new Date(dish.dateSelected);
+                                const hours = cur.getHours() + 4;
                                 const HH = hours < 10 ? (hours == 0 ? 12 : "0"+hours) : (hours > 12 ? hours-12 : hours);
                                 const AMPM = hours > 12 ? "PM" : "AM";
                                 const MI = cur.getMinutes() < 10 ? "0"+cur.getMinutes() : cur.getMinutes();
