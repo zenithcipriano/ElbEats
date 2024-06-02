@@ -278,7 +278,7 @@ class HomePageCardReview extends React.Component {
             <tr onClick={() => {this.reviewClickedF(this.state.reviewClicked)}}>
               <td style={{textAlign: "left"}}>{this.state.star} {this.state.numStar}</td>
               <td style={{textAlign: "right", fontSize: "13px"}}> {months[parseInt(this.state.reviewData.datePosted.substring(5, 7))]} {this.state.reviewData.datePosted.substring(8, 10)} {this.state.reviewData.datePosted.substring(0, 4)} {
-                parseInt(this.state.reviewData.datePosted.substring(11, 13))-4 < 10 ? "0"+(parseInt(this.state.reviewData.datePosted.substring(11, 13))-4) : (parseInt(this.state.reviewData.datePosted.substring(11, 13))-4)}
+                parseInt(this.state.reviewData.datePosted.substring(11, 13)) < 10 ? "0"+(parseInt(this.state.reviewData.datePosted.substring(11, 13))) : (parseInt(this.state.reviewData.datePosted.substring(11, 13)))}
                 {this.state.reviewData.datePosted.substring(13, 19)}</td>
             </tr>
             <tr onClick={() => {this.reviewClickedF(this.state.reviewClicked)}}>
