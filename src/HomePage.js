@@ -48,7 +48,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
     const [showFilters, setshowfilters] = useState(true);
 
     const d = new Date();
-    const monthD = d.getMonth();
+    const monthD = d.getMonth()+1;
     const day = d.getDate();
     const year = d.getFullYear();
 
@@ -68,7 +68,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
 
     const SearchDishes = async () => {
         const time = `${year}-${monthD < 10 ? "0" + monthD : monthD}-${day < 10 ? "0" + day : day} 00:00:00`;
-        console.log(time);
+        // console.log(time);
         // console.log(retDishes);
             
         await axios({
