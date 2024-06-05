@@ -505,8 +505,9 @@ function DishPage({isMobile, navigate}) {
                     {isMobile ? 
                     <table id='rateTable' style={isMobile ? style3 : {left: "-8px"}}>
                         <tr>
+                            {userInfo.type == "reviewer" && !isMobile ?
                             <td><button style={{fontSize: 17}} onClick={ handleOpen }>{revAction == "Edit" ? "Edit" : "Write a"} Review {revAction == "Add" ? <FiPlusCircle /> : <BiEditAlt />}</button>
-                            </td>
+                            </td> : null}
 
                             {userInfo.type == "reviewer" && revAction == "Edit" ? 
                             <td><button style={{fontSize: 17}} onClick={ () => {
