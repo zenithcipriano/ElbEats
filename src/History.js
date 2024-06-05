@@ -182,8 +182,7 @@ function History({data, isMobile}) {
     const Retrieving = async () => {
         const tempDay = parseInt(day) + parseInt(dayDisplayed)
         const time = `${year}-${(1+monthD) < 10 ? "0" + (1+monthD) : (1+monthD)}-${tempDay < 10 ? "0" + tempDay : tempDay} 00:00:00`;
-        const nextTime = `${year}-${(1+monthD) < 10 ? "0" + (1+monthD) : (1+monthD)}-${tempDay+1 < 10 ? "0" + tempDay+1 : tempDay+1} 00:00:00`;
-        console.log(time);
+        const nextTime = `${year}-${(1+monthD) < 10 ? "0" + (1+monthD) : (1+monthD)}-${(tempDay+1) < 10 ? "0" + (tempDay+1) : (tempDay+1)} 00:00:00`;
 
         await axios({
             method: 'post',
