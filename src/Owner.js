@@ -253,9 +253,9 @@ function OwnerPage({isMobile, setIsLoggedIn, cookies}) {
                             {isMobile ? <div className='userProfile' style={{marginBottom: 0, paddingBottom: 10, marginTop: -85, maxWidth: width-10, marginLeft: 3, width: width-10, position: 'relative', zIndex: 100}}>
                                     <table align='center' style={{position: 'relative'}}>
                                         <tr>
-                                            {/* <td>
+                                            <td>
                                                 <CgProfile size={30}/>
-                                            </td> */}
+                                            </td>
                                             <td><h1>{username}</h1></td>
                                             <td onClick={() => {setDelAction("user"); handleOpenDel()}}><RiDeleteBin6Line size={30} style={{marginTop: 0}}/></td>
                                         </tr>

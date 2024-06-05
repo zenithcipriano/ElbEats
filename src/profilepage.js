@@ -174,7 +174,7 @@ function ProfilePage({isMobile, setIsLoggedIn, cookies}) {
                             </div>
                         </td> : null }
                         <td style={isMobile ? {paddingTop: 20} : {padding: 10, paddingRight: 0}}><div>
-                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 0, width: width-10, zIndex: 100}}>
+                            {isMobile ? <div className='userProfile' style={{marginBottom: 5, paddingBottom: 10, maxWidth: width-10, marginLeft: 0, width: width-10, zIndex: 100, marginTop: -75}}>
                                 <table align='center' style={{position: 'relative'}}>
                                     <tr>
                                         <td>
