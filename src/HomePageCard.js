@@ -17,10 +17,35 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { GoBookmarkSlash } from "react-icons/go";
 import AlertModal from './alertModal';
+import { TbHistory } from 'react-icons/tb';
 
 class HomePageCard extends React.Component {
   constructor(props) {
     super(props);
+
+    const mineralLabel = ["calcium", "zinc", "phosphorus", "iron", "Vit A", "Vit B1", "Vit B2", "Vit B3", "Vit C", "Vit K"];
+    const minerals = [props.data.ingCalciumFinal, 
+      props.data.ingZnFinal, 
+      props.data.ingPhosphorusFinal, 
+      props.data.ingIronFinal,
+      props.data.ingAFinal,
+      props.data.ingB1Final,
+      props.data.ingB2Final,
+      props.data.ingNiacinFinal,
+      props.data.ingCFinal,
+      props.data.ingKFinal];
+    const sorted = [...minerals].sort(function(a, b) {
+      return a - b;
+    }).reverse();
+
+    let minerals1 = ''
+    for (let i=0; i < sorted.length; i++) {
+      if(sorted.length-1 == i) {
+        minerals1 += mineralLabel[minerals.indexOf(sorted[i])]
+      } else {
+        minerals1 += mineralLabel[minerals.indexOf(sorted[i])] + ', '
+      }
+    }
 
     const options = props.userInfo.type == "owner" && props.userInfo.id == props.data.userID ? [
       "View Dish Details",
@@ -73,10 +98,11 @@ class HomePageCard extends React.Component {
         resName: props.data.restoname,
         distance: 0,
         status:  isOpenDay && isOpenTime0 && isOpenTime1 ? "Open": "Closed",
-        vitamins: props.data.vitamins,
+        // vitamins: props.data.vitamins,
+        vitamins: '',
         calories: parseInt(props.data.ingCaloriesFinal),
         sodium: parseInt(props.data.ingSodiumFinal),
-        minerals: props.data.minerals,
+        minerals: minerals1,
         available: props.data.available,
         // tabs: tb ? tb.replace(" ", "").split(",").slice(0,2) : [],
         price: props.data.walkinprice,
@@ -133,7 +159,8 @@ class HomePageCard extends React.Component {
       }
 
       if(prevProps.cardOpen != this.props.cardOpen) {
-        if(this.props.cardOpen == this.state.dishID) {
+        // if(this.props.cardOpen == this.state.dishID) {
+        if(this.props.cardOpen == this) {
           this.setState({open: true})
         } else {
           this.setState({open: false})
@@ -146,11 +173,13 @@ class HomePageCard extends React.Component {
     // wait
     // setCardOpen={setCardOpen} cardOpen={cardOpen}
     // this.setState({open: !this.state.open})
-    if(this.state.dishID == this.props.cardOpen) {
+    // if(this.state.dishID == this.props.cardOpen) {
+    if(this == this.props.cardOpen) {
       // this.setState({open: false})
       this.props.setCardOpen(0)
     } else {
-      this.props.setCardOpen(this.state.dishID)
+      this.props.setCardOpen(this)
+      // this.props.setCardOpen(this.state.dishID)
     }
   }
   // handleClick(event) {
@@ -384,7 +413,8 @@ class HomePageCard extends React.Component {
                     textOverflow: "ellipsis",
                     width:"130px",
                     // border: "1px solid rgba(0, 0, 0, 0.1)",
-                  }}>*Contains {this.state.minerals? this.state.minerals + " and": ""} Vitamins {this.state.vitamins} 
+                  }}>{this.state.minerals? `*Has ${this.state.minerals}` : ""}
+                  {/* }}>*Has {this.state.minerals? this.state.minerals + " and": ""} Vitamins {this.state.vitamins}  */}
                   </div></td>
                     {/* <td className="vitmin" style={{width:"80px"}}> {this.state.minerals} </td> */}
                   </tr>

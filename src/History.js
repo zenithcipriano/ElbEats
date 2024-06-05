@@ -30,9 +30,9 @@ function History({data, isMobile}) {
     const [micro, setmicro] = useState(0);
     // const [vitamins, setVitamins] = useState(data.vitamins)
     // const [minerals, setMinerals] = useState(data.minerals)
-    const gender = 'M';
-    const age = 18; // age 18 - 29
-    const weight = gender == 'M' ? 60.5 : 52.5
+    // const gender = 'M';
+    // const age = 18; // age 18 - 29
+    // const weight = gender == 'M' ? 60.5 : 52.5
     // const weight
     const [standardCalories, setStandardCalories] = useState(0);
     const setStanCal = (age, gender) => {
@@ -79,34 +79,34 @@ function History({data, isMobile}) {
     }
 
     const [stanmicro, setstanmicro] = useState(1);
-    useEffect(() => {
-        const temp1 = stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK;
+    // useEffect(() => {
+        // const temp1 = stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC + stanK;
         // console.log(temp1);
-        setstanmicro(temp1);
-        setmicro(
-            Math.floor(calcium/stancalcium * 100 >= 100 ? 100 : calcium/stancalcium * 100) + 
-            Math.floor(phosphorus/stanphosphorus * 100 >= 100 ? 100 : phosphorus/stanphosphorus * 100) + 
-            Math.floor(iron/staniron * 100 >= 100 ? 100 : iron/staniron * 100) + 
-            Math.floor(zinc/stanzinc * 100 >= 100 ? 100 : zinc/stanzinc * 100) + 
-            Math.floor(A/stanA * 100 >= 100 ? 100 : A/stanA * 100) + 
-            Math.floor(B1/stanB1 * 100 >= 100 ? 100 : B1/stanB1 * 100) + 
-            Math.floor(B2/stanB2 * 100 >= 100 ? 100 : B2/stanB2 * 100) + 
-            Math.floor(B3/stanB3 * 100 >= 100 ? 100 : B3/stanB3 * 100) + 
-            Math.floor(C/stanC * 100 >= 100 ? 100 : C/stanC * 100) + 
-            Math.floor(K/stanK * 100 >= 100 ? 100 : K/stanK * 100)
-        );
-    }, [stancalcium]);
-    useState(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC, + stanK);
+        // setstanmicro(10*100);
+        // setmicro(
+        //     Math.floor(calcium/stancalcium * 100 >= 100 ? 100 : calcium/stancalcium * 100) + 
+        //     Math.floor(phosphorus/stanphosphorus * 100 >= 100 ? 100 : phosphorus/stanphosphorus * 100) + 
+        //     Math.floor(iron/staniron * 100 >= 100 ? 100 : iron/staniron * 100) + 
+        //     Math.floor(zinc/stanzinc * 100 >= 100 ? 100 : zinc/stanzinc * 100) + 
+        //     Math.floor(A/stanA * 100 >= 100 ? 100 : A/stanA * 100) + 
+        //     Math.floor(B1/stanB1 * 100 >= 100 ? 100 : B1/stanB1 * 100) + 
+        //     Math.floor(B2/stanB2 * 100 >= 100 ? 100 : B2/stanB2 * 100) + 
+        //     Math.floor(B3/stanB3 * 100 >= 100 ? 100 : B3/stanB3 * 100) + 
+        //     Math.floor(C/stanC * 100 >= 100 ? 100 : C/stanC * 100) + 
+        //     Math.floor(K/stanK * 100 >= 100 ? 100 : K/stanK * 100)
+        // );
+    // }, [stancalcium]);
+    // useState(stancalcium + stanphosphorus + staniron + stanzinc + stanA + stanB1 + stanB2 + stanB3 + stanC, + stanK);
 
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
 
     const diff = 300 - (window.innerWidth/3);
-    const [adjustLeft, setAdjustLeft] = useState(diff > 0 ? "-"+Math.ceil((diff)/2)+"px": "0px")
+    // const [adjustLeft, setAdjustLeft] = useState(diff > 0 ? "-"+Math.ceil((diff)/2)+"px": "0px")
 
     window.onresize = function(event) {
-        const diff1 = 300 - (window.innerWidth/3);
-        setAdjustLeft(diff > 0 ? "-"+Math.ceil((diff)/2)+"px": "0px");
+        // const diff1 = 300 - (window.innerWidth/3);
+        // setAdjustLeft(diff > 0 ? "-"+Math.ceil((diff)/2)+"px": "0px");
         setWidth(window.innerWidth);
         setHeight(window.innerHeight);
     }
@@ -122,6 +122,13 @@ function History({data, isMobile}) {
         const B1Prog = B1 < stanB1 ? B1/stanB1 * 100 : 100;
         const B2Prog = B2 < stanB2 ? B2/stanB2 * 100 : 100;
         const B3Prog = B3 < stanB3 ? B3/stanB3 * 100 : 100;
+        
+        // setstanmicro(10*100);
+        console.log()
+        if(micro != (calcProgress + phosProg + irProg + znProg + AProg + B1Prog + B2Prog + B3Prog + CProg + KProg)) {
+            setmicro(calcProgress + phosProg + irProg + znProg + AProg + B1Prog + B2Prog + B3Prog + CProg + KProg)
+            setstanmicro(10*100);
+        }
 
         const data = [
             // { value: progress, color: percent < 20 ? "#6e2323" : percent < 40 ? "orange" : percent < 60 ? "yellow" : percent < 80 ? "#9ACD32" : percent > 110 ? "#6e2323" : "#337357"},
@@ -194,8 +201,8 @@ function History({data, isMobile}) {
             }
         }).then((res) => {
             if(res.data.success){
-                const dishList = res.data.dishList
-                // console.log(dishList);
+                const dishList = res.data.dishList;
+                console.log(dishList);
 
                 setSampleData(dishList);
                 let caltotal = 0;
@@ -336,8 +343,7 @@ function History({data, isMobile}) {
                                     <td>
                                     <div className='pie' style={{
                                         // border: "1px solid black",
-                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5,
-                                        zIndex: 100 }}>
+                                        marginLeft: width/3 > (234.6-75) ? 0 : (((width/3)-(234.6-75))/2)-5}}>
                                     <div style={{
                                         // marginLeft: width/3 > (234.6-75) ? -75 : ((width/3)-(234.6-75)), 
                                         marginLeft: -75,

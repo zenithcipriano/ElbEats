@@ -72,6 +72,9 @@ class HomePageCardReview extends React.Component {
   }
 
   alertClose() {
+    if(this.state.isSucces) {
+      window.location.reload();
+    }
     this.setState({openAlert: false});
   }
 
@@ -123,7 +126,7 @@ class HomePageCardReview extends React.Component {
       if(val === "Add") {
         const now = new Date();
         const YYYY = now.getFullYear();
-        const MM = now.getMonth() < 10 ? "0"+now.getMonth() : now.getMonth();
+        const MM = (1+now.getMonth()) < 10 ? "0"+(1+now.getMonth()) : (1+now.getMonth());
         const DD = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
         const HH = now.getHours() < 10 ? "0"+now.getHours() : now.getHours();
         const MI = now.getMinutes() < 10 ? "0"+now.getMinutes() : now.getMinutes();
@@ -141,11 +144,15 @@ class HomePageCardReview extends React.Component {
             url: process.env.REACT_APP_API_URL+"/addToHistory",
             data,
         }).then((res) => {
-            this.alertOpen("Having trouble adding to today's meal list. Please try again later.", res.data.success);
-            this.setState({loading: false});
+            // this.alertOpen("Having trouble adding to today's meal list. Please try again later.", res.data.success);
+            // this.setState({loading: false});
 
             // alert(res.data.message);
-            // if(res.data.success){
+            if(res.data.success){
+              this.setState({open: false}); //, openAlert: true, alertMess: `Successfully selected ${this.state.dishName}.`, isSucces: true});
+              this.alertOpen(`Successfully selected ${this.state.dishName}.`, res.data.success);
+
+
                 // this.setState({open: false});
 
                 // const location = useLocation();
@@ -154,7 +161,12 @@ class HomePageCardReview extends React.Component {
                 // if (this.props.history) {
                 // window.location.reload();
                 // }
-            // }
+            } else {
+              this.alertOpen("Having trouble adding to today's meal list. Please try again later.", res.data.success);
+
+              // this.setState({openAlert: true, alertMess: "Having trouble adding to today's meal list. Please try again later.", isSucces: false});
+            }
+            this.setState({loading: false});
           })
         }
     }
