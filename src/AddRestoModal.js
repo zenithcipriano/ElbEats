@@ -238,13 +238,14 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                         url: process.env.REACT_APP_API_URL+"/createResto",
                         data: newResto,
                     }).then((res) => {
-                        console.log(res);
-                        setRet(false);
+                        // console.log(res);
                         if(res.data.success){
                             // alert(res.data.message);
-                            handleClose();
                             window.location.reload();
                         } else {
+                            setRet(false);
+                            // handleClose();
+
                             setOpenAlert(true);
                             setAlertMess(`Restaurant '${restoname}' already exist in the system.`)
                             // alert("Creating New Restaurant Failed.")
@@ -258,12 +259,13 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                         data: newResto,
                     }).then((res) => {
                         // alert(res.data.message);
-                        setRet(false);
                         if(res.data.success){
                             // alert(res.data.message);
-                            handleClose();
                             window.location.reload();
                         } else {
+                            setRet(false);
+                            // handleClose();
+
                             setOpenAlert(true);
                             setAlertMess(`Restaurant '${restoname}' already exist in the system.`)
                             // alert(`Updating Restaurant '${restoname}' failed.`)

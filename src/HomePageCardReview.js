@@ -141,8 +141,8 @@ class HomePageCardReview extends React.Component {
             url: process.env.REACT_APP_API_URL+"/addToHistory",
             data,
         }).then((res) => {
-            this.setState({loading: false});
             this.alertOpen("Having trouble adding to today's meal list. Please try again later.", res.data.success);
+            this.setState({loading: false});
 
             // alert(res.data.message);
             // if(res.data.success){

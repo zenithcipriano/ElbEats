@@ -84,7 +84,6 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
             },
         }).then((res) => {
             // console.log(res);
-            setRetDishes(true);
             if(res.data.success){
                 const dishList = res.data.dishList
 
@@ -98,6 +97,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                 setAlertMess("Having trouble retrieving dish information. Please try again later.");
                 // alert(res.data.message);
             }
+            setRetDishes(true);
         })
         // }
     }
@@ -144,8 +144,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                 url: process.env.REACT_APP_API_URL+"/filterDish",
                 data: input
             }).then((res) => {
-                console.log(res);
-                setRetDishes(true);
+                // console.log(res);
                 if(res.data.success){
                     const dishList = res.data.dishList
 
@@ -159,6 +158,7 @@ function HomePage({isLoggedIn, isMobile, submittedInput, keywords}) {
                     setAlertMess("Having trouble retrieving dish information. Please try again later.");
                     // alert(res.data.message);
                 }
+                setRetDishes(true);
             })
         }
     }

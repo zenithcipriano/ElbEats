@@ -185,7 +185,6 @@ class HomePageCard extends React.Component {
           url: process.env.REACT_APP_API_URL+"/addToHistory",
           data,
       }).then((res) => {
-          this.setState({loading: false});
           // this.alertOpen('Successfully added ');
           // alert(res.data.message);
           if(res.data.success){
@@ -200,6 +199,7 @@ class HomePageCard extends React.Component {
           } else {
             this.alertOpen("Having trouble adding to today's meal list. Please try again later.");
           }
+          this.setState({loading: false});
       })
     } else if(choice === "Remove from History") {
       this.setState({loading: true});
@@ -213,7 +213,6 @@ class HomePageCard extends React.Component {
           url: process.env.REACT_APP_API_URL+"/deleteFromHistory",
           data,
       }).then((res) => {
-          this.setState({loading: false});
           // alert(res.data.message);
           if(res.data.success){
               this.setState({open: false});
@@ -221,6 +220,7 @@ class HomePageCard extends React.Component {
           } else {
             this.alertOpen("Having trouble removing from today's meal list. Please try again later.");
           }
+          this.setState({loading: false});
       })
     }
   };

@@ -72,7 +72,7 @@ function RestaurantPage({isMobile}) {
         }).then(async (res) => {
             if(res.data.success){
                 const data = res.data.resto;
-                console.log(data);
+                // console.log(data);
 
                 const tempRate = data.ratings ? data.ratings : 0;
                 setNumRev(data.numRevs);

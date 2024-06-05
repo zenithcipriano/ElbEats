@@ -165,19 +165,14 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                     url: process.env.REACT_APP_API_URL+"/createDish",
                     data: newDish,
                 }).then((res) => {
-                    setRet(false);
                     if(res.data.success){
-                        // setOpenAlert(true);
-                        // setAlertMess(res.data.message);
-                        // setIsSuccess(true);
-
-                        // alert(res.data.message);
-                        handleClose();
                         window.location.reload();
                     } else {
+                        setRet(false);
+                        // handleClose();
+
                         setOpenAlert(true);
                         setAlertMess(`Dish '${dishname}' already exist in the system.`);
-                        // alert(`Dish '${dishname}' already exist in the system.`)
                     }
                 })
             } else if (action = "Edit"){
@@ -188,12 +183,13 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                     data: newDish,
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
                     if(res.data.success){
                         // alert(res.data.message);
-                        handleClose();
                         window.location.reload();
                     } else {
+                        setRet(false);
+                        // handleClose();
+
                         setOpenAlert(true);
                         setAlertMess(`Updating Dish '${dishname}' failed.`);
                         // alert(`Dish '${dishname}' already exist in the system.`)
@@ -261,7 +257,6 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                     url: process.env.REACT_APP_API_URL+"/searchIng",
                     data: {ingName: ingSearch},
                 }).then((res) => {
-                   setfindIng(false);
                     if(res.data.success){
                         setResults(res.data.results);
                         setSearchPushed(true);
@@ -270,6 +265,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                         setAlertMess('Having trouble retrieving the ingredient list. Please try again later.');
                         // alert(res.data.message);
                     }
+                   setfindIng(false);
                 })
         } else {
             await new Promise(res => setTimeout(res, 100));

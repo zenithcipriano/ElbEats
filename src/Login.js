@@ -130,9 +130,8 @@ class Login extends React.Component {
                         username: this.state.username,
                         password: this.state.password,
                     }
-                }).then((res) => {
+                }).then(async (res) => {
                     if(res.data.success){
-                        this.resetValues()
                         // const cookies = new Cookies();
                         this.state.cookies.set(
                             "authToken",
@@ -141,14 +140,15 @@ class Login extends React.Component {
                             age: 60*60*24,
                             sameSite: "lax",
                         });
-                        console.log(res.data);
+                        // console.log(res.data);
                         // cookies.remove("authToken");
 
                         localStorage.setItem("user_reference", res.data.id);
                         localStorage.setItem("user_type", res.data.type);
                         localStorage.setItem("age", res.data.age);
                         localStorage.setItem("sex", res.data.sex);
-                        this.state.checkLog();
+                        await this.state.checkLog();
+                        this.resetValues()
                         // this.setState({openAlert: true, message: res.data.message})
                         // this.props.setOpenAlert(true);
                         // this.props.setAlertMess(res.data.message);
@@ -188,11 +188,10 @@ class Login extends React.Component {
                             age: this.state.age,
                             sex: this.state.sex == 'Male' ? 'M' : 'F'
                         }
-                    }).then((res) => {
+                    }).then(async (res) => {
                         if(res.data.success){
                             // this.resetValues()
                             // alert(res.data.message)
-                            this.resetValues()
                             // const cookies = new Cookies();
                             this.state.cookies.set(
                                 "authToken",
@@ -211,7 +210,8 @@ class Login extends React.Component {
                             localStorage.setItem("user_type", res.data.type);
                             localStorage.setItem("age", res.data.age);
                             localStorage.setItem("sex", res.data.sex);
-                            this.state.checkLog();
+                            await this.state.checkLog();
+                            this.resetValues()
                             
                             // this.props.setOpenAlert(true);
                             // this.props.setAlertMess(res.data.message);

@@ -84,12 +84,14 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     data: reviewbody,
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
                     if(res.data.success){
-                        resetButton();
-                        handleClose();
+                        
                         window.location.reload();
                     } else {
+                        setRet(false);
+                        // resetButton();
+                        // handleClose();
+
                         setOpenAlert(true);
                         setAlertMess('Having trouble saving your review. Please try again later.');
                         // setAlertMess(res.data.message);
@@ -103,15 +105,15 @@ function AddReview ({open, handleClose, height, action, dishID, curRev}) {
                     data: reviewbody,
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
                     if(res.data.success){
-                        resetButton();
-                        handleClose();
+                        // resetButton();
+                        // handleClose();
                         window.location.reload();
                     } else {
                         setOpenAlert(true);
                         setAlertMess('Having trouble saving your review. Please try again later.');
                         // setAlertMess(res.data.message);
+                        setRet(false);
                     }
                 })
             } else {

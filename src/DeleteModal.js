@@ -51,18 +51,19 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname, setIs
                     },
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
+                    
                     if(res.data.success){
                         // alert(res.data.message);
-                        handleClose();
                         if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
                         }
+                        handleClose();
                     } else {
                         setOpenAlert(true);
                         setAlertMess('Having trouble deleting this restaurant. Please try again later.');
+                        setRet(false);
                         // alert("Deletion failed.");
                     }
                 })
@@ -75,20 +76,21 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname, setIs
                     },
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
+                    
                     if(res.data.success){
                         // alert(res.data.message);
-                        handleClose();
                         // navigate("/profile");
                         // window.location.reload();
                         if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
+                            handleClose();
                         }
                     } else {
                         setOpenAlert(true);
                         setAlertMess('Having trouble deleting this dish. Please try again later.');
+                        setRet(false);
                         // alert("Deletion failed.");
                     }
                 })
@@ -101,20 +103,20 @@ function DeleteModal ({open, handleClose, userInfo, ID, type, name, rname, setIs
                     },
                 }).then((res) => {
                     // alert(res.data.message);
-                    setRet(false);
                     if(res.data.success){
                         // alert(res.data.message);
-                        handleClose();
                         // navigate("/profile");
                         // window.location.reload();
                         if(pathname == "/profile" || type == "review") {
                             window.location.reload();
                         } else {
                             navigate('/profile');
+                            handleClose();
                         }
                     } else {
                         setOpenAlert(true);
                         setAlertMess('Having trouble deleting this review. Please try again later.');
+                        setRet(false);
                         // alert("Deletion failed.");
                     }
                 })
