@@ -90,7 +90,8 @@ class HomePageCard extends React.Component {
         options: options,
         loading: false,
         openAlert: false,
-        alertMess: ""
+        alertMess: "",
+        isSucces: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -102,10 +103,13 @@ class HomePageCard extends React.Component {
   }
 
   alertOpen(mess) {
-    this.setState({openAlert: true, alertMess: mess});
+    this.setState({openAlert: true, alertMess: mess, isSucces: false});
   }
 
   alertClose() {
+    if(this.state.isSucces) {
+      window.location.reload();
+    }
     this.setState({openAlert: false});
   }
 
@@ -188,13 +192,13 @@ class HomePageCard extends React.Component {
           // this.alertOpen('Successfully added ');
           // alert(res.data.message);
           if(res.data.success){
-              this.setState({open: false});
-
+              this.setState({open: open, isSucces: true, alertMess: `Successfully selected ${this.state.dishName}.`});
+              
               // const location = useLocation();
               // const { pathname } = location;
               // if (pathname == "/history") {
               // if (this.props.history) {
-              window.location.reload();
+              // window.location.reload();
               // }
           } else {
             this.alertOpen("Having trouble adding to today's meal list. Please try again later.");
@@ -215,8 +219,10 @@ class HomePageCard extends React.Component {
       }).then((res) => {
           // alert(res.data.message);
           if(res.data.success){
-              this.setState({open: false});
-              window.location.reload();
+              // this.setState({open: false});
+              this.setState({open: open, isSucces: true, alertMess: `Successfully removed ${this.state.dishName}.`});
+
+              // window.location.reload();
           } else {
             this.alertOpen("Having trouble removing from today's meal list. Please try again later.");
           }
@@ -448,7 +454,7 @@ class HomePageCard extends React.Component {
         </ Card>
         <AddDishModal open={this.state.openDish} handleClose={() => this.handleEdit(false)} height={window.innerHeight} action={"Edit"} loadingModal={false} restoID={this.state.restoID} dishData={this.props.data} isMobile={this.props.isMobile}/>
         <DeleteModal open={this.state.openDel} handleClose={() => this.handleDelete(false)} userInfo={this.props.userInfo} ID={this.state.dishID} type={"dish"} name={this.state.dishName} rname={this.state.resName}/>
-        <AlertModal open={this.state.openAlert} handleClose={this.alertClose} message={this.state.alertMess} isSuccess={false}/>
+        <AlertModal open={this.state.openAlert} handleClose={this.alertClose} message={this.state.alertMess} isSuccess={this.state.isSucces}/>
       </div>;
     }
 }
