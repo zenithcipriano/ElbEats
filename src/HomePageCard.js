@@ -192,7 +192,7 @@ class HomePageCard extends React.Component {
           // this.alertOpen('Successfully added ');
           // alert(res.data.message);
           if(res.data.success){
-              this.setState({open: open, isSucces: true, alertMess: `Successfully selected ${this.state.dishName}.`});
+              this.setState({open: false, openAlert: true, alertMess: `Successfully selected ${this.state.dishName}.`});
               
               // const location = useLocation();
               // const { pathname } = location;
@@ -220,7 +220,7 @@ class HomePageCard extends React.Component {
           // alert(res.data.message);
           if(res.data.success){
               // this.setState({open: false});
-              this.setState({open: open, isSucces: true, alertMess: `Successfully removed ${this.state.dishName}.`});
+              this.setState({open: false, openAlert: true, isSucces: true, alertMess: `Successfully removed ${this.state.dishName}.`});
 
               // window.location.reload();
           } else {
