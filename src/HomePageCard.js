@@ -192,7 +192,7 @@ class HomePageCard extends React.Component {
           // this.alertOpen('Successfully added ');
           // alert(res.data.message);
           if(res.data.success){
-              this.setState({open: false, openAlert: true, alertMess: `Successfully selected ${this.state.dishName}.`});
+              this.setState({open: false, openAlert: true, alertMess: `Successfully selected ${this.state.dishName}.`, isSucces: true});
               
               // const location = useLocation();
               // const { pathname } = location;
