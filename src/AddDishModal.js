@@ -704,7 +704,7 @@ function AddDishModal ({open, handleClose, height, action, restoID, dishData, lo
                                     <table style={{position: 'relative', width: "100%"}}>
                                         <tr>
                                             <td style={{width: "100%"}}>
-                                            <input type="text" value={ingSearch} onChange={handleIngSearch} className='inputModal' placeholder='asin' 
+                                            <input type="text" value={ingSearch} onChange={handleIngSearch} className='inputModal' placeholder='e.g. salt, asin, flour, tinapay, wings' 
                                             onKeyDown={(event) => {
                                                 if(event.key.includes("Enter")) searchIng()
                                             }}

@@ -668,7 +668,7 @@ function AddRestoModal ({open, handleClose, userInfo, height, action, restoID, r
                         <tr>
                             <td colSpan={2}><fieldset>
                                 <legend>Days of the Week: </legend>
-                                <table style={{position: "relative", width: "100%", tableLayout: "fixed", marginBottom:-2, marginRight: -10, width: width-90}}><tr>
+                                <table style={{position: "relative", width: "100%", maxWidth: 550, tableLayout: "fixed", marginBottom:-2, marginRight: -10, width: width-90}}><tr>
                                 {
                                     days.map((dw, index) =>{
                                         return (
